@@ -149,11 +149,14 @@ TridStat :: calculateStatistic(Msa & msa)
 	
 	/* Print if verbose mode on */
 	if (Options::Get().verbose){
+		cout << "factor a = "<<Options::Get().factor_a<<"\n";
+		cout << "factor b = "<<Options::Get().factor_b<<"\n";
+		cout << "factor c = "<<Options::Get().factor_c<<"\n";
 		cout.width(10);
 		cout << "Trident conservation Score :\n";
 		for (int col(0); col < ncol; ++col){
 		  
-		  cout << (1.0 - t[col]) * (1.0 - r[col]) * (1.0 - g[col]) << ";";
+		  cout << pow((float) (1.0 - t[col]), Options::Get().factor_a) * pow((float) (1.0 - r[col]), Options::Get().factor_b) * pow((float) (1.0 - g[col]), Options::Get().factor_c) << ";";
 		}
 		cout << "\n";
 	}

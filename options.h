@@ -95,6 +95,9 @@ class Options
 				output_name         = outArg.getValue();
 				statistic						= msArg.getValue();
         threshold		        = thArg.getValue();
+				factor_a						= taArg.getValue();
+				factor_b						= tbArg.getValue();
+				factor_c						= tcArg.getValue();
 				
         // Check the options which they are needed 
         if (mult_ali_fname.empty()){
