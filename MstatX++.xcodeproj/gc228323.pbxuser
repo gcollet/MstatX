@@ -289,6 +289,15 @@
 			3CBFB38512916CFE004AF96C /* PBXTextBookmark */ = 3CBFB38512916CFE004AF96C /* PBXTextBookmark */;
 			3CBFB38612916CFE004AF96C /* PBXTextBookmark */ = 3CBFB38612916CFE004AF96C /* PBXTextBookmark */;
 			3CBFB38712916CFE004AF96C /* PBXTextBookmark */ = 3CBFB38712916CFE004AF96C /* PBXTextBookmark */;
+			3CBFB38812916E94004AF96C /* PBXTextBookmark */ = 3CBFB38812916E94004AF96C /* PBXTextBookmark */;
+			3CBFB38912916E94004AF96C /* PBXTextBookmark */ = 3CBFB38912916E94004AF96C /* PBXTextBookmark */;
+			3CBFB38A12916E94004AF96C /* PBXTextBookmark */ = 3CBFB38A12916E94004AF96C /* PBXTextBookmark */;
+			3CBFB38B12916F7E004AF96C /* PBXTextBookmark */ = 3CBFB38B12916F7E004AF96C /* PBXTextBookmark */;
+			3CBFB38C12916F7E004AF96C /* PBXTextBookmark */ = 3CBFB38C12916F7E004AF96C /* PBXTextBookmark */;
+			3CBFB38D12916F7E004AF96C /* PBXTextBookmark */ = 3CBFB38D12916F7E004AF96C /* PBXTextBookmark */;
+			3CBFB391129171AE004AF96C /* PBXTextBookmark */ = 3CBFB391129171AE004AF96C /* PBXTextBookmark */;
+			3CBFB392129171AE004AF96C /* PBXTextBookmark */ = 3CBFB392129171AE004AF96C /* PBXTextBookmark */;
+			3CBFB393129171AE004AF96C /* PBXTextBookmark */ = 3CBFB393129171AE004AF96C /* PBXTextBookmark */;
 			3CD40F2512830A7F006F4674 = 3CD40F2512830A7F006F4674 /* PBXTextBookmark */;
 			3CD40F2612830A7F006F4674 = 3CD40F2612830A7F006F4674 /* PBXTextBookmark */;
 			3CD40F2712830A7F006F4674 = 3CD40F2712830A7F006F4674 /* PBXTextBookmark */;
@@ -1505,7 +1514,7 @@
 		isa = PBXTextBookmark;
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 105";
-		rLen = 924;
+		rLen = 955;
 		rLoc = 2909;
 		rType = 0;
 		vrLen = 822;
@@ -1526,7 +1535,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 106";
 		rLen = 0;
-		rLoc = 3406;
+		rLoc = 3428;
 		rType = 0;
 		vrLen = 1367;
 		vrLoc = 1809;
@@ -1566,7 +1575,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 106";
 		rLen = 0;
-		rLoc = 3858;
+		rLoc = 3926;
 		rType = 0;
 		vrLen = 1357;
 		vrLoc = 1788;
@@ -1596,7 +1605,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 106";
 		rLen = 0;
-		rLoc = 3833;
+		rLoc = 3864;
 		rType = 0;
 		vrLen = 1342;
 		vrLoc = 1807;
@@ -1616,7 +1625,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 106";
 		rLen = 0;
-		rLoc = 3406;
+		rLoc = 3428;
 		rType = 0;
 		vrLen = 1367;
 		vrLoc = 1809;
@@ -1756,7 +1765,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 127";
 		rLen = 0;
-		rLoc = 3378;
+		rLoc = 3399;
 		rType = 0;
 		vrLen = 1409;
 		vrLoc = 2558;
@@ -1856,7 +1865,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 115";
 		rLen = 0;
-		rLoc = 3218;
+		rLoc = 3235;
 		rType = 0;
 		vrLen = 1379;
 		vrLoc = 2175;
@@ -1876,7 +1885,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 130";
 		rLen = 0;
-		rLoc = 3833;
+		rLoc = 3864;
 		rType = 0;
 		vrLen = 1318;
 		vrLoc = 2558;
@@ -1896,7 +1905,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 157";
 		rLen = 0;
-		rLoc = 4752;
+		rLoc = 4815;
 		rType = 0;
 		vrLen = 1187;
 		vrLoc = 2782;
@@ -1916,7 +1925,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 127";
 		rLen = 0;
-		rLoc = 3378;
+		rLoc = 3399;
 		rType = 0;
 		vrLen = 1548;
 		vrLoc = 2419;
@@ -1936,7 +1945,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4453;
+		rLoc = 4516;
 		rType = 0;
 		vrLen = 1392;
 		vrLoc = 2987;
@@ -1956,7 +1965,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4557;
+		rLoc = 4620;
 		rType = 0;
 		vrLen = 1400;
 		vrLoc = 2987;
@@ -1976,7 +1985,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4558;
+		rLoc = 4621;
 		rType = 0;
 		vrLen = 1400;
 		vrLoc = 2987;
@@ -1986,7 +1995,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 124";
 		rLen = 0;
-		rLoc = 3293;
+		rLoc = 3311;
 		rType = 0;
 		vrLen = 1400;
 		vrLoc = 2987;
@@ -2006,7 +2015,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 121";
 		rLen = 0;
-		rLoc = 3181;
+		rLoc = 3196;
 		rType = 0;
 		vrLen = 1400;
 		vrLoc = 2987;
@@ -2040,7 +2049,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 121";
 		rLen = 0;
-		rLoc = 3181;
+		rLoc = 3196;
 		rType = 0;
 		vrLen = 1400;
 		vrLoc = 2987;
@@ -2060,7 +2069,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4449;
+		rLoc = 4512;
 		rType = 0;
 		vrLen = 1396;
 		vrLoc = 2987;
@@ -2080,7 +2089,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4504;
+		rLoc = 4567;
 		rType = 0;
 		vrLen = 1392;
 		vrLoc = 2987;
@@ -2100,7 +2109,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4449;
+		rLoc = 4512;
 		rType = 0;
 		vrLen = 1396;
 		vrLoc = 2987;
@@ -2134,7 +2143,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4557;
+		rLoc = 4620;
 		rType = 0;
 		vrLen = 1400;
 		vrLoc = 2987;
@@ -2154,7 +2163,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4502;
+		rLoc = 4565;
 		rType = 0;
 		vrLen = 1400;
 		vrLoc = 2987;
@@ -2174,7 +2183,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4557;
+		rLoc = 4620;
 		rType = 0;
 		vrLen = 1396;
 		vrLoc = 2987;
@@ -2194,7 +2203,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4504;
+		rLoc = 4567;
 		rType = 0;
 		vrLen = 1392;
 		vrLoc = 2987;
@@ -2214,7 +2223,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4504;
+		rLoc = 4567;
 		rType = 0;
 		vrLen = 1392;
 		vrLoc = 2987;
@@ -2234,7 +2243,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4504;
+		rLoc = 4567;
 		rType = 0;
 		vrLen = 1392;
 		vrLoc = 2987;
@@ -2350,7 +2359,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4556;
+		rLoc = 4619;
 		rType = 0;
 		vrLen = 1407;
 		vrLoc = 2987;
@@ -2370,7 +2379,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4438;
+		rLoc = 4501;
 		rType = 0;
 		vrLen = 1412;
 		vrLoc = 2987;
@@ -2390,7 +2399,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4556;
+		rLoc = 4619;
 		rType = 0;
 		vrLen = 1408;
 		vrLoc = 2987;
@@ -2410,7 +2419,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 156";
 		rLen = 0;
-		rLoc = 4531;
+		rLoc = 4594;
 		rType = 0;
 		vrLen = 1438;
 		vrLoc = 2987;
@@ -2450,7 +2459,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 152";
 		rLen = 0;
-		rLoc = 4157;
+		rLoc = 4225;
 		rType = 0;
 		vrLen = 1523;
 		vrLoc = 3094;
@@ -2460,7 +2469,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 152";
 		rLen = 0;
-		rLoc = 4157;
+		rLoc = 4225;
 		rType = 0;
 		vrLen = 1523;
 		vrLoc = 3094;
@@ -2480,7 +2489,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 153";
 		rLen = 0;
-		rLoc = 4213;
+		rLoc = 4281;
 		rType = 0;
 		vrLen = 1567;
 		vrLoc = 3094;
@@ -2510,7 +2519,7 @@
 		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
 		name = "trident.cpp: 164";
 		rLen = 0;
-		rLoc = 4591;
+		rLoc = 4654;
 		rType = 0;
 		vrLen = 1567;
 		vrLoc = 3094;
@@ -2535,6 +2544,96 @@
 		vrLen = 1279;
 		vrLoc = 2535;
 	};
+	3CBFB38812916E94004AF96C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
+		name = "trident.cpp: 139";
+		rLen = 0;
+		rLoc = 3839;
+		rType = 0;
+		vrLen = 1567;
+		vrLoc = 3094;
+	};
+	3CBFB38912916E94004AF96C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3CBFB36512916672004AF96C /* 1zlq.mali_raw */;
+		name = "1zlq.mali_raw: 1";
+		rLen = 0;
+		rLoc = 116;
+		rType = 0;
+		vrLen = 25390;
+		vrLoc = 0;
+	};
+	3CBFB38A12916E94004AF96C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3CD40F1112830507006F4674 /* scoring_matrix.cpp */;
+		name = "scoring_matrix.cpp: 164";
+		rLen = 0;
+		rLoc = 3620;
+		rType = 0;
+		vrLen = 1279;
+		vrLoc = 2535;
+	};
+	3CBFB38B12916F7E004AF96C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
+		name = "trident.cpp: 139";
+		rLen = 0;
+		rLoc = 3839;
+		rType = 0;
+		vrLen = 1567;
+		vrLoc = 3094;
+	};
+	3CBFB38C12916F7E004AF96C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3CBFB36512916672004AF96C /* 1zlq.mali_raw */;
+		name = "1zlq.mali_raw: 1";
+		rLen = 0;
+		rLoc = 116;
+		rType = 0;
+		vrLen = 25390;
+		vrLoc = 0;
+	};
+	3CBFB38D12916F7E004AF96C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3CD40F1112830507006F4674 /* scoring_matrix.cpp */;
+		name = "scoring_matrix.cpp: 164";
+		rLen = 0;
+		rLoc = 3620;
+		rType = 0;
+		vrLen = 1279;
+		vrLoc = 2535;
+	};
+	3CBFB391129171AE004AF96C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */;
+		name = "trident.cpp: 120";
+		rLen = 0;
+		rLoc = 3123;
+		rType = 0;
+		vrLen = 1656;
+		vrLoc = 2394;
+	};
+	3CBFB392129171AE004AF96C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3CBFB36512916672004AF96C /* 1zlq.mali_raw */;
+		name = "1zlq.mali_raw: 1";
+		rLen = 0;
+		rLoc = 116;
+		rType = 0;
+		vrLen = 25390;
+		vrLoc = 0;
+	};
+	3CBFB393129171AE004AF96C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3CD40F1112830507006F4674 /* scoring_matrix.cpp */;
+		name = "scoring_matrix.cpp: 164";
+		rLen = 0;
+		rLoc = 3620;
+		rType = 0;
+		vrLen = 1279;
+		vrLoc = 2535;
+	};
 	3CD40F0712830424006F4674 /* MstatX++ */ = {
 		isa = PBXExecutable;
 		activeArgIndices = (
@@ -2546,12 +2645,12 @@
 			YES,
 		);
 		argumentStrings = (
-			"-ma /Users/gc228323/Database/1zlq.mali_cdd",
+			"-ma /Users/gc228323/Database/1zlq_full.mali",
 			"-s trident",
 			"-t 0.8",
+			"-tb 0.5",
 			"-v",
 			"-tc 3",
-			"-tb 0.5",
 		);
 		autoAttachOnCrash = 1;
 		breakpointsEnabled = 0;
@@ -2697,9 +2796,9 @@
 	};
 	3CDB1BDE12894A330061FB28 /* trident.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1371, 2450}}";
-			sepNavSelRange = "{4591, 0}";
-			sepNavVisRange = "{3094, 1567}";
+			sepNavIntBoundsRect = "{{0, 0}, {1371, 2548}}";
+			sepNavSelRange = "{3145, 0}";
+			sepNavVisRange = "{2394, 1656}";
 		};
 	};
 	3CDB1C1412895D960061FB28 /* PBXTextBookmark */ = {

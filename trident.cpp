@@ -116,29 +116,32 @@ TridStat :: calculateStatistic(Msa & msa)
 			type_list.erase(type_list.begin()+pos);
 			ntype--;
 		}
-		
-		/* Calculate Mean vector */
-		vector<float> mean(alph_size, 0.0); 
-		for (int i(0); i < ntype; ++i)
+		if (ntype){
+			/* Calculate Mean vector */
+			vector<float> mean(alph_size, 0.0);
+					for (int i(0); i < ntype; ++i)
+					for (int a(0); a < alph_size; ++a)
+					mean[a] += score_mat.normScore(sm_alphabet[a], type_list[i]);
+			
 			for (int a(0); a < alph_size; ++a)
-				mean[a] += score_mat.normScore(sm_alphabet[a], type_list[i]);
+				mean[a] /= ntype;
 		
-		for (int a(0); a < alph_size; ++a)
-			mean[a] /= ntype;
-		
-		/* Calculate Score */
-		float lambda = sqrt(alph_size * (score_mat.getMax() - score_mat.getMin()) * (score_mat.getMax() - score_mat.getMin()));
-		float tmp_score = 0.0;
-		for (int i(0); i < ntype; ++i){
-		  vector<float> diff_vect;
-			for(int a(0); a < alph_size; ++a){
-			  diff_vect.push_back(mean[a] - score_mat.normScore(sm_alphabet[a], type_list[i]));
+			/* Calculate Score */
+			float lambda = sqrt(alph_size * (score_mat.getMax() - score_mat.getMin()) * (score_mat.getMax() - score_mat.getMin()));
+			float tmp_score = 0.0;
+			for (int i(0); i < ntype; ++i){
+				vector<float> diff_vect;
+				for(int a(0); a < alph_size; ++a){
+					diff_vect.push_back(mean[a] - score_mat.normScore(sm_alphabet[a], type_list[i]));
+				}
+				tmp_score += normVect(diff_vect);
 			}
-			tmp_score += normVect(diff_vect);
+			tmp_score /= ntype;
+			tmp_score /= lambda;
+			r.push_back(tmp_score);
+		} else {
+			r.push_back(1.0);
 		}
-		tmp_score /= ntype;
-		tmp_score /= lambda;
-		r.push_back(tmp_score);
 	}
 	/* Calculate g(x) = nb_gap / nb_seq 
 	 * Represents the proportion of gaps in the column
@@ -155,7 +158,6 @@ TridStat :: calculateStatistic(Msa & msa)
 		cout.width(10);
 		cout << "Trident conservation Score :\n";
 		for (int col(0); col < ncol; ++col){
-		  
 		  cout << pow((float) (1.0 - t[col]), Options::Get().factor_a) * pow((float) (1.0 - r[col]), Options::Get().factor_b) * pow((float) (1.0 - g[col]), Options::Get().factor_c) << ";";
 		}
 		cout << "\n";
