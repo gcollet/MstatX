@@ -325,17 +325,15 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>3C3D905E128AFDDE00CFE587</string>
+										<string>3CE87BE512912A21006F5BB6</string>
 										<key>history</key>
 										<array>
 											<string>3C193E3F1288041F00ACB7CD</string>
 											<string>3C193E9812880BB400ACB7CD</string>
-											<string>3C193F2912882B3100ACB7CD</string>
 											<string>3CDB1C1412895D960061FB28</string>
 											<string>3CDB1C1612895D960061FB28</string>
 											<string>3CDB1C1912895D960061FB28</string>
 											<string>3CDB1C1B12895D960061FB28</string>
-											<string>3CDB1C2312895D960061FB28</string>
 											<string>3CDB1D281289835B0061FB28</string>
 											<string>3CDB1D4E128985EB0061FB28</string>
 											<string>3CDB1D4F128985EB0061FB28</string>
@@ -347,8 +345,6 @@
 											<string>3CDB1D7512898B180061FB28</string>
 											<string>3CDB1D7C12898B180061FB28</string>
 											<string>3C3D8ED8128AC4C400CFE587</string>
-											<string>3C3D8EDA128AC4C400CFE587</string>
-											<string>3C3D8EDC128AC4C400CFE587</string>
 											<string>3C3D8EDF128AC4C400CFE587</string>
 											<string>3C3D8EE0128AC4C400CFE587</string>
 											<string>3C3D8EE1128AC4C400CFE587</string>
@@ -365,7 +361,7 @@
 											<string>3C3D9033128AF1E000CFE587</string>
 											<string>3C3D9055128AFDDE00CFE587</string>
 											<string>3C3D9056128AFDDE00CFE587</string>
-											<string>3C3D9057128AFDDE00CFE587</string>
+											<string>3C3D905E128AFDDE00CFE587</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -380,8 +376,6 @@
 											<string>3C193E03128800A000ACB7CD</string>
 											<string>3C193E04128800A000ACB7CD</string>
 											<string>3C193E06128800A000ACB7CD</string>
-											<string>3C193E7C1288099700ACB7CD</string>
-											<string>3C193F811288576F00ACB7CD</string>
 											<string>3C193F831288576F00ACB7CD</string>
 											<string>3C193F8B1288576F00ACB7CD</string>
 											<string>3CDB1C3112895D960061FB28</string>
@@ -401,14 +395,10 @@
 											<string>3CDB1D8D12898B180061FB28</string>
 											<string>3C3D8EEA128AC4C400CFE587</string>
 											<string>3C3D8EEF128AC4C400CFE587</string>
-											<string>3C3D8EF5128AC4C400CFE587</string>
-											<string>3C3D8EF7128AC4C400CFE587</string>
 											<string>3C3D9016128ADAEF00CFE587</string>
 											<string>3C3D9039128AF1E000CFE587</string>
 											<string>3C3D9059128AFDDE00CFE587</string>
-											<string>3C3D905A128AFDDE00CFE587</string>
 											<string>3C3D905B128AFDDE00CFE587</string>
-											<string>3C3D905D128AFDDE00CFE587</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -466,9 +456,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>3C3D9060128AFDDE00CFE587</string>
+				<string>3CE87BE612912A21006F5BB6</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>3C3D9061128AFDDE00CFE587</string>
+				<string>3CE87BE712912A21006F5BB6</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -603,9 +593,7 @@
 	<key>WindowOrderList</key>
 	<array>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>3CD40F1C128309FC006F4674</string>
-		<string>1C78EAAD065D492600B07095</string>
-		<string>/Volumes/DATA/Users/gc228323/Work/MstatX++/MstatX++.xcodeproj</string>
+		<string>/Volumes/DATA/Users/gc228323/Work/MstatX/MstatX++.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>4 59 1680 969 0 0 1680 1028 </string>
@@ -805,13 +793,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>3C3D904E128AF99C00CFE587</string>
+				<string>3CE87BE812912A21006F5BB6</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>3C3D904F128AF99C00CFE587</string>
-				<string>3C3D9050128AF99C00CFE587</string>
-				<string>3C3D9051128AF99C00CFE587</string>
-				<string>3C3D9052128AF99C00CFE587</string>
-				<string>3C3D9053128AF99C00CFE587</string>
+				<string>3CE87BE912912A21006F5BB6</string>
+				<string>3CE87BEA12912A21006F5BB6</string>
+				<string>3CE87BEB12912A21006F5BB6</string>
+				<string>3CE87BEC12912A21006F5BB6</string>
+				<string>3CE87BED12912A21006F5BB6</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
