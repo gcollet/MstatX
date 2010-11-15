@@ -1,0 +1,3 @@
+In file included from /Volumes/DATA/Developer/SDKs/MacOSX10.5.sdk/usr/include/c++/4.0.0/iostream:43,
+                 from /Volumes/DATA/Users/gc228323/Work/MstatX++/main.cpp:1:
+/Volumes/DATA/Developer/SDKs/MacOSX10.5.sdk/usr/include/c++/4.0.0/i686-apple-darwin9/bits/c++config.h:79: error: current namespace 'std' does not enclose strongly used namespace '__gnu_debug_def'
