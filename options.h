@@ -65,7 +65,7 @@ class Options
 				argline.addArg(&verbArg);
 				ARGU::ValueArg<string>	outArg(	"-o"			,"--output"						,"Name of the output file [default=mali_file]"				,"string"	,"");
 				argline.addArg(&outArg);
-				ARGU::ValueArg<string>	msArg(	"-s"			,"--statistic"				,"Name of the statistic used [default=mlc]"				,"string"	,"mlc");
+				ARGU::ValueArg<string>	msArg(	"-s"			,"--statistic"				,"Name of the statistic used [default=mlc]"						,"string"	,"trident");
 				argline.addArg(&msArg);
 				ARGU::ValueArg<float>	thArg(		"-t"			,"--threshold"				,"Threshold to print correlation [default=0.8]"				,"float"	, 0.8);
 				argline.addArg(&thArg);
