@@ -148,4 +148,14 @@ MlcStat :: calculateStatistic(Msa & msa)
       cor_mat[col1][col2] /= stdev[col1] * stdev[col2] * (float) (nseq * nseq) ;
 		}
 	}
+	
+	if (Options::Get().verbose){
+		for (int col1(0); col1 < ncol; ++col1){
+			for (int col2(0); col2 <= col1; ++col2){
+				if (cor_mat[col1][col2] > Options::Get().threshold){
+				  cout << "pair ("<<col1<<","<<col2<<") = "<<cor_mat[col1][col2]<<" above "<<Options::Get().threshold<<"\n";	
+				}
+			}
+		}
+	}
 }

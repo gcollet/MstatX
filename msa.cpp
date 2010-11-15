@@ -6,6 +6,7 @@
  *
  */
 
+#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -58,6 +59,14 @@ Msa :: Msa(string fname)
 	nseq = mali_name.size();
 	ncol = mali_seq[0].size();
 	cout << "nb seq = "<<nseq<<" -- nb col = "<<ncol<<"\n";
+	
+	/* Change all mali.seq in upper case*/
+	for (int i(0); i < nseq; ++i){
+		for(int j(0); j < ncol; ++j){
+			mali_seq[i][j] = toupper(mali_seq[i][j]);
+		}
+	}
+	
 	/* Analyse the multiple alignment */
 	defineAlphabet();
 	countGap();
@@ -168,6 +177,7 @@ Msa :: countType(){
 			  aa_types.push_back(mali_seq[row][col]);
 			}
 		}
+		aa_type_list.push_back(aa_types);
 		nb_type.push_back(aa_types.size());
 	}
 }

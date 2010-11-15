@@ -93,24 +93,29 @@ ScoringMatrix :: ScoringMatrix(string fname)
 		cout << "\n\n";
 	}	
 	
-	/* Allocate the aa_vect */
-	aa_vect = (float **) calloc (alphabet_size, sizeof(float *));
-	if (aa_vect == NULL){
+	/* Allocate the norm_matrix */
+	norm_matrix = (float **) calloc (alphabet_size, sizeof(float *));
+	if (norm_matrix == NULL){
 	  cerr << "Cannot allocate the normalized amino acid vector\n";
 		exit(0);
 	}
 	for (int i(0); i < alphabet_size; ++i) {
-		aa_vect[i] = (float *) calloc(i+1, sizeof(float));
-		if (aa_vect[i] == NULL){
-			cerr << "Cannot allocate aa_vect[" << i << "]\n";
+		norm_matrix[i] = (float *) calloc(i+1, sizeof(float));
+		if (norm_matrix[i] == NULL){
+			cerr << "Cannot allocate norm_matrix[" << i << "]\n";
 			exit(0);
 		}
 	}
 	
 	/* Calculate normalized vector */
+	min = 1000; max = -1000;
 	for (int i(0); i < alphabet_size; ++i) {
 		for (int j(0); j <= i; ++j){
-			aa_vect[i][j] = score(alphabet[i], alphabet[j]) / sqrt(score(alphabet[i], alphabet[i]) * score(alphabet[j], alphabet[j]));
+			norm_matrix[i][j] = score(alphabet[i], alphabet[j]) / sqrt(score(alphabet[i], alphabet[i]) * score(alphabet[j], alphabet[j]));
+			if (norm_matrix[i][j] < min) 
+				min = norm_matrix[i][j];
+			if (norm_matrix[i][j] > max) 
+				max = norm_matrix[i][j];
 		}
 	}
 	
@@ -121,7 +126,7 @@ ScoringMatrix :: ScoringMatrix(string fname)
 			cout << alphabet[i];
 			for (int j(0); j <= i; j++){
 				cout.width(9);
-				cout << aa_vect[i][j];
+				cout << norm_matrix[i][j];
 			}
 			cout << "\n";
 		}
@@ -147,9 +152,9 @@ ScoringMatrix :: ~ScoringMatrix()
 		}
 		free(matrix);
 		for (int i(0); i < alphabet.size(); ++i){
-			free(aa_vect[i]);
+			free(norm_matrix[i]);
 		}
-		free(aa_vect);
+		free(norm_matrix);
 	}
 	
 }
@@ -166,7 +171,7 @@ ScoringMatrix :: index(char aa)
 }
 
 
-float 
+float
 ScoringMatrix :: score(char aa1, char aa2)
 {
 	int x,y;
@@ -178,4 +183,18 @@ ScoringMatrix :: score(char aa1, char aa2)
 	  x = pos2; y = pos1;	
 	}
 	return matrix[x][y];
+}
+
+float 
+ScoringMatrix :: normScore(char aa1, char aa2)
+{
+	int x,y;
+  int pos1 = index(aa1);
+	int pos2 = index(aa2);
+	if (pos1 > pos2){
+		x = pos1; y = pos2;
+	} else {
+	  x = pos2; y = pos1;	
+	}
+	return norm_matrix[x][y];
 }

@@ -18,21 +18,22 @@ class Msa
 {
 protected:
 	string alphabet;
-	vector<string> mali_name;		/**< Name of sequences of the multiple alignment */
-	vector<string> mali_seq;		/**< Sequences of the multiple alignment */
-	vector<int>    gap_counts;	/**< Number of gaps in each column */
-	vector<float>  aa_freq;			/**< Frequency of amino acids types in the overall multiple alignment */
-	vector<float>  entropy;     /**< Entropy of each column of the multiple alignment */
-	vector<int>    nb_type;     /**< Number of amino acid types in the column */
+	vector<string> mali_name;			/**< Name of sequences of the multiple alignment */
+	vector<string> mali_seq;			/**< Sequences of the multiple alignment */
+	vector<string> aa_type_list;	/**< List of aa type in each column (size = ncol * 20) */
+	vector<int>    gap_counts;		/**< Number of gaps in each column */
+	vector<float>  aa_freq;				/**< Frequency of amino acids types in the overall multiple alignment */
+	vector<float>  entropy;				/**< Entropy of each column of the multiple alignment */
+	vector<int>    nb_type;				/**< Number of amino acid types in the column */
 	
-	int nseq;										/**< Number of sequences in the multiple alignment */
-	int ncol;										/**< Number of columns in the multiple alignment */
+	int nseq;											/**< Number of sequences in the multiple alignment */
+	int ncol;											/**< Number of columns in the multiple alignment */
 	
-	void countGap();						/**< Count the number of gap in each column */
-	void countFreq();						/**< Calculate the frequencies of each amino acid type in the multiple alignment */
-	void countType();           /**< Calculate the number of different amino acid types in each column */
-	void countEntropy();        /**< Calculate the entropy of each column in the multiple alignment */
-	void defineAlphabet();			/**< Define the alphabet used in the multiple alignment */
+	void countGap();							/**< Count the number of gap in each column */
+	void countFreq();							/**< Calculate the frequencies of each amino acid type in the multiple alignment */
+	void countType();							/**< Calculate the number of different amino acid types in each column */
+	void countEntropy();					/**< Calculate the entropy of each column in the multiple alignment */
+	void defineAlphabet();				/**< Define the alphabet used in the multiple alignment */
 	
 public:
 	Msa(string fname);
@@ -53,6 +54,7 @@ public:
 	
 	char getSymbol(int seq, int col){return mali_seq[seq][col];};
 	int getNtype(int col){return nb_type[col];};
+	string getTypeList(int col){return aa_type_list[col];};
 };
 
 #endif

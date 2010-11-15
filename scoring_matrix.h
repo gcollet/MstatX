@@ -19,17 +19,23 @@ protected:
 	string alphabet;
 	float ** matrix;
   bool is_set;
-	float **aa_vect;  /**< Normalized vector of each amino acid type */
-
+	float **norm_matrix;  /**< Normalized vector of each amino acid type */
+	float max;
+	float min;
+	
 public:
 	ScoringMatrix(string fname);
 	virtual ~ScoringMatrix();
 	
-	int getAlphabetSize(){return (int) alphabet.size();};
-	string getAlphabet(){return alphabet;};
-	int index(char aa);
-	float score(char aa, char aa);
-	bool isSet(){return is_set;};
+	int			getAlphabetSize(){return (int) alphabet.size();};
+	string	getAlphabet(){return alphabet;};
+	float   getMax(){return max;};
+	float		getMin(){return min;};
+	int			index(char aa);
+	float		score(char aa, char aa);
+	float		normScore(char aa, char aa);
+	bool		isSet(){return is_set;};
+	
 };
 
 #endif

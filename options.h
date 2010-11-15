@@ -69,6 +69,12 @@ class Options
 				argline.addArg(&msArg);
 				ARGU::ValueArg<float>	thArg(		"-t"			,"--threshold"				,"Threshold to print correlation [default=0.8]"				,"float"	, 0.8);
 				argline.addArg(&thArg);
+				ARGU::ValueArg<float>	taArg(		"-ta"			,"--trident_a"				,"Factor applied to the first member of trident score  [default=1.0]"				,"float"	, 1.0);
+				argline.addArg(&taArg);
+				ARGU::ValueArg<float>	tbArg(		"-tb"			,"--trident_b"				,"Factor applied to the second member of trident score [default=1.0]"				,"float"	, 1.0);
+				argline.addArg(&tbArg);
+				ARGU::ValueArg<float>	tcArg(		"-tc"			,"--trident_c"				,"Factor applied to the third member of trident score  [default=1.0]"				,"float"	, 1.0);
+				argline.addArg(&tcArg);
 				/*ARGU::ValueArg<int>  mwArg( "-mw"				,"--max_window"	,"maximum extension of core length"		,"int"	,30);
 				argline.addArg(&sfnArg);*/
 				
@@ -115,6 +121,10 @@ public:
   	string statistic;           // Name of the statistic calculated by MstatX++
 		bool verbose;								// Switch for verbose mode
   	float threshold;            // Threshold for correlation print
+		float factor_a;							// Factor applied to the first  member of trident score
+		float factor_b;             // Factor applied to the second member of trident score
+		float factor_c;							// Factor applied to the third  member of trident score
+	
     /* Destructor */
     ~Options(){};
   
