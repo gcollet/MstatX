@@ -13,6 +13,7 @@
 		3CDB1BCE128948430061FB28 /* statistic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CDB1BCD128948430061FB28 /* statistic.cpp */; };
 		3CDB1BDC12894A2C0061FB28 /* mlc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CDB1BDB12894A2C0061FB28 /* mlc.cpp */; };
 		3CDB1BDF12894A330061FB28 /* trident.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CDB1BDE12894A330061FB28 /* trident.cpp */; };
+		4F5ED04212A1B9A900C80BC2 /* mut_info.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F5ED04112A1B9A900C80BC2 /* mut_info.cpp */; };
 		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
 		8DD76F6A0486A84900D96B5E /* MstatX++.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* MstatX++.1 */; };
 /* End PBXBuildFile section */
@@ -52,6 +53,8 @@
 		3CDB1BDD12894A330061FB28 /* trident.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trident.h; sourceTree = "<group>"; };
 		3CDB1BDE12894A330061FB28 /* trident.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = trident.cpp; sourceTree = "<group>"; };
 		3CDB1D0112897EB00061FB28 /* mclachlan72b.mat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mclachlan72b.mat; sourceTree = "<group>"; };
+		4F5ED04012A1B9A900C80BC2 /* mut_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mut_info.h; sourceTree = "<group>"; };
+		4F5ED04112A1B9A900C80BC2 /* mut_info.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mut_info.cpp; sourceTree = "<group>"; };
 		8DD76F6C0486A84900D96B5E /* MstatX++ */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "MstatX++"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859E8B029090EE04C91782 /* MstatX++.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = "MstatX++.1"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -141,6 +144,8 @@
 				3CDB1BDE12894A330061FB28 /* trident.cpp */,
 				3C3D8EAD128AB11200CFE587 /* wentropy.h */,
 				3C3D8EAE128AB11200CFE587 /* wentropy.cpp */,
+				4F5ED04012A1B9A900C80BC2 /* mut_info.h */,
+				4F5ED04112A1B9A900C80BC2 /* mut_info.cpp */,
 			);
 			name = Statistics;
 			sourceTree = "<group>";
@@ -181,7 +186,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "MstatX++" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* MstatX++ */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -203,6 +215,7 @@
 				3CDB1BDC12894A2C0061FB28 /* mlc.cpp in Sources */,
 				3CDB1BDF12894A330061FB28 /* trident.cpp in Sources */,
 				3C3D8EAF128AB11200CFE587 /* wentropy.cpp in Sources */,
+				4F5ED04212A1B9A900C80BC2 /* mut_info.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,7 +255,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_OPENMP_SUPPORT = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
