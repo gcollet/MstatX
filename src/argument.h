@@ -75,7 +75,7 @@ namespace ARGU {
 		/**
 		 * Sets the value of the argument.
 		 */
-		virtual void setValue(string val){};
+		virtual void setValue(string val) = 0;
 		
 	};
 	
