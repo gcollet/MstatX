@@ -11,6 +11,7 @@
 #include "options.h"
 
 #include <cmath>
+#include <fstream>
 #include <algorithm>
 
 #define MIN(x,y)  (x < y ? x : y)
@@ -75,10 +76,11 @@ WEntStat :: calculateStatistic(Msa & msa)
 	for (int i(0); i < ncol; i++){
 		proba[i] = (float *) calloc(alphabet.size(), sizeof(float));
 		if (proba[i] == NULL){
-			fprintf(stderr,"Cannot Allocate henikoff submatrix\n");
+			fprintf(stderr,"Cannot Allocate probability submatrix\n");
 			exit(0);
 		}
 	}
+	
 	/* Calculate Sequence Weights */
 	for (int seq(0); seq < nseq; ++seq){
 		seq_weight.push_back(calcSeqWeight(msa,seq));
@@ -89,12 +91,7 @@ WEntStat :: calculateStatistic(Msa & msa)
 		cout << "Seq weights :\n";
 		for (int seq(0); seq < nseq; ++seq){
 		  cout.width(10);
-		  cout << seq_weight[seq];
-			/*for (int col(0); col < ncol; ++col){
-				cout.width(10);
-			  cout << msa.getSymbol(seq, col);	
-			}*/
-			cout << "\n";
+		  cout << seq_weight[seq] << "\n";
 		}
 		cout << "\n";
 	}
@@ -117,15 +114,19 @@ WEntStat :: calculateStatistic(Msa & msa)
 		col_cons[x] *= lambda;
 	}
 	
-	/* Print if verbose mode on */
-	if (Options::Get().verbose){
-		cout.width(10);
-		cout << "cons\n";
-		for (int col(0); col < ncol; ++col){
-		  
-		  cout << (1.0 - col_cons[col]) * (1.0 - ((float)msa.getGap(col) / (float)nseq)) << ";";
-		}
-		cout << "\n";
+	cout << "Score is based on wentropy + gap counts\n";
+	cout << "S = (1 - entropy) * (1 - gap_freq)\n";
+	
+	/* Print Conservation score in output file */
+	ofstream file(Options::Get().output_name.c_str());
+	if (!file.is_open()){
+	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
+		exit(0);
 	}
+	for (int col(0); col < ncol; ++col){
+	  file << (1.0 - col_cons[col]) * (1 - ((float) msa.getGap(col) / (float) nseq)) << ";";
+	}
+	file << "\n";
+	file.close();
 }
 

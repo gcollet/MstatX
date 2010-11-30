@@ -65,7 +65,7 @@ class Options
 				argline.addArg(&verbArg);
 				ARGU::ValueArg<string>	outArg(	"-o"			,"--output"						,"Name of the output file [default=mali_file]"				,"string"	,"");
 				argline.addArg(&outArg);
-				ARGU::ValueArg<string>	msArg(	"-s"			,"--statistic"				,"Name of the statistic used [default=trident]"						,"string"	,"trident");
+				ARGU::ValueArg<string>	msArg(	"-s"			,"--statistic"				,"Name of the statistic used [default=trident]"						,"string"	,"wentropy");
 				argline.addArg(&msArg);
 				ARGU::ValueArg<float>	thArg(		"-t"			,"--threshold"				,"Threshold to print correlation [default=0.8]"				,"float"	, 0.8);
 				argline.addArg(&thArg);
@@ -108,7 +108,7 @@ class Options
 				if (output_name.empty()){
 					int beg = mult_ali_fname.find_last_of('/');
 					int end = mult_ali_fname.find_last_of('.');
-				  output_name = mult_ali_fname.substr(beg+1, end - beg - 1);
+				  output_name = mult_ali_fname.substr(beg+1, end - beg - 1) + ".cons";
 				}
       } catch (exception &e) {
         throw;
