@@ -55,6 +55,8 @@ public:
 	char getSymbol(int seq, int col){return mali_seq[seq][col];};
 	int getNtype(int col){return nb_type[col];};
 	string getTypeList(int col){return aa_type_list[col];};
+	
+	void fitToAlphabet(string);
 };
 
 #endif

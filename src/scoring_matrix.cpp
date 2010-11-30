@@ -164,7 +164,7 @@ ScoringMatrix :: index(char aa)
 {
 	int pos = alphabet.find(aa);
 	if (pos >= alphabet.size()){
-		cerr << "Symbol '"<< aa << "' not in alphabet\n";
+		cerr << "Symbol " << aa << " is not in alphabet\n";
 		exit(0);
 	} 
 	return pos;

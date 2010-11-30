@@ -12,6 +12,7 @@
 #include "scoring_matrix.h"
 
 #include <cmath>
+#include <fstream>
 #include <algorithm>
 
 #define MIN(x,y)  (x < y ? x : y)
@@ -106,6 +107,8 @@ TridStat :: calculateStatistic(Msa & msa)
 	int alph_size = score_mat.getAlphabetSize();
 	string sm_alphabet = score_mat.getAlphabet();
 	
+	msa.fitToAlphabet(sm_alphabet);
+	
 	for (int x(0); x < ncol; x++){
 		
 		int ntype = msa.getNtype(x);
@@ -143,24 +146,31 @@ TridStat :: calculateStatistic(Msa & msa)
 			r.push_back(1.0);
 		}
 	}
+
 	/* Calculate g(x) = nb_gap / nb_seq 
 	 * Represents the proportion of gaps in the column
 	 */
 	for (int x(0); x < ncol; x++){
 		g.push_back((float) msa.getGap(x) / (float) nseq);
 	}
-	
+
 	/* Print if verbose mode on */
-	if (Options::Get().verbose){
-		cout << "factor a = "<<Options::Get().factor_a<<"\n";
-		cout << "factor b = "<<Options::Get().factor_b<<"\n";
-		cout << "factor c = "<<Options::Get().factor_c<<"\n";
-		cout.width(10);
-		cout << "Trident conservation Score :\n";
-		for (int col(0); col < ncol; ++col){
-		  cout << pow((float) (1.0 - t[col]), Options::Get().factor_a) * pow((float) (1.0 - r[col]), Options::Get().factor_b) * pow((float) (1.0 - g[col]), Options::Get().factor_c) << ";";
-		}
-		cout << "\n";
+	cout << "Score is based on trident score defined by Valdar (2002)\n";
+	cout << "S = (1 - t)^a * (1 - r)^b * (1 - g)^c\n";
+	cout << "t measures the entropy\n";
+	cout << "r measures the residue similarity (based on a normalized substitution matrix)\n";
+	cout << "g measures the gap frequencies\n";
+	cout << "a = "<<Options::Get().factor_a<<"\n";
+	cout << "b = "<<Options::Get().factor_b<<"\n";
+	cout << "c = "<<Options::Get().factor_c<<"\n";
+	
+	ofstream file(Options::Get().output_name.c_str());
+	if (!file.is_open()){
+	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
+		exit(0);
+	}
+	for (int col(0); col < ncol; ++col){
+	  file << pow((float) (1.0 - t[col]), Options::Get().factor_a) * pow((float) (1.0 - r[col]), Options::Get().factor_b) * pow((float) (1.0 - g[col]), Options::Get().factor_c) << "\n";
 	}
 }
 

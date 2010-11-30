@@ -292,3 +292,30 @@ Msa :: getCol(int col)
 	return column;
 }
 
+
+/**************************************************************
+ * fitToAlphabet(string alph1) transforms symbols 
+ * if a symbol from msa is not in alph1 then it is a gap
+ **************************************************************/
+void
+Msa :: fitToAlphabet(string alph1){
+	int alph_size = alph1.size();
+	for (int i(0); i < nseq; i++){
+		for (int j(0); j < ncol; j++){
+			if (mali_seq[i][j] != '-' && mali_seq[i][j] != ' ' && alph1.find(mali_seq[i][j]) >= alph_size){
+				int k = alphabet.find(mali_seq[i][j]);
+				if (k < alphabet.size()){
+					alphabet.erase(alphabet.begin() + k);
+				}
+				int pos = aa_type_list[j].find(mali_seq[i][j]);
+				if (pos < aa_type_list[j].size()){
+					aa_type_list[j].erase(aa_type_list[j].begin() + pos);
+					nb_type[j]--;
+				}
+				mali_seq[i][j] = '-';
+			}
+		}
+	}
+}
+
+

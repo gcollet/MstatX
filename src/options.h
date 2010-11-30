@@ -69,11 +69,11 @@ class Options
 				argline.addArg(&msArg);
 				ARGU::ValueArg<float>	thArg(		"-t"			,"--threshold"				,"Threshold to print correlation [default=0.8]"				,"float"	, 0.8);
 				argline.addArg(&thArg);
-				ARGU::ValueArg<float>	taArg(		"-ta"			,"--trident_a"				,"Factor applied to the first member of trident score  [default=1.0]"				,"float"	, 1.0);
+				ARGU::ValueArg<float>	taArg(		"-a"			,"--trident_a"				,"Factor applied to the first member of trident score  [default=1.0]"				,"float"	, 1.0);
 				argline.addArg(&taArg);
-				ARGU::ValueArg<float>	tbArg(		"-tb"			,"--trident_b"				,"Factor applied to the second member of trident score [default=0.5]"				,"float"	, 0.5);
+				ARGU::ValueArg<float>	tbArg(		"-b"			,"--trident_b"				,"Factor applied to the second member of trident score [default=0.5]"				,"float"	, 0.5);
 				argline.addArg(&tbArg);
-				ARGU::ValueArg<float>	tcArg(		"-tc"			,"--trident_c"				,"Factor applied to the third member of trident score  [default=3.0]"				,"float"	, 3.0);
+				ARGU::ValueArg<float>	tcArg(		"-c"			,"--trident_c"				,"Factor applied to the third member of trident score  [default=3.0]"				,"float"	, 3.0);
 				argline.addArg(&tcArg);
 				/*ARGU::ValueArg<int>  mwArg( "-mw"				,"--max_window"	,"maximum extension of core length"		,"int"	,30);
 				argline.addArg(&sfnArg);*/
