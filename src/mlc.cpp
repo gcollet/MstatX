@@ -159,3 +159,4 @@ MlcStat :: calculateStatistic(Msa & msa)
 		}
 	}
 }
+
