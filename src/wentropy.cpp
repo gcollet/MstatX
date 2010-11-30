@@ -114,8 +114,8 @@ WEntStat :: calculateStatistic(Msa & msa)
 		col_cons[x] *= lambda;
 	}
 	
-	cout << "Score is based on wentropy + gap counts\n";
-	cout << "S = (1 - entropy) * (1 - gap_freq)\n";
+	cout << "\nScore is based on wentropy + gap counts\n";
+	cout << "S = (1 - entropy) * (1 - gap_freq)\n\n";
 	
 	/* Print Conservation score in output file */
 	ofstream file(Options::Get().output_name.c_str());

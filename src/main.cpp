@@ -33,7 +33,6 @@ int main (int argc, char **argv) {
 	}
 	
 	/* Read the multiple alignment */
-	cout << "Read multiple alignment\n";
 	Msa msa(Options::Get().mult_ali_fname);
 	
 	/* Calculate the statistics */
@@ -43,6 +42,6 @@ int main (int argc, char **argv) {
 	delete stat;
 	
 	t2 = clock();		
-	cout << "Mstatx computed in "<< (t2 - t1) / (double)CLOCKS_PER_SEC <<" seconds\n";
+	cout << "Mstatx computed in "<< (t2 - t1) / (double)CLOCKS_PER_SEC <<" seconds - results are availables in " << Options::Get().output_name << "\n";
 	return 0;
 }

@@ -35,6 +35,7 @@ Msa :: Msa(string fname)
 	  cerr << "Cannot open file " << fname << "\n";
 		exit(0);
 	}
+
 	int nb_seq_limits =500;
 	/* Read file */
 	string s, tmp_seq;
@@ -58,7 +59,7 @@ Msa :: Msa(string fname)
 	
 	nseq = mali_name.size();
 	ncol = mali_seq[0].size();
-	cout << "nb seq = "<<nseq<<" -- nb col = "<<ncol<<"\n";
+	cout << "Multiple alignment : nb seq = "<<nseq<<", nb col = "<<ncol<<"\n";
 	
 	/* Change all mali.seq in upper case*/
 	for (int i(0); i < nseq; ++i){
