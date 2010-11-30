@@ -124,9 +124,8 @@ WEntStat :: calculateStatistic(Msa & msa)
 		exit(0);
 	}
 	for (int col(0); col < ncol; ++col){
-	  file << (1.0 - col_cons[col]) * (1 - ((float) msa.getGap(col) / (float) nseq)) << ";";
+	  file << (1.0 - col_cons[col]) * (1 - ((float) msa.getGap(col) / (float) nseq)) << "\n";
 	}
-	file << "\n";
 	file.close();
 }
 

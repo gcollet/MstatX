@@ -37,7 +37,6 @@ int main (int argc, char **argv) {
 	Msa msa(Options::Get().mult_ali_fname);
 	
 	/* Calculate the statistics */
-	cout << "Calculate Statistics\n";
 	Statistic * stat = StatisticFactory::CreateByName(Options::Get().statistic);
 	stat->calculateStatistic(msa);
 	

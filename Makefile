@@ -1,6 +1,6 @@
-CC	= g++-4.2
+CC	= g++
 CFLAGS	= 
-LIBS	= -lm -lpthread -fopenmp 
+LIBS	= -lm -lpthread  
 
 SRC=src/*.cpp
 HDR=src/*.h

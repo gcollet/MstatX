@@ -10,7 +10,7 @@
 #include <cmath>
 #include <vector>
 
-#include "omp.h"
+//#include "omp.h"
 #include "mlc.h"
 #include "msa.h"
 #include "options.h"
@@ -119,7 +119,7 @@ MlcStat :: calculateStatistic(Msa & msa)
 	/* Calculate MLC coefficients */
 	cout << "  Calculate MLC correlations\n";
 	int col1;
-#pragma omp parallel for schedule (dynamic)
+//#pragma omp parallel for schedule (dynamic)
 	for (col1 = 0; col1 < ncol; ++col1){
 		if (stdev[col1] == 0.0 || gap_count[col1] > max_gap){
 			continue;
