@@ -2,6 +2,7 @@
 #include <ctime>
 
 #include "msa.h"
+#include "matrix.h"
 #include "options.h"
 #include "statistic.h"
 #include "scoring_matrix.h"
@@ -31,6 +32,13 @@ int main (int argc, char **argv) {
 		cerr << e.what() << "\n";
 		exit(0);
 	}
+	
+	/* Test Triangular matrix*/
+	TriangularMatrix<float> testMat(5);
+	for (int i(0); i < 5; i++){
+		for (int j(0); j <= i
+	}
+	
 	
 	/* Read the multiple alignment */
 	Msa msa(Options::Get().mult_ali_fname);

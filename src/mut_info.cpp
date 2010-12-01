@@ -104,7 +104,7 @@ MIStat :: calculateStatistic(Msa & msa)
 	}
 	
 	/* Allocate f_ij (size = alph_size * alph_size * npair) */
-	f_ij = (float ***) calloc(npair, sizeof(float**));
+	/*f_ij = (float ***) calloc(npair, sizeof(float**));
 	if (f_ij == NULL){
 		fprintf(stderr,"Cannot Allocate pair frequency matrix (f_ij)\n");
 		exit(0);
@@ -122,7 +122,7 @@ MIStat :: calculateStatistic(Msa & msa)
 				exit(0);
 			}
 		}
-	}
+	}*/
 	
 	
 	/* Calculate Sequence Weights */
