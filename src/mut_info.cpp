@@ -6,6 +6,7 @@
  *
  */
 
+#include "matrix.h"
 #include "mut_info.h"
 
 #include <iostream>
@@ -104,7 +105,7 @@ MIStat :: calculateStatistic(Msa & msa)
 	}
 	
 	/* Allocate f_ij (size = alph_size * alph_size * npair) */
-	f_ij = (float ***) calloc(npair, sizeof(float**));
+	/*f_ij = (float ***) calloc(npair, sizeof(float**));
 	if (f_ij == NULL){
 		fprintf(stderr,"Cannot Allocate pair frequency matrix (f_ij)\n");
 		exit(0);
@@ -123,7 +124,7 @@ MIStat :: calculateStatistic(Msa & msa)
 			}
 		}
 	}
-	
+	*/
 	
 	/* Calculate Sequence Weights */
 	cout << "Calculate Sequence Weights\n";
@@ -135,9 +136,16 @@ MIStat :: calculateStatistic(Msa & msa)
 	}
 	
 	
+	TriangularMatrix<float> test_mat(13);
+	int i = 1, j = 1;
+	cout << "size =" << 13 * (13+1) /2 << "\n";
+	cout << "index ("<<i<<","<<j<<") = " << test_mat.index(i,j) << "\n";
 	/* Calculate frequencies for single positions */
+	return;
 	for (int x(0); x < ncol; x++){
-		float total = 0.0;
+		int total_pseudo = 0;
+		int total_non_pseudo = 0;
+		float val;
 		for (int a(0); a < alphabet.size(); a++){
 			f_i[x][a] = 0.0;
 			for (int j(0); j < nseq; j++){
@@ -145,13 +153,24 @@ MIStat :: calculateStatistic(Msa & msa)
 					f_i[x][a] += seq_weight[j];
 				}
 			}
-			if (f_i[x][a] == 0.0) {
-				f_i[x][a] = (float) 1 / (float) nseq;
+			if (f_i[x][a] > 0.0) {
+				total_non_pseudo++;	
+			}
+		}
+		total_pseudo = alphabet.size() - total_non_pseudo;
+		val = ((float) total_pseudo / (float) nseq) / (float) total_non_pseudo;
+		for (int a(0); a < alphabet.size(); a++){
+			if (f_i[x][a] > 0.0) {
+				f_i[x][a] -= val;
+			} else {
+				f_i[x][a] = 1.0 / (float) nseq;
 			}
 		}
 	}
-	
-	
-	
+	float total = 0.0;
+	for (int a(0); a < alphabet.size(); a++){
+	  total += f_i[1][a] + f_i[4][a];
+	}
+	cout << "total" << total/2 << "\n";
 }
 

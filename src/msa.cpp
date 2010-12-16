@@ -36,16 +36,16 @@ Msa :: Msa(string fname)
 		exit(0);
 	}
 
-	int nb_seq_limits =500;
+	
 	/* Read file */
 	string s, tmp_seq;
-	while (file.good() && mali_seq.size() < nb_seq_limits){
+	while (file.good() && mali_seq.size() < Options::Get().nb_seq){
 		getline(file,s);
 		if (s[0] == '>'){
 			if (mali_name.size() != 0){
 			  mali_seq.push_back(tmp_seq);	
 			}
-			if (mali_seq.size() < nb_seq_limits){
+			if (mali_seq.size() < Options::Get().nb_seq){
   			mali_name.push_back(s.substr(1, s.find_first_of(' ') - 1));
 			}
 			tmp_seq.clear();
@@ -53,7 +53,7 @@ Msa :: Msa(string fname)
 			tmp_seq = tmp_seq + s;
 		}
 	}
-	if (mali_seq.size() < nb_seq_limits){
+	if (mali_seq.size() < Options::Get().nb_seq){
 	  mali_seq.push_back(tmp_seq);
 	}
 	

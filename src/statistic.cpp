@@ -11,6 +11,7 @@
 #include "wentropy.h"
 #include "mut_info.h"
 #include "trident.h"
+#include "kabat.h"
 #include "mlc.h"
 
 void AddAllStatistics()
@@ -19,4 +20,5 @@ void AddAllStatistics()
 	StatisticFactory::Add<TridStat>("trident");
 	StatisticFactory::Add<WEntStat>("wentropy");
 	StatisticFactory::Add<MIStat>("mutual");
+	StatisticFactory::Add<KabatStat>("kabat");
 }

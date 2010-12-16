@@ -99,10 +99,10 @@ WEntStat :: calculateStatistic(Msa & msa)
 	/* Calculate aa proba and conservation score by columns */
 	float lambda = 1.0 / log(MIN(alphabet.size(),nseq));
 	
-  for (int x(0); x < ncol; x++){
+  for (int x(0); x < ncol; ++x){
 		col_cons.push_back(0.0);
 		for (int a(0); a < alphabet.size(); a++){
-		  for (int j(0); j < nseq; j++){
+		  for (int j(0); j < nseq; ++j){
 				if(msa.getSymbol(j, x) == alphabet[a]){
 					proba[x][a] += seq_weight[j];
 				}
@@ -115,7 +115,7 @@ WEntStat :: calculateStatistic(Msa & msa)
 	}
 	
 	cout << "\nScore is based on wentropy + gap counts\n";
-	cout << "S = (1 - entropy) * (1 - gap_freq)\n\n";
+	cout << "S = (1 - wentropy) * (1 - gap_freq)\n\n";
 	
 	/* Print Conservation score in output file */
 	ofstream file(Options::Get().output_name.c_str());
