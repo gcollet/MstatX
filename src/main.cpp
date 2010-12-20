@@ -35,9 +35,6 @@ int main (int argc, char **argv) {
 	
 	/* Test Triangular matrix*/
 	TriangularMatrix<float> testMat(5);
-	for (int i(0); i < 5; i++){
-		for (int j(0); j <= i
-	}
 	
 	
 	/* Read the multiple alignment */
