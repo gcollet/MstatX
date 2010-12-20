@@ -1,6 +1,6 @@
 /*
  *  wentropy.h
- *  MstatX++
+ *  MstatX
  *
  *  Created by COLLET Guillaume on 10/11/10.
  *
