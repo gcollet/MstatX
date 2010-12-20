@@ -21,6 +21,7 @@
 
 #include "jensen.h"
 #include "options.h"
+#include "scoring_matrix.h"
 
 #include <cmath>
 #include <fstream>
@@ -143,10 +144,17 @@ JensenStat :: calculateStatistic(Msa & msa)
 	
 	/* Calculate conservation score by columns */
 	for (int x(0); x < ncol; ++x){
-		double score(0.0);
+		float score_left(0.0);
+		float score_right(0.0);
 		for (int a(0); a < alphabet.size(); a++){
+			float q = msa.getFreq(alphabet[a]);
 			
+			score_left  += proba[x][a] * log(proba[x][a] / (0.5 * proba[x][a] + 0.5 * q));
+			score_right += q * log(q / (0.5 * proba[x][a] + 0.5 * q));
 		}
+		cout << 0.5 * score_left + 0.5 * score_right << "\n";
+		col_cons.push_back(0.5 * score_left + 0.5 * score_right);
+		
 	}
 	
 	cout << "\nScore is based on Jensen-Shannon measure\n";
