@@ -89,6 +89,8 @@ class Options
 				argline.addArg(&tcArg);
 				ARGU::ValueArg<float>	nsArg(		"-n"			,"--nb_seq"						,"Maximum number of sequences read in the multiple alignment  [default=500]"				,"int"	, 500);
 				argline.addArg(&nsArg);
+				ARGU::ValueArg<int>		wArg(			"-w"			,"--window"						,"Number of side columns (jensen score)"		,"int"	,3);
+				argline.addArg(&wArg);
 				/*ARGU::ValueArg<int>  mwArg( "-mw"				,"--max_window"	,"maximum extension of core length"		,"int"	,30);
 				argline.addArg(&sfnArg);*/
 				
@@ -113,6 +115,7 @@ class Options
 				factor_b						= tbArg.getValue();
 				factor_c						= tcArg.getValue();
 				nb_seq							= nsArg.getValue();
+				window							=	wArg.getValue();
         // Check the options which they are needed 
         if (mult_ali_fname.empty()){
 					cout << "Error : A file name for multiple alignment is needed\n\n";
@@ -142,6 +145,7 @@ public:
 		float factor_b;             // Factor applied to the second member of trident score
 		float factor_c;							// Factor applied to the third  member of trident score
 		int nb_seq;
+	  int window;                 // Size of the window to take in account side columns
     /* Destructor */
     ~Options(){};
   
