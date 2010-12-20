@@ -71,6 +71,14 @@ JensenStat :: calcSeqWeight(Msa & msa, int i)
 	return w ;
 }
 
+/*
+ * Calculate statistics based on the measure 
+ * proposed by Jensen et al. (2007)
+ * S = λ * R(p,r) + (1 - λ) * R(q,r)
+ * with R(p,r) : \sum_{a=1}^{K} p(a) log (p(a)/r(a))
+ * i.e. a Kullback-Leibler divergence with probability
+ * p and background probability r
+ */
 void
 JensenStat :: calculateStatistic(Msa & msa)
 {
@@ -109,7 +117,7 @@ JensenStat :: calculateStatistic(Msa & msa)
 	}
 	
 	/* Calculate aa proba by columns */
-	double lambda = 1.0 / log(MIN(alphabet.size(),nseq));
+	double lambda = 0.5;
 	
   for (int x(0); x < ncol; ++x){
 		int nb_abs = 0;
@@ -135,7 +143,9 @@ JensenStat :: calculateStatistic(Msa & msa)
 	
 	/* Calculate conservation score by columns */
 	for (int x(0); x < ncol; ++x){
+		double score(0.0);
 		for (int a(0); a < alphabet.size(); a++){
+			
 		}
 	}
 	
