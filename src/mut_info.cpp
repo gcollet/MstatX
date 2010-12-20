@@ -123,8 +123,7 @@ MIStat :: calculateStatistic(Msa & msa)
 				exit(0);
 			}
 		}
-	}
-	*/
+	}*/
 	
 	/* Calculate Sequence Weights */
 	cout << "Calculate Sequence Weights\n";

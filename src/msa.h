@@ -1,6 +1,6 @@
 /*
  *  msa.h
- *  MstatX++
+ *  MstatX
  *
  *  Created by COLLET Guillaume on 08/11/10.
  *
