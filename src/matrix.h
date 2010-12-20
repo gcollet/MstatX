@@ -24,17 +24,15 @@ private:
 	T * data;
 public:
 	/* Constructor */
-	TriangularMatrix():size(0),width(0),data(NULL){}
+	TriangularMatrix():size(0),width(0){}
 	TriangularMatrix(int width):width(width){
 		size = width * (width + 1) / 2;
-		
+		data = new T[size];
 	}
 	
 	/* Destructor */
 	~TriangularMatrix(){
-		if ( data != NULL) {
-		  free(data);	
-		}
+		delete [] data;
 	}
 	
 	/* Initialization */
@@ -45,7 +43,7 @@ public:
 			cerr << "data allocated in matrix are erased\n";
 			free(data);
 		}
-		data = (T *) malloc(size * sizeof(T));
+		data = new T[size];
 	}
 	
 	/* Setter */
