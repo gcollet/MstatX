@@ -1,5 +1,5 @@
 CC	= g++
-CFLAGS	= 
+CFLAGS	= -O2 -fopenmp
 LIBS	= -lm -lpthread  
 
 SRC=src/*.cpp
