@@ -14,7 +14,8 @@
 
 /* Calculate the conservation of columns in the msa 
  * by the formula from Wu & Kabat (1970)
- * V(i) = k * N / n1 
+ * V(i) = k / n1 (in the original function, this score is
+ * multiplicated by N)
  * We use these notations in the code below
  */
 void
@@ -23,12 +24,14 @@ KabatStat :: calculateStatistic(Msa & msa)
 	int k;	/**< number of amino acid types in column */
 	int n1; /**< number of occurences of the most represented amino acid in a column */
 	int N = msa.getNseq();	/**< number of sequences in the msa*/
-	int ncol = msa.getNcol();
+	int ncol = msa.getNcol(); /**< number of columns in the multiple alignment */
 	vector<int> naa;
 	
 	for	(int x(0); x < ncol; ++x){
+		
 		k = msa.getNtype(x);
-		/* Find the most represented amino acid type */
+		
+		/* Find the most represented amino acid type (n1) */
 		string aa_type = msa.getTypeList(x);
 		vector<int> nb_aa(aa_type.size(), 0);
 		for (int s(0); s < N; ++s){
@@ -39,7 +42,9 @@ KabatStat :: calculateStatistic(Msa & msa)
 			if (nb_aa[i] > n1)
 				n1 = nb_aa[i];
 		}
-		col_cons.push_back((float)k /** (float) N*/ / (float) n1);
+		
+		/* Calculate conservation from Wu & Kabat formula */
+		col_cons.push_back((float)k / (float) n1);
 	}
 	
 	cout << "\nScore is based on kabat score\n";

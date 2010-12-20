@@ -59,7 +59,7 @@ Msa :: Msa(string fname)
 	
 	nseq = mali_name.size();
 	ncol = mali_seq[0].size();
-	cout << "Multiple alignment : nb seq = "<<nseq<<", nb col = "<<ncol<<"\n";
+	cout << "\nMultiple alignment : nb seq = "<<nseq<<", nb col = "<<ncol<<"\n";
 	
 	/* Change all mali.seq in upper case*/
 	for (int i(0); i < nseq; ++i){
