@@ -19,22 +19,21 @@
  * THE SOFTWARE. 
  */
 
-#include "statistic.h"
-#include "wentropy.h"
-#include "mut_info.h"
-#include "trident.h"
-#include "mvector.h"
-#include "jensen.h"
-#include "kabat.h"
-#include "mlc.h"
+#ifndef __MVECTOR_H__
+#define __MVECTOR_H__
 
-void AddAllStatistics()
+#include "statistic.h"
+
+class MVectStat  : public Statistic 
 {
-	StatisticFactory::Add<MlcStat>("mlc");
-	StatisticFactory::Add<TridStat>("trident");
-	StatisticFactory::Add<WEntStat>("wentropy");
-	StatisticFactory::Add<MIStat>("mutual");
-	StatisticFactory::Add<KabatStat>("kabat");
-	StatisticFactory::Add<JensenStat>("jensen");
-	StatisticFactory::Add<MVectStat>("mvector");
-}
+private:
+	int ncol;
+	int nseq;
+  
+	
+public:
+	~MVectStat(){};
+	void calculateStatistic(Msa & msa){};
+};
+
+#endif
