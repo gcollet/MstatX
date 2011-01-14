@@ -134,12 +134,14 @@ TridStat :: calculateStatistic(Msa & msa)
 		if (ntype){
 			/* Calculate Mean vector */
 			vector<float> mean(alph_size, 0.0);
-					for (int i(0); i < ntype; ++i)
-					for (int a(0); a < alph_size; ++a)
+			for (int i(0); i < ntype; ++i){
+				for (int a(0); a < alph_size; ++a){
 					mean[a] += score_mat.normScore(sm_alphabet[a], type_list[i]);
-			
-			for (int a(0); a < alph_size; ++a)
+				}
+			}
+			for (int a(0); a < alph_size; ++a){
 				mean[a] /= ntype;
+			}
 		
 			/* Calculate Score */
 			float lambda = sqrt(alph_size * (score_mat.getMax() - score_mat.getMin()) * (score_mat.getMax() - score_mat.getMin()));

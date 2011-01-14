@@ -30,10 +30,10 @@ private:
 	int ncol;
 	int nseq;
   
+	float normVect(vector<float> vect);
 	
 public:
-	~MVectStat(){};
-	void calculateStatistic(Msa & msa){};
+	void calculateStatistic(Msa & msa);
 };
 
 #endif
