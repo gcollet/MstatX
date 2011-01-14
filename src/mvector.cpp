@@ -75,9 +75,16 @@ MVectStat :: calculateStatistic(Msa & msa)
 		exit(0);
 	}
 	for (int a(0); a < alph_size; ++a) {
-		file << score_mat.getAlphabet()[a] << " ";
+		file << sm_alphabet[a] << " ";
 	}
 	file << "\n";
+	for (int a(0); a < alph_size; ++a) {
+		file << sm_alphabet[a] << " ";
+		for (int b(0); b< alph_size; ++b) {
+			file << score_mat.normScore(sm_alphabet[a],sm_alphabet[b]); << " ";
+		}
+		file << "\n";
+	}
 	for (int col(0); col < ncol; col++) {
   	for (int a(0); a < alph_size; ++a) {
 	  	mean_col[a] /= (float) nseq;
