@@ -115,7 +115,7 @@ TridStat :: calculateStatistic(Msa & msa)
 	 *					  X_a = \left[ \begin{array}{c}M(a,a_1)\\M(a,a_2)\\.\\.\\.\\M(a,a_{20})\end{array}\right]
 	 *							M is a normalized scoring matrix
 	 */
-	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/blosum62.mat");
+	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/mclachlan71.mat");
 	int alph_size = score_mat.getAlphabetSize();
 	string sm_alphabet = score_mat.getAlphabet();
 	
