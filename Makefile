@@ -19,7 +19,7 @@
 # THE SOFTWARE.
 
 CC	= g++
-CFLAGS	= -O2 -fopenmp
+CFLAGS	= -O2
 LIBS	= -lm -lpthread  
 
 SRC=src/*.cpp

@@ -87,7 +87,7 @@ class Options
 				argline.addArg(&tbArg);
 				ARGU::ValueArg<float>	tcArg(		"-c"			,"--trident_c"				,"Factor applied to the third member of trident score  [default=3.0]"				,"float"	, 3.0);
 				argline.addArg(&tcArg);
-				ARGU::ValueArg<float>	nsArg(		"-n"			,"--nb_seq"						,"Maximum number of sequences read in the multiple alignment  [default=500]"				,"int"	, 500);
+				ARGU::ValueArg<int>	nsArg(		"-n"			,"--nb_seq"						,"Maximum number of sequences read in the multiple alignment  [default=500]"				,"int"	, 500);
 				argline.addArg(&nsArg);
 				ARGU::ValueArg<int>		wArg(			"-w"			,"--window"						,"Number of side columns (jensen score)"		,"int"	,3);
 				argline.addArg(&wArg);

@@ -81,7 +81,7 @@ MVectStat :: calculateStatistic(Msa & msa)
 	for (int a(0); a < alph_size; ++a) {
 		file << sm_alphabet[a] << " ";
 		for (int b(0); b< alph_size; ++b) {
-			file << score_mat.normScore(sm_alphabet[a],sm_alphabet[b]); << " ";
+			file << score_mat.normScore(sm_alphabet[a],sm_alphabet[b]) << " ";
 		}
 		file << "\n";
 	}

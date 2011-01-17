@@ -185,4 +185,3 @@ JensenStat :: calculateStatistic(Msa & msa)
 	}
 	file.close();
 }
-

@@ -89,7 +89,7 @@ public:
 			i = col;
 			j = row;
 		}
-		return data[j * (j + 1) / 2 + i];
+		return j * (j + 1) / 2 + i;
 	}
 };
 
