@@ -23,6 +23,7 @@
 #include "wentropy.h"
 #include "mut_info.h"
 #include "trident.h"
+#include "mvector.h"
 #include "jensen.h"
 #include "kabat.h"
 #include "mlc.h"
@@ -35,4 +36,5 @@ void AddAllStatistics()
 	StatisticFactory::Add<MIStat>("mutual");
 	StatisticFactory::Add<KabatStat>("kabat");
 	StatisticFactory::Add<JensenStat>("jensen");
+	StatisticFactory::Add<MVectStat>("mvector");
 }

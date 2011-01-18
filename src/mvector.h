@@ -19,78 +19,21 @@
  * THE SOFTWARE. 
  */
 
-#ifndef __MATRIX_H__
-#define __MATRIX_H__
+#ifndef __MVECTOR_H__
+#define __MVECTOR_H__
 
-#include <vector>
-#include <string>
-#include <iostream>
+#include "statistic.h"
 
-using namespace std;
-
-template<class T>
-class TriangularMatrix
+class MVectStat  : public Statistic 
 {
 private:
-	int size;
-	int width;
-	T * data;
+	int ncol;
+	int nseq;
+  
+	float normVect(vector<float> vect);
+	
 public:
-	/* Constructor */
-	TriangularMatrix():size(0),width(0){}
-	TriangularMatrix(int width):width(width){
-		size = width * (width + 1) / 2;
-		data = new T[size];
-	}
-	
-	/* Destructor */
-	~TriangularMatrix(){
-		delete [] data;
-	}
-	
-	/* Initialization */
-	void initMatrix(int w){
-		width = w;
-		size  = width * (width + 1) / 2;
-		if (data != NULL){
-			cerr << "data allocated in matrix are erased\n";
-			free(data);
-		}
-		data = new T[size];
-	}
-	
-	/* Setter */
-	void set(int row, int col, T val){
-	  int i = row;
-		int j = col;
-		if (i > j){
-			i = col;
-			j = row;
-		}
-		data[j * (j + 1) / 2 + i] = val;
-	}
-	
-	/* Getter */
-	T get(int row, int col){
-	  int i = row;
-		int j = col;
-		if (i > j){
-			i = col;
-			j = row;
-		}
-		return data[j * (j + 1) / 2 + i];
-	}
-	
-	/* Index */
-	int index (int row, int col){
-		int i = row;
-		int j = col;
-		if (i > j){
-			i = col;
-			j = row;
-		}
-		return j * (j + 1) / 2 + i;
-	}
+	void calculateStatistic(Msa & msa);
 };
 
 #endif
