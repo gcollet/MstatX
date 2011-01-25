@@ -30,7 +30,7 @@ private:
 	int ncol;
 	int nseq;
   
-	float normVect(vector<float> vect);
+	float normVect(vector<float> vect); /**< Normalized vector of each column of the msa (size = ncol * 20) */
 	
 public:
 	void calculateStatistic(Msa & msa);

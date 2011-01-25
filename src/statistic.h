@@ -23,7 +23,6 @@
 #define __STATISTIC_H__
 
 #include <string>
-
 #include "msa.h"
 #include "factory.h"
 
@@ -34,7 +33,6 @@ class Statistic
 public:
 	Statistic(){};
 	virtual ~Statistic(){};
-		
 	virtual void calculateStatistic(Msa & msa){};
 };
 

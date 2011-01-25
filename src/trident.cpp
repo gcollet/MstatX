@@ -41,7 +41,7 @@ TridStat :: calcSeqWeight(Msa & msa, int i)
 	int k;								    /**< number of symbol types in a column */
 	int n;								    /**< number of occurence of aa[i][x] in column x */
 	int L = msa.getNcol();    /**< number of columns (i.e. length of the alignment) */
-	int nseq = msa.getNseq(); /**< number of rows (i.e. number of sequences in the alignment) */
+	int N = msa.getNseq(); /**< number of rows (i.e. number of sequences in the alignment) */
 	float w;						    	/**< weight of sequence i */
 	
 	w = 0.0;
@@ -49,7 +49,7 @@ TridStat :: calcSeqWeight(Msa & msa, int i)
 		k = msa.getNtype(x);
 		/* Calculate the number of aa[i][x] in current column */
 		n = 0;
-		for(seq = 0; seq < nseq; ++seq){
+		for(seq = 0; seq < N; ++seq){
 		  if (msa.getSymbol(i, x) == msa.getSymbol(seq, x)){
 				n++;
 			}
@@ -60,47 +60,49 @@ TridStat :: calcSeqWeight(Msa & msa, int i)
 	return w ;
 }
 
+/** normVect(vector<float> vect)
+ *
+ * Return the vector norm = √(∑v*v)
+ */
+float 
+TridStat :: normVect(vector<float> vect){
+	float score= 0.0;
+	for(int i(0); i < vect.size(); ++i){
+		score += vect[i] * vect[i];
+	}
+	return sqrt(score);
+}
+
+
+
 void
 TridStat :: calculateStatistic(Msa & msa)
 {
 	/* Init size */
 	ncol = msa.getNcol();
-	nseq = msa.getNseq();
+	N = msa.getNseq();
 	string alphabet = msa.getAlphabet();
+	int K = alphabet.size();
 	
 	/* Calculate Sequence Weights */
-	for (int seq(0); seq < nseq; ++seq){
-		seq_weight.push_back(calcSeqWeight(msa,seq));
+	for (int seq(0); seq < N; ++seq){
+		w.push_back(calcSeqWeight(msa,seq));
 	}
-	
-	/* Print if verbose mode on */
-	if (Options::Get().verbose){
-		cout << "Seq weights :\n";
-		for (int seq(0); seq < nseq; ++seq){
-		  cout.width(10);
-		  cout << seq_weight[seq];
-			/*for (int col(0); col < ncol; ++col){
-			 cout.width(10);
-			 cout << msa.getSymbol(seq, col);	
-			 }*/
-			cout << "\n";
-		}
-		cout << "\n";
-	}
-	
+
 	/* Calculate t(x) = \frac{\sum_{a=1}^{K}p_a log(p_a)}{log(min(N,K))}
 	 *						p_a = \sum_{i \in \{i|s(i) = a\}} w_i
 	 *						w_i = \frac{1}{L} \sum_{x=1}^{L}\frac{1}{K_x n_{x_i}}
+	 * Like in wentropy
 	 */
-	float lambda = 1.0 / log(MIN(alphabet.size(),nseq));
+	float lambda = 1.0 / log(MIN(K,N));
 	
   for (int x(0); x < ncol; x++){
 		t.push_back(0.0);
-		for (int a(0); a < alphabet.size(); a++){
+		for (int a(0); a < K; a++){
 			float tmp_proba(0.0);
-		  for (int j(0); j < nseq; j++){
+		  for (int j(0); j < N; j++){
 				if(msa.getSymbol(j, x) == alphabet[a]){
-					tmp_proba += seq_weight[j];
+					tmp_proba += w[j];
 				}
 			}
 			if (tmp_proba != 0.0){
@@ -165,19 +167,9 @@ TridStat :: calculateStatistic(Msa & msa)
 	 * Represents the proportion of gaps in the column
 	 */
 	for (int x(0); x < ncol; x++){
-		g.push_back((float) msa.getGap(x) / (float) nseq);
+		g.push_back((float) msa.getGap(x) / (float) N);
 	}
 
-	/* Print if verbose mode on */
-	cout << "Score is based on trident score defined by Valdar (2002)\n";
-	cout << "S = (1 - t)^a * (1 - r)^b * (1 - g)^c\n";
-	cout << "t measures the entropy\n";
-	cout << "r measures the residue similarity (based on a normalized substitution matrix)\n";
-	cout << "g measures the gap frequencies\n";
-	cout << "a = "<<Options::Get().factor_a<<"\n";
-	cout << "b = "<<Options::Get().factor_b<<"\n";
-	cout << "c = "<<Options::Get().factor_c<<"\n";
-	
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
@@ -188,13 +180,4 @@ TridStat :: calculateStatistic(Msa & msa)
 	}
 }
 
-
-float 
-TridStat :: normVect(vector<float> vect){
-	float score= 0.0;
-	for(int i(0); i < vect.size(); ++i){
-		score += vect[i] * vect[i];
-	}
-	return sqrt(score);
-}
 

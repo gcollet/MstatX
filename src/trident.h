@@ -27,8 +27,8 @@
 class TridStat : public Statistic {
 private:
 	int ncol;
-	int nseq;
-	vector<float> seq_weight;	/**< Weight of each sequence in the msa (size = nb sequences) */
+	int N;
+	vector<float> w;					/**< Weight of each sequence in the msa (size = nb sequences) */
 	vector<float> t;					/**< t(x) = Shannon entropy score  + Weighted sequence Score */
 	vector<float> r;					/**< r(x) = Stereochemical score */
 	vector<float> g;					/**< g(x) = Gap Score */

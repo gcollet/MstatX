@@ -30,10 +30,11 @@
 
 using namespace std;
 
-int main (int argc, char **argv) {
+int main (int argc, char **argv)
+{
 	clock_t t1,t2;
-	
 	t1 = clock();
+	
 	/* 
 	 * Parses command line 
 	 */
@@ -54,19 +55,21 @@ int main (int argc, char **argv) {
 		exit(0);
 	}
 	
-	/* Test Triangular matrix*/
-	TriangularMatrix<float> test_mat(5);
-	
-	
-	/* Read the multiple alignment */
+	/*
+	 * Read the multiple alignment 
+	 */
 	Msa msa(Options::Get().mult_ali_fname);
 	
-	/* Calculate the statistics */
+	/* 
+	 * Calculate the statistic
+	 */
 	Statistic * stat = StatisticFactory::CreateByName(Options::Get().statistic);
 	stat->calculateStatistic(msa);
-	
 	delete stat;
 	
+	/*
+	 * Print time
+	 */
 	t2 = clock();		
 	cout << "Mstatx computed in "<< (t2 - t1) / (double)CLOCKS_PER_SEC <<" seconds\nResults are written in " << Options::Get().output_name << "\n\n";
 	return 0;

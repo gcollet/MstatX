@@ -12,8 +12,11 @@ Statistics currently available are :
  - wentropy (1)
  - trident (1)
  - kabat (1)
+ - jensen (1)
+ - mvector (1)
  - mlc (2)
  - mutual (2)
+ - sca (2)
 
 These statistics are divided in two. in one hand, statistics on one 
 column (1), in the other hand, statistics on pairs of columns (2).

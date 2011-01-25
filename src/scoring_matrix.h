@@ -39,7 +39,6 @@ protected:
 public:
 	ScoringMatrix(string fname);
 	virtual ~ScoringMatrix();
-	
 	int			getAlphabetSize(){return (int) alphabet.size();};
 	string	getAlphabet(){return alphabet;};
 	float   getMax(){return max;};
