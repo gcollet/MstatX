@@ -60,6 +60,12 @@ int main (int argc, char **argv)
 	 */
 	Msa msa(Options::Get().mult_ali_fname);
 	
+	/*
+	 * If Basic, output basic information
+	 */
+	if (Options::Get().basic) {
+		msa.printBasic();
+	}
 	/* 
 	 * Calculate the statistic
 	 */

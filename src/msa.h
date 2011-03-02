@@ -70,6 +70,7 @@ public:
 	string getTypeList(int col){return aa_type_list[col];};				/**< Return the list of amino acid types in the column col */
 	
 	void fitToAlphabet(string alph1);																		/**< if a symbol of the msa is not in alphabet alph1, then it is changed in a gap '-' */
+	void printBasic();
 };
 
 #endif

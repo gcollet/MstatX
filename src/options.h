@@ -91,8 +91,8 @@ class Options
 				argline.addArg(&nsArg);
 				ARGU::ValueArg<int>		wArg(			"-w"			,"--window"						,"Number of side columns (jensen score)"		,"int"	,3);
 				argline.addArg(&wArg);
-				/*ARGU::ValueArg<int>  mwArg( "-mw"				,"--max_window"	,"maximum extension of core length"		,"int"	,30);
-				argline.addArg(&sfnArg);*/
+				ARGU::SwitchArg					bArg("-b"			,"--basic"					,"Add a basic output nbAA/col"																				,"string");
+				argline.addArg(&bArg);
 				
 				// Parse the command line
         argline.parseLine();
@@ -116,6 +116,7 @@ class Options
 				factor_c						= tcArg.getValue();
 				nb_seq							= nsArg.getValue();
 				window							=	wArg.getValue();
+				basic								= bArg.getValue();
         // Check the options which they are needed 
         if (mult_ali_fname.empty()){
 					cout << "Error : A file name for multiple alignment is needed\n\n";
@@ -140,6 +141,7 @@ public:
 		string output_name;         // Name of the output files
   	string statistic;           // Name of the statistic calculated by MstatX++
 		bool verbose;								// Switch for verbose mode
+		bool basic;									// Switch for basic information output
   	float threshold;            // Threshold for correlation print
 		float factor_a;							// Factor applied to the first  member of trident score
 		float factor_b;             // Factor applied to the second member of trident score

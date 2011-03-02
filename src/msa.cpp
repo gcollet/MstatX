@@ -333,3 +333,40 @@ Msa :: fitToAlphabet(string alph1){
 }
 
 
+/**************************************************************
+ * printBasic() prints basic information in output
+ *
+ **************************************************************/
+void
+Msa :: printBasic(){
+	string dictionary = "ARNDCQEGHILKMFPSTWYV-";
+	vector<int> counts(dictionary.size(), 0);
+	string out_name = Options::Get().output_name;
+	out_name = out_name.substr(0,out_name.find('.')) + ".aa_count";
+	ofstream file(out_name.c_str());
+	if (!file.is_open()){
+	  cerr << "Cannot open file " << out_name << "\n";
+		exit(0);
+	}
+	for (int a(0); a < dictionary.size(); a++) {
+		file << dictionary[a] << " ";
+	}
+	file << "\n";
+	for (int col(0); col < ncol; col++){
+		for (int seq(0); seq < nseq; seq++){
+			int pos = dictionary.find(mali_seq[seq][col]);
+			if (pos < dictionary.size()){
+				counts[pos]++;
+			} else {
+				cerr << mali_seq[seq][col] << " is not in the dictionary\n";
+			}
+		}
+		for (int a(0); a < dictionary.size(); a++) {
+			file << counts[a] << " ";
+			counts[a] = 0;
+		}
+		file << "\n";
+	}
+	file.close();
+}
+
