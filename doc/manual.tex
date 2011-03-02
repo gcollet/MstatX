@@ -1,0 +1,95 @@
+% Copyright (c) 2010 Guillaume Collet
+% 
+% Permission is hereby granted, free of charge, to any person obtaining a copy
+% of this software and associated documentation files (the "Software"), to deal
+% in the Software without restriction, including without limitation the rights
+% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+% copies of the Software, and to permit persons to whom the Software is
+% furnished to do so, subject to the following conditions:
+% 
+% The above copyright notice and this permission notice shall be included in
+% all copies or substantial portions of the Software.
+% 
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+% THE SOFTWARE. 
+%
+
+
+\documentclass[12pt]{report}
+\usepackage{geometry}
+\geometry{a4paper} 
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{MstatX User Manual}
+\author{Guillaume Collet}
+\date{\today}
+
+\renewcommand*{\thesection}{\arabic{section}}
+
+\begin{document}
+
+% Title Page
+\maketitle
+\thispagestyle{empty} \newpage
+
+% Blank Page
+\thispagestyle{empty}  \null \newpage
+
+% Table of contents
+\setcounter{tocdepth}{3}
+\tableofcontents
+\thispagestyle{empty} 
+\newpage
+
+% Begin the document
+\setcounter{page}{1}
+\section{Introduction}
+MstatX aims to provide a simple and easy-to-extend solution for multiple alignment statistics calculation. 
+A multiple alignment is simply defined by an alphabet of symbols and a list of words made with this alphabet.
+The definition of statistics calculation is completely independant and can be seen as a module or a plug-in.\\
+
+The default usage of MstatX is for multiple alignment of protein sequences, so, it uses amino acids substitution 
+matrix to calculate statistics. But it is possible to use it for any alphabet with any scoring scheme defined by 
+the user.\\
+
+MstatX has two side: the end-user side and the programmer side. 
+If you wants to calculate statistics already available in MstatX, then read the section \ref{user_sec}. 
+If you want to add a new statistics module in MstatX, then read the section \ref{prog_sec} to have some examples of
+already coded statistics modules.
+
+\newpage
+\section{User side} 
+\label{user_sec}
+This section is dedicated to the usage of MstatX. If you want to add a statistics module in MstatX, read section \ref{prog_sec}.\\
+
+\subsection{Getting started}
+The basic use of MstatX is like the following:
+\begin{verbatim}
+mstatx -m example.mali
+\end{verbatim}
+This command will calculate the trident statistics of each columns in the multiple sequences alignment given in file {\verb example.mali} . 
+
+
+\subsection{Options}
+\label{opt_sec}
+
+\subsection{Available statistics}
+\label{stat_sec}
+\subsubsection{Trident}
+
+\newpage
+\section{Programmer side}
+\label{prog_sec}
+
+\subsection{The Statistics virtual class}
+\label{cla_sec}
+
+\end{document}  
