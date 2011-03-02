@@ -79,19 +79,19 @@ class Options
 				argline.addArg(&outArg);
 				ARGU::ValueArg<string>	msArg(	"-s"			,"--statistic"				,"Name of the statistic used [default=trident]"						,"string"	,"wentropy");
 				argline.addArg(&msArg);
-				ARGU::ValueArg<float>	thArg(		"-t"			,"--threshold"				,"Threshold to print correlation [default=0.8]"				,"float"	, 0.8);
+				ARGU::ValueArg<float>		thArg(	"-t"			,"--threshold"				,"Threshold to print correlation [default=0.8]"				,"float"	, 0.8);
 				argline.addArg(&thArg);
-				ARGU::ValueArg<float>	taArg(		"-a"			,"--trident_a"				,"Factor applied to the first member of trident score  [default=1.0]"				,"float"	, 1.0);
+				ARGU::ValueArg<float>		taArg(	"-a"			,"--trident_a"				,"Factor applied to the first member of trident score  [default=1.0]"				,"float"	, 1.0);
 				argline.addArg(&taArg);
-				ARGU::ValueArg<float>	tbArg(		"-b"			,"--trident_b"				,"Factor applied to the second member of trident score [default=0.5]"				,"float"	, 0.5);
+				ARGU::ValueArg<float>		tbArg(	"-b"			,"--trident_b"				,"Factor applied to the second member of trident score [default=0.5]"				,"float"	, 0.5);
 				argline.addArg(&tbArg);
-				ARGU::ValueArg<float>	tcArg(		"-c"			,"--trident_c"				,"Factor applied to the third member of trident score  [default=3.0]"				,"float"	, 3.0);
+				ARGU::ValueArg<float>		tcArg(	"-c"			,"--trident_c"				,"Factor applied to the third member of trident score  [default=3.0]"				,"float"	, 3.0);
 				argline.addArg(&tcArg);
-				ARGU::ValueArg<int>	nsArg(		"-n"			,"--nb_seq"						,"Maximum number of sequences read in the multiple alignment  [default=500]"				,"int"	, 500);
+				ARGU::ValueArg<int>			nsArg(	"-n"			,"--nb_seq"						,"Maximum number of sequences read in the multiple alignment  [default=500]"				,"int"	, 500);
 				argline.addArg(&nsArg);
-				ARGU::ValueArg<int>		wArg(			"-w"			,"--window"						,"Number of side columns (jensen score)"		,"int"	,3);
+				ARGU::ValueArg<int>			wArg(		"-w"			,"--window"						,"Number of side columns (jensen score)"		,"int"	,3);
 				argline.addArg(&wArg);
-				ARGU::SwitchArg					bArg("-b"			,"--basic"					,"Add a basic output nbAA/col"																				,"string");
+				ARGU::SwitchArg					bArg(		"-b"			,"--basic"					,"Add a basic output nbAA/col"																				,"string");
 				argline.addArg(&bArg);
 				
 				// Parse the command line
