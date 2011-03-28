@@ -93,7 +93,8 @@ class Options
 				argline.addArg(&wArg);
 				ARGU::SwitchArg					bArg(		"-b"			,"--basic"					,"Add a basic output nbAA/col"																				,"string");
 				argline.addArg(&bArg);
-				
+				ARGU::SwitchArg					gArg(		"-g"			,"--global"					,"Output only the global score of the multiple alignment"	,"string");
+				argline.addArg(&gArg);
 				// Parse the command line
         argline.parseLine();
         
@@ -117,6 +118,7 @@ class Options
 				nb_seq							= nsArg.getValue();
 				window							=	wArg.getValue();
 				basic								= bArg.getValue();
+				global							= gArg.getValue();
         // Check the options which they are needed 
         if (mult_ali_fname.empty()){
 					cout << "Error : A file name for multiple alignment is needed\n\n";
@@ -142,7 +144,8 @@ public:
   	string statistic;           // Name of the statistic calculated by MstatX++
 		bool verbose;								// Switch for verbose mode
 		bool basic;									// Switch for basic information output
-  	float threshold;            // Threshold for correlation print
+	  bool global;
+   	float threshold;            // Threshold for correlation print
 		float factor_a;							// Factor applied to the first  member of trident score
 		float factor_b;             // Factor applied to the second member of trident score
 		float factor_c;							// Factor applied to the third  member of trident score

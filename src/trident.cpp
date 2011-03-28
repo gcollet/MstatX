@@ -175,8 +175,17 @@ TridStat :: calculateStatistic(Msa & msa)
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
 		exit(0);
 	}
-	for (int col(0); col < ncol; ++col){
-	  file << pow((float) (1.0 - t[col]), Options::Get().factor_a) * pow((float) (1.0 - r[col]), Options::Get().factor_b) * pow((float) (1.0 - g[col]), Options::Get().factor_c) << "\n";
+	
+	if (Options::Get().global){
+		float total = 0.0;
+		for (int col(0); col < ncol; ++col){
+			total += pow((float) (1.0 - t[col]), Options::Get().factor_a) * pow((float) (1.0 - r[col]), Options::Get().factor_b) * pow((float) (1.0 - g[col]), Options::Get().factor_c);
+		}		
+		file << total / ncol << "\n";
+	} else {
+		for (int col(0); col < ncol; ++col){
+			file << pow((float) (1.0 - t[col]), Options::Get().factor_a) * pow((float) (1.0 - r[col]), Options::Get().factor_b) * pow((float) (1.0 - g[col]), Options::Get().factor_c) << "\n";
+		}
 	}
 }
 

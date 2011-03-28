@@ -148,8 +148,17 @@ WEntStat :: calculateStatistic(Msa & msa)
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
 		exit(0);
 	}
-	for (int col(0); col < ncol; ++col){
-	  file << col_cons[col] << "\n";
+	
+	if (Options::Get().global){
+		float total = 0.0;
+		for (int col(0); col < ncol; ++col){
+			total += col_cons[col];
+		}
+		file << total / ncol << "\n"; 
+	} else {
+		for (int col(0); col < ncol; ++col){
+			file << col_cons[col] << "\n";
+		}
 	}
 	file.close();
 }
