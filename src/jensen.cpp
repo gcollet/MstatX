@@ -174,6 +174,11 @@ JensenStat :: calculateStatistic(Msa & msa)
 	cout << "\nScore is based on Jensen-Shannon measure\n";
 	cout << "S = λ R(p,r) + (1 - λ) R(q,r)\n\n";
 	
+	
+}
+
+void 
+JensenStat :: printStatistic(Msa & msa){
 	/* Print Conservation score in output file */
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){
@@ -193,3 +198,4 @@ JensenStat :: calculateStatistic(Msa & msa)
 	}
 	file.close();
 }
+

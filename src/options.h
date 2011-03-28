@@ -73,6 +73,8 @@ class Options
 				argline.addArg(&mafArg);
 				ARGU::ValueArg<string>	smpArg(	"-sp"			,"--score_matrix_path","Path to the score matrix"														,"string" ,getEnvVar("SCORE_MAT_PATH"));
 				argline.addArg(&smpArg);
+				ARGU::ValueArg<string>	smArg(	"-sm"			,"--score_matrix",     "Score matrix file"														,"string" ,"VTML250.mat");
+				argline.addArg(&smArg);
 				ARGU::SwitchArg					verbArg("-v"			,"--verbose"					,"Verbose mode"																				,"string");
 				argline.addArg(&verbArg);
 				ARGU::ValueArg<string>	outArg(	"-o"			,"--output"						,"Name of the output file [default=mali_file]"				,"string"	,"");
@@ -108,6 +110,7 @@ class Options
 				
 				// Get arguments
 				mult_ali_fname			= mafArg.getValue();
+				score_matrix_fname  = smArg.getValue();
 				verbose							= verbArg.getValue();
 				output_name         = outArg.getValue();
 				statistic						= msArg.getValue();
@@ -139,6 +142,7 @@ public:
   
     /* List of options */
 		string score_matrix_path;  	// The path to the scoring matrix
+		string score_matrix_fname;  // The file of the scoring matrix
 		string mult_ali_fname;			// The file name of the multiple alignment to read
 		string output_name;         // Name of the output files
   	string statistic;           // Name of the statistic calculated by MstatX++

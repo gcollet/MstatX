@@ -21,6 +21,7 @@
 
 #include <cmath>
 #include <vector>
+#include <fstream>
 
 //#include "omp.h"
 #include "mlc.h"
@@ -51,7 +52,7 @@ void
 MlcStat :: calculateStatistic(Msa & msa)
 {
   /* Create the McLachlan score matrix */
-	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/mclachlan71.mat");
+	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/" + Options::Get().score_matrix_fname);
 	
 	/* If alphabets are not matching, stop */
 	if (!msa.isInclude(score_mat.getAlphabet())){
@@ -160,15 +161,25 @@ MlcStat :: calculateStatistic(Msa & msa)
       cor_mat[col1][col2] /= stdev[col1] * stdev[col2] * (float) (nseq * nseq) ;
 		}
 	}
+
+}
+
+void 
+MlcStat :: printStatistic(Msa & msa)
+{
+	/* Print Conservation score in output file */
+	ofstream file(Options::Get().output_name.c_str());
+	if (!file.is_open()){
+	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
+		exit(0);
+	}
 	
-	if (Options::Get().verbose){
-		for (int col1(0); col1 < ncol; ++col1){
-			for (int col2(0); col2 <= col1; ++col2){
-				if (cor_mat[col1][col2] > Options::Get().threshold){
-				  cout << "pair ("<<col1<<","<<col2<<") = "<<cor_mat[col1][col2]<<" above "<<Options::Get().threshold<<"\n";	
-				}
+	for (int col1(0); col1 < ncol; ++col1){
+		for (int col2(0); col2 <= col1; ++col2){
+			if (cor_mat[col1][col2] > Options::Get().threshold){
+				file << "pair ("<<col1<<","<<col2<<") = "<<cor_mat[col1][col2]<<" above "<<Options::Get().threshold<<"\n";	
 			}
 		}
 	}
+	file.close();
 }
-

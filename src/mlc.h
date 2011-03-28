@@ -39,6 +39,7 @@ private:
 public:
 	~MlcStat();
 	void calculateStatistic(Msa & msa);
+	void printStatistic(Msa & msa);
 };
 
 #endif
