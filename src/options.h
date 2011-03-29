@@ -91,7 +91,7 @@ class Options
 				argline.addArg(&nsArg);
 				ARGU::ValueArg<int>			wArg(		"-w"			,"--window"						,"Number of side columns (jensen score)"		,"int"	,3);
 				argline.addArg(&wArg);
-				ARGU::SwitchArg					bArg(		"-b"			,"--basic"					,"Add a basic output nbAA/col"																				,"string");
+				ARGU::SwitchArg					bArg(		"-ba"			,"--basic"					,"Add a basic output nbAA/col"																				,"string");
 				argline.addArg(&bArg);
 				
 				// Parse the command line
@@ -126,7 +126,7 @@ class Options
 				if (output_name.empty()){
 					int beg = mult_ali_fname.find_last_of('/');
 					int end = mult_ali_fname.find_last_of('.');
-				  output_name = mult_ali_fname.substr(beg+1, end - beg - 1) + ".cons";
+				  output_name = mult_ali_fname.substr(beg+1, end - beg - 1) + ".stat";
 				}
       } catch (exception &e) {
         throw;
