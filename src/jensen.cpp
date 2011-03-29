@@ -174,14 +174,28 @@ JensenStat :: calculateStatistic(Msa & msa)
 	cout << "\nScore is based on Jensen-Shannon measure\n";
 	cout << "S = λ R(p,r) + (1 - λ) R(q,r)\n\n";
 	
+	
+}
+
+void 
+JensenStat :: printStatistic(Msa & msa){
 	/* Print Conservation score in output file */
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
 		exit(0);
 	}
-	for (int col(0); col < ncol; ++col){
-		file << col_cons[col] * (1 - ((float) msa.getGap(col) / (float) nseq)) << "\n";
+	if (Options::Get().global){
+		float total = 0.0;
+		for (int col(0); col < ncol; ++col){
+			total += col_cons[col] * (1 - ((float) msa.getGap(col) / (float) nseq));
+		}
+		file << total / ncol << "\n";
+	} else {
+		for (int col(0); col < ncol; ++col){
+			file << col_cons[col] * (1 - ((float) msa.getGap(col) / (float) nseq)) << "\n";
+		}
 	}
 	file.close();
 }
+

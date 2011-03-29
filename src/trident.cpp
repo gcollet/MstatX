@@ -117,7 +117,7 @@ TridStat :: calculateStatistic(Msa & msa)
 	 *					  X_a = \left[ \begin{array}{c}M(a,a_1)\\M(a,a_2)\\.\\.\\.\\M(a,a_{20})\end{array}\right]
 	 *							M is a normalized scoring matrix
 	 */
-	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/mclachlan71.mat");
+	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/" + Options::Get().score_matrix_fname);
 	int alph_size = score_mat.getAlphabetSize();
 	string sm_alphabet = score_mat.getAlphabet();
 	
@@ -175,8 +175,17 @@ TridStat :: calculateStatistic(Msa & msa)
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
 		exit(0);
 	}
-	for (int col(0); col < ncol; ++col){
-	  file << pow((float) (1.0 - t[col]), Options::Get().factor_a) * pow((float) (1.0 - r[col]), Options::Get().factor_b) * pow((float) (1.0 - g[col]), Options::Get().factor_c) << "\n";
+	
+	if (Options::Get().global){
+		float total = 0.0;
+		for (int col(0); col < ncol; ++col){
+			total += pow((float) (1.0 - t[col]), Options::Get().factor_a) * pow((float) (1.0 - r[col]), Options::Get().factor_b) * pow((float) (1.0 - g[col]), Options::Get().factor_c);
+		}		
+		file << total / ncol << "\n";
+	} else {
+		for (int col(0); col < ncol; ++col){
+			file << pow((float) (1.0 - t[col]), Options::Get().factor_a) * pow((float) (1.0 - r[col]), Options::Get().factor_b) * pow((float) (1.0 - g[col]), Options::Get().factor_c) << "\n";
+		}
 	}
 }
 

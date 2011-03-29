@@ -43,14 +43,14 @@ MVectStat :: calculateStatistic(Msa & msa)
 	ncol = msa.getNcol();
 	nseq = msa.getNseq();
 	/* Get the scoring matrix */
-	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/mclachlan71.mat");
+	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/" + Options::Get().score_matrix_fname);
 	/* Remove the unknown symbol from msa (consider them as gaps)*/
-	string sm_alphabet = score_mat.getAlphabet();
+	sm_alphabet = score_mat.getAlphabet();
 	msa.fitToAlphabet(sm_alphabet);
 	
 	/* Calculate the mean vector for each column */
 	int alph_size = score_mat.getAlphabetSize();
-	vector<vector<float> > means(ncol);
+	means = vector<vector<float> >(ncol);
 	vector<float> mean_col(alph_size, 0.0);
 	for (int col(0); col < ncol; col++) {
 		for (int seq(0); seq < nseq; ++seq) {
@@ -67,32 +67,23 @@ MVectStat :: calculateStatistic(Msa & msa)
 		}
 		means[col] = mean_col;
 	}
-	
+}
+
+void
+MVectStat :: printStatistic(Msa & msa)
+{
 	/* Print the output */
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
 		exit(0);
 	}
-	for (int a(0); a < alph_size; ++a) {
-		file << sm_alphabet[a] << " ";
-	}
-	file << "\n";
-	for (int a(0); a < alph_size; ++a) {
-		file << sm_alphabet[a] << " ";
-		for (int b(0); b< alph_size; ++b) {
-			file << score_mat.normScore(sm_alphabet[a],sm_alphabet[b]) << " ";
-		}
-		file << "\n";
-	}
+	int alph_size = sm_alphabet.size();
 	for (int col(0); col < ncol; col++) {
   	for (int a(0); a < alph_size; ++a) {
-	  	mean_col[a] /= (float) nseq;
-			file << means[col][a] << " ";
+	  	file << means[col][a] << " ";
 		}
 		file << "\n";
 	}
-	
-	
-	
+	file.close();
 }

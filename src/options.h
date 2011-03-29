@@ -73,6 +73,8 @@ class Options
 				argline.addArg(&mafArg);
 				ARGU::ValueArg<string>	smpArg(	"-sp"			,"--score_matrix_path","Path to the score matrix"														,"string" ,getEnvVar("SCORE_MAT_PATH"));
 				argline.addArg(&smpArg);
+				ARGU::ValueArg<string>	smArg(	"-sm"			,"--score_matrix",     "Score matrix file"														,"string" ,"VTML250.mat");
+				argline.addArg(&smArg);
 				ARGU::SwitchArg					verbArg("-v"			,"--verbose"					,"Verbose mode"																				,"string");
 				argline.addArg(&verbArg);
 				ARGU::ValueArg<string>	outArg(	"-o"			,"--output"						,"Name of the output file [default=mali_file]"				,"string"	,"");
@@ -93,7 +95,8 @@ class Options
 				argline.addArg(&wArg);
 				ARGU::SwitchArg					bArg(		"-ba"			,"--basic"					,"Add a basic output nbAA/col"																				,"string");
 				argline.addArg(&bArg);
-				
+				ARGU::SwitchArg					gArg(		"-g"			,"--global"					,"Output only the global score of the multiple alignment"	,"string");
+				argline.addArg(&gArg);
 				// Parse the command line
         argline.parseLine();
         
@@ -107,6 +110,7 @@ class Options
 				
 				// Get arguments
 				mult_ali_fname			= mafArg.getValue();
+				score_matrix_fname  = smArg.getValue();
 				verbose							= verbArg.getValue();
 				output_name         = outArg.getValue();
 				statistic						= msArg.getValue();
@@ -117,6 +121,7 @@ class Options
 				nb_seq							= nsArg.getValue();
 				window							=	wArg.getValue();
 				basic								= bArg.getValue();
+				global							= gArg.getValue();
         // Check the options which they are needed 
         if (mult_ali_fname.empty()){
 					cout << "Error : A file name for multiple alignment is needed\n\n";
@@ -137,12 +142,14 @@ public:
   
     /* List of options */
 		string score_matrix_path;  	// The path to the scoring matrix
+		string score_matrix_fname;  // The file of the scoring matrix
 		string mult_ali_fname;			// The file name of the multiple alignment to read
 		string output_name;         // Name of the output files
   	string statistic;           // Name of the statistic calculated by MstatX++
 		bool verbose;								// Switch for verbose mode
 		bool basic;									// Switch for basic information output
-  	float threshold;            // Threshold for correlation print
+	  bool global;
+   	float threshold;            // Threshold for correlation print
 		float factor_a;							// Factor applied to the first  member of trident score
 		float factor_b;             // Factor applied to the second member of trident score
 		float factor_c;							// Factor applied to the third  member of trident score

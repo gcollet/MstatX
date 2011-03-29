@@ -37,7 +37,7 @@ KabatStat :: calculateStatistic(Msa & msa)
 	int k;	/**< number of amino acid types in column */
 	int n1; /**< number of occurences of the most represented amino acid in a column */
 	int N = msa.getNseq();	/**< number of sequences in the msa*/
-	int ncol = msa.getNcol(); /**< number of columns in the multiple alignment */
+	ncol = msa.getNcol(); /**< number of columns in the multiple alignment */
 	vector<int> naa;
 	
 	for	(int x(0); x < ncol; ++x){
@@ -62,15 +62,28 @@ KabatStat :: calculateStatistic(Msa & msa)
 	
 	cout << "\nScore is based on kabat score\n";
 	cout << "S = k / n1\n\n";
-	
+
+}
+
+void 
+KabatStat :: printStatistic(Msa & msa){
 	/* Print Conservation score in output file */
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
 		exit(0);
 	}
-	for (int col(0); col < ncol; ++col){
-	  file << col_cons[col] << "\n";
+	
+	if (Options::Get().global){
+		float total = 0.0;
+		for (int col(0); col < ncol; ++col){
+			total += col_cons[col];
+		}
+		file << total / ncol << "\n";
+	} else {
+		for (int col(0); col < ncol; ++col){
+			file << col_cons[col] << "\n";
+		}
 	}
 	file.close();
 }

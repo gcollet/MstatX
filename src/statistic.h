@@ -34,6 +34,7 @@ public:
 	Statistic(){};
 	virtual ~Statistic(){};
 	virtual void calculateStatistic(Msa & msa){};
+	virtual void printStatistic(Msa & msa){};
 };
 
 
