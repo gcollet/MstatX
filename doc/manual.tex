@@ -26,6 +26,7 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{epstopdf}
+\usepackage{hyperref}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
 \title{MstatX User Manual}
@@ -65,6 +66,18 @@ If you wants to calculate statistics already available in MstatX, then read the 
 If you want to add a new statistics module in MstatX, then read the section \ref{prog_sec} to have some examples of
 already coded statistics modules.
 
+\section{Installation}
+If you read this, then you have downloaded MstatX from my \href{https://github.com/gcollet/MstatX}{github repository}.
+When you are at the root of MstatX, just open a terminal and:
+\begin{verbatim}
+make
+\end{verbatim}
+This will compile MstatX with \verb g++ . So you need it in order to compile.\\
+
+MstatX uses only one environment variable: \verb SCORE_MAT_PATH . 
+This variable gives the path to the substitution matrices directory.
+You can set this variable in your \verb .bashrc  file or you can also use the -sd option to specify the substitution matrices directory to MstatX.
+
 \newpage
 \section{User side} 
 \label{user_sec}
@@ -73,17 +86,37 @@ This section is dedicated to the usage of MstatX. If you want to add a statistic
 \subsection{Getting started}
 The basic use of MstatX is like the following:
 \begin{verbatim}
-mstatx -m example.mali
+mstatx -ma example.mali
 \end{verbatim}
-This command will calculate the trident statistics of each columns in the multiple sequences alignment given in file {\verb example.mali} . 
+This command will calculate the trident statistic of each columns in the multiple sequences alignment given in file \verb example.mali . The trident statistic scores are written in file \verb example.stat . Line $1$ of file \verb example.stat  corresponds to column $1$ in file \verb example.mali , etc. This definition allows the calculation of multiple scores for a given column.\\
 
+
+The trident statistic is defined in section \ref{trid_stat}. 
 
 \subsection{Options}
 \label{opt_sec}
 
 \subsection{Available statistics}
 \label{stat_sec}
+
 \subsubsection{Trident}
+\label{trid_stat}
+The trident statistic module is based on the work of William S.J. Valdar \cite{Valdar-2002}. 
+It is composed of three parts, each measures a different aspect of column conservation.\\
+
+The first part, noted $t(x)$, measures the entropy of a column $x$ by the Shannon formula:
+\begin{equation}
+ t(x) = \frac{1}{log(min(N,K))}\sum_{a=1}^{K}p_a log(p_a)
+\end{equation}
+In this formule, $N$ is the number of sequences in the multiple alignment, $K$ is the size of the alphabet, and $p_a$ is the probability of symbol $a$ in the column $x$. The redondancy between the sequences in the multiple alignement is measured in $p_a$ by this formula:
+\begin{equation}
+	p_a = \sum_{i \in \{i|s(i) = a\}} w_i
+\end{equation}
+In this formula, $w_i$ is the weight of sequence $i$ and it is added to the probability $p_a$ only if the symbol of sequence $i$ and column $x$ is $a$. The weight is calculated by the formula from Henikoff \& Henikoff \cite{Henikoff-1994}:
+\begin{equation}
+	w_i = \frac{1}{L} \sum_{x=1}^{L}\frac{1}{K_x n_{x_i}}
+\end{equation}
+In this formula, $L$ is the length of the alignment, 
 
 \newpage
 \section{Programmer side}
@@ -91,5 +124,8 @@ This command will calculate the trident statistics of each columns in the multip
 
 \subsection{The Statistics virtual class}
 \label{cla_sec}
+
+\bibliographystyle{plain}
+\bibliography{biblio}
 
 \end{document}  
