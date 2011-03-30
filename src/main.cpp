@@ -43,6 +43,8 @@ int main (int argc, char **argv)
 	}
 	catch (exception &e) {
 		cerr << e.what() << "\n";
+		Options::Get().print_usage();
+		exit(0);
 	}
 	
 	/* 
@@ -66,6 +68,7 @@ int main (int argc, char **argv)
 	if (Options::Get().basic) {
 		msa.printBasic();
 	}
+	
 	/* 
 	 * Calculate the statistic
 	 */
