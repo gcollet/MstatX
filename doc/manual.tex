@@ -53,9 +53,20 @@
 % Begin the document
 \setcounter{page}{1}
 \section{Introduction}
-MstatX aims to provide a simple and easy-to-extend solution for multiple alignment statistics calculation. 
-A multiple alignment is simply defined by an alphabet of symbols and a list of words made with this alphabet.
-The definition of statistics calculation is completely independant and can be seen as a module or a plug-in.\\
+MstatX provides a simple and easy-to-extend solution for multiple alignment scores calculation.\\
+
+A multiple alignment can be produced in many ways, including the use of an application like CLUSTALW 
+\cite{Larkin-2007} or MUSCLE \cite{Edgar0-2004}, but also manually. Once obtained, automatic methods 
+gives a global score for the alignment. But we often need to calculate the conservation on one or many 
+columns. Or we want to calculate a global score with another method or statistic.\\
+
+When we searched the web for such a tool, we found nothing. Many scores exist to evaluate a multiple 
+alignment, but no simple command-line tool can do it easily. That is why we created MstatX.\\
+
+In MstatX, things are simple. A multiple alignment is simply defined by an alphabet of symbols and a list 
+of words made with this alphabet. The calculation of a given score is completely independent from the 
+other scores. The output is a simple text file with the score of each column of the multiple alignment (or the
+global score only if asked).\\
 
 The default usage of MstatX is for multiple alignment of protein sequences, so, it uses amino acids substitution 
 matrix to calculate statistics. But it is possible to use it for any alphabet with any scoring scheme defined by 
@@ -99,7 +110,7 @@ The trident statistic is defined in section \ref{trid_stat}.
 \subsection{Available statistics}
 \label{stat_sec}
 
-Statistics proposed in MstatX comes from many articles. For a review of these scores, you can refer to  \cite{Valdar-2002} and  \cite{Johansson-2010}
+Statistics proposed in MstatX comes from many articles. For a review of these statistics, you can refer to  \cite{Valdar-2002} and  \cite{Johansson-2010}. Some of the statistics use scoring matrices. We choose to use matrices in the AAindex format \cite{Kawashima-2008} from the AAindex website\footnote{\url{http://www.genome.jp/aaindex/}}. Although it has not been updated since 2008, this website provide a useful list of amino acids scoring matrices in a simple format. The user can use his own scoring matrix by the flag -sp and -sc.
 
 \subsubsection{Trident}
 \label{trid_stat}

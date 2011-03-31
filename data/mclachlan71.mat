@@ -2,8 +2,7 @@ H MCLA710101
 D The similarity of pairs of amino acids (McLachlan, 1971)
 R PMID:5167087
 A McLachlan, A.D.
-T Tests for comparing related amino-acid sequences
-  cytochrome c and cytochrome c551
+T Tests for comparing related amino-acid sequences cytochrome c and cytochrome c551
 J J. Mol. Biol. 61, 409-424 (1971)
 * (RR 9.)
 M rows = ARNDCQEGHILKMFPSTWYV, cols = ARNDCQEGHILKMFPSTWYV
