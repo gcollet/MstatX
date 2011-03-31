@@ -1,12 +1,13 @@
 The aim of MstatX project is to provide an easy-to-use and easy-to-extend 
 application to derive statistics from a multiple alignment file.
 
-MstatX only takes a multiple alignment in input with the option -ma.
+MstatX only takes a multiple alignment in input with the option flag -m.
 Then you can specify the statistic with the flag -s.
 
 The default statistic is a weighted-entropy which means a Shannon 
 entropy based on probabilities computed with the sequence weighting 
-scheme defined by Henikoff & Henikoff.
+scheme defined by Henikoff & Henikoff. The description of all the 
+statistics available in MstatX are in the manual and also in the code.
 
 Statistics currently available are :
  - wentropy (1)
@@ -20,12 +21,35 @@ Statistics currently available are :
 
 These statistics are divided in two. in one hand, statistics on one 
 column (1), in the other hand, statistics on pairs of columns (2).
-The description of each statistic measure is provided in the code.
 
 This application is not designed to validate a multiple alignment. 
 The given multiple alignment is supposed to be exact (obviously,
-this assumption is not true).
+this assumption is not true). Originally, MstatX was created to compute 
+statistics for each columns but with the flag -g, you can also output a global
+score of a multiple alignment (the mean of the column scores).
 
 Mstatx is distributed under the term of the MIT licence. For any bug 
 report or information, contact me at : gcollet [AT] ouvaton.org
+
+Licence:
+
+Copyright (c) 2010 Guillaume Collet
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
