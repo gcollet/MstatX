@@ -327,6 +327,13 @@ private:
 			nb_seq							= nsArg.getValue();
 			window							=	wArg.getValue();
 			
+			/* Changes the output name if not given by the user */
+			if (output_name == "output.txt"){
+				output_name = mult_ali_fname.substr(0,mult_ali_fname.find("."));
+				output_name += ".stat";
+			}
+			
+			
 		} catch (exception &e) {
         throw;
 		}
