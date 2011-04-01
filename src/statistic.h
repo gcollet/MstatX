@@ -37,11 +37,9 @@ public:
 	virtual void printStatistic(Msa & msa){};
 };
 
-
 class StatisticFactory : public Factory<Statistic>{};
 
 void AddAllStatistics();
-
 
 #endif
 

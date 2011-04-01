@@ -68,18 +68,18 @@ of words made with this alphabet. The calculation of a given score is completely
 other scores. The output is a simple text file with the score of each column of the multiple alignment (or the
 global score only if asked).\\
 
-The default usage of MstatX is for multiple alignment of protein sequences, so, it uses amino acids substitution 
-matrix to calculate statistics. But it is possible to use it for any alphabet with any scoring scheme defined by 
-the user.\\
+The default usage of MstatX is for multiple alignment of protein sequences, so, we implemented an "amino~acids~substitution~matrix" reader. In fact, it can read any substitution matrix of any size, so it can
+be used for DNA scoring.\\
 
 MstatX has two side: the end-user side and the programmer side. 
 If you wants to calculate statistics already available in MstatX, then read the section \ref{user_sec}. 
 If you want to add a new statistics module in MstatX, then read the section \ref{prog_sec} to have some examples of
 already coded statistics modules.
 
+\newpage
 \section{Installation}
 If you read this, then you have downloaded MstatX from my \href{https://github.com/gcollet/MstatX}{github repository}.
-When you are at the root of MstatX, just open a terminal and:
+When you are at the root directory of MstatX, just open a terminal and:
 \begin{verbatim}
 make
 \end{verbatim}
@@ -87,7 +87,7 @@ This will compile MstatX with \verb g++ . So you need it in order to compile.\\
 
 MstatX uses only one environment variable: \verb SCORE_MAT_PATH . 
 This variable gives the path to the substitution matrices directory.
-You can set this variable in your \verb .bashrc  file or you can also use the -sd option to specify the substitution matrices directory to MstatX.
+You can set this variable in your \verb .bashrc  file or you can also use the \verb -sp  option to specify the substitution matrices directory to MstatX.
 
 \newpage
 \section{User side} 
@@ -99,8 +99,7 @@ The basic use of MstatX is like the following:
 \begin{verbatim}
 mstatx -ma example.mali
 \end{verbatim}
-This command will calculate the trident statistic of each columns in the multiple sequences alignment given in file \verb example.mali . The trident statistic scores are written in file \verb example.stat . Line $1$ of file \verb example.stat  corresponds to column $1$ in file \verb example.mali , etc. This definition allows the calculation of multiple scores for a given column.\\
-
+This command will calculate the trident statistic of each columns in the multiple sequences alignment given in file \verb example.mali . The scores are written in file \verb example.stat. The score on line $1$ of this file is the score of column $1$, line $2$ is the score of column $2$, etc.\\
 
 The trident statistic is defined in section \ref{trid_stat}. 
 
@@ -134,9 +133,37 @@ In this formula, $L$ is the length of the alignment,
 \newpage
 \section{Programmer side}
 \label{prog_sec}
+MstatX tries to provide an easy-to-extend application for scoring a multiple alignment.
+So MstatX keeps its simplicity even in the code.\\
+
+The main.cpp file contains the main function. This function simply:
+\begin{itemize}
+\item reads the command line;
+\item initialize the statistic factory;
+\item reads the multiple alignment file;
+\item calculate the statistic;
+\item print the results in output;
+\item print some informations on standard output.\\
+\end{itemize}
+
+This simplicity is provided by the virtual class Statistic which allows the use of a factory design pattern 
+to create the right sub-class. The virtual class Statistic is described in the next section.
 
 \subsection{The Statistics virtual class}
 \label{cla_sec}
+If you want to add a statistic calculation, you need to write a class inherited from the Statistic class.
+\begin{verbatim}
+class Statistic {
+  public:
+    Statistic(){};
+    virtual ~Statistic(){};
+    virtual void calculateStatistic(Msa & msa){};
+    virtual void printStatistic(Msa & msa){};
+};
+\end{verbatim}
+In the Statistic class, only two methods are virtual: calculateStatistic(Msa \& msa) and printStatistic(Msa \& msa).
+So you have to rewrite only two methods to create a new statistic. 
+
 
 \bibliographystyle{plain}
 \bibliography{manual}
