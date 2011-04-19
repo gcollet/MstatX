@@ -27,17 +27,13 @@
 class WEntStat  : public Statistic 
 {
 private:
-	int ncol;
-	int N;										/**< Number of sequences in the msa */
-  float ** p;								/**< Probabilities of amino acids in each column (size = 20 * nb columns) */
-	vector<float> w;					/**< Weight of each sequence in the msa (size = nb sequences) */
 	vector<float> col_cons;		/**< Conservation score of each column (size = nb columns) */
 
 	float calcSeqWeight(Msa & msa, int i);
 	
 public:
-	~WEntStat();
 	void calculateStatistic(Msa & msa);
+	void printStatistic(Msa & msa);
 };
 
 #endif

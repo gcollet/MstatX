@@ -28,20 +28,6 @@
 
 #define MIN(x,y)  (x < y ? x : y)
 
-/** Destructor
- *
- */
-WEntStat :: ~WEntStat()
-{
-	if (p != NULL){
-		for (int i(0); i < ncol; ++i) {
-			if (p[i] != NULL){
-				free (p[i]);	
-			}
-		}
-		free(p);
-	}
-}
 
 /** calcSeqWeight(Msa & msa, int i)
  *
@@ -58,7 +44,7 @@ WEntStat :: calcSeqWeight(Msa & msa, int i)
 	int k;								    /**< number of symbol types in a column */
 	int n;								    /**< number of occurence of aa[i][x] in column x */
 	int L = msa.getNcol();    /**< number of columns (i.e. length of the alignment) */
-	int N = msa.getNseq(); /**< number of rows (i.e. number of sequences in the alignment) */
+	int N = msa.getNseq();    /**< number of rows (i.e. number of sequences in the alignment) */
 	float w;						    	/**< weight of sequence i */
 	
 	w = 0.0;
@@ -76,6 +62,7 @@ WEntStat :: calcSeqWeight(Msa & msa, int i)
 	return w ;
 }
 
+
 /** calculateStatistic(Msa & msa)
  *
  * Calculate wentropy statistic and print it in the output file
@@ -89,20 +76,21 @@ WEntStat :: calcSeqWeight(Msa & msa, int i)
 void
 WEntStat :: calculateStatistic(Msa & msa)
 {
-	/* Init size */
-	ncol = msa.getNcol();
-	N = msa.getNseq();
 	string alphabet = msa.getAlphabet();
+	
+	/* Init sizes */
+	int L = msa.getNcol();
+	int N = msa.getNseq();
 	int K = alphabet.size();
 	
-	/* Allocate proba array */
-	p = (float **) calloc(ncol, sizeof(float*));
+	/* Allocate probabilities array */
+	float ** p = (float **) calloc(L, sizeof(float*));
 	if (p == NULL){
 		fprintf(stderr,"Cannot Allocate probability matrix\n");
 		exit(0);
 	}
-	for (int i(0); i < ncol; i++){
-		p[i] = (float *) calloc(alphabet.size(), sizeof(float));
+	for (int i(0); i < L; i++){
+		p[i] = (float *) calloc(K, sizeof(float));
 		if (p[i] == NULL){
 			fprintf(stderr,"Cannot Allocate probability submatrix\n");
 			exit(0);
@@ -110,26 +98,17 @@ WEntStat :: calculateStatistic(Msa & msa)
 	}
 	
 	/* Calculate Sequence Weights */
+	vector<float> w;
 	for (int seq(0); seq < N; ++seq){
 		w.push_back(calcSeqWeight(msa,seq));
-	}
-	
-	/* Print if verbose mode on */
-	if (Options::Get().verbose){
-		cout << "Seq weights :\n";
-		for (int seq(0); seq < N; ++seq){
-		  cout.width(10);
-		  cout << w[seq] << "\n";
-		}
-		cout << "\n";
 	}
 	
 	/* Calculate aa proba and conservation score by columns */
 	float lambda = 1.0 / log(MIN(K,N));
 	
-  for (int x(0); x < ncol; ++x){
+  for (int x(0); x < L; ++x){
 		col_cons.push_back(0.0);
-		for (int a(0); a < K; a++){
+		for (int a(0); a < K; ++a){
 		  for (int j(0); j < N; ++j){
 				if(msa.getSymbol(j, x) == alphabet[a]){
 					p[x][a] += w[j];
@@ -141,25 +120,35 @@ WEntStat :: calculateStatistic(Msa & msa)
 		}
 		col_cons[x] *= lambda;
 	}
+	
+	for (int i(0); i < L; ++i) {
+		free (p[i]);	
+	}
+	free(p);
+}
 
-	/* Print Conservation score in output file */
+
+/** printStatistic(Msa & msa)
+ *
+ * Print Conservation score in output file 
+ */
+void 
+WEntStat :: printStatistic(Msa & msa){
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
 		exit(0);
 	}
-	
 	if (Options::Get().global){
 		float total = 0.0;
-		for (int col(0); col < ncol; ++col){
+		for (int col(0); col < col_cons.size(); ++col){
 			total += col_cons[col];
 		}
-		file << total / ncol << "\n"; 
+		file << total / col_cons.size() << "\n"; 
 	} else {
-		for (int col(0); col < ncol; ++col){
+		for (int col(0); col < col_cons.size(); ++col){
 			file << col_cons[col] << "\n";
 		}
 	}
 	file.close();
-}
-
+};
