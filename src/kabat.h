@@ -27,9 +27,9 @@
 class KabatStat : public Statistic
 {
 private:
-	int ncol;
-	int nseq;
+	
 	vector<float> col_cons;		/**< Conservation score of each column (size = nb columns) */
+
 public:
 	void calculateStatistic(Msa & msa);
 	void printStatistic(Msa & msa);
