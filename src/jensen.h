@@ -27,16 +27,11 @@
 class JensenStat  : public Statistic 
 {
 private:
-	int ncol;
-	int nseq;
-  double ** proba;						/**< probabilities of amino acids in each column (size = 20 * nb columns) */
-	vector<double> seq_weight;	/**< Weight of each sequence in the msa (size = nb sequences) */
 	vector<double> col_cons;		/**< Conservation score of each column (size = nb columns) */
 	
-	double calcSeqWeight(Msa & msa, int i);
+	float calcSeqWeight(Msa & msa, int i);
 	
 public:
-	~JensenStat();
 	void calculateStatistic(Msa & msa);
 	void printStatistic(Msa & msa);
 };

@@ -23,59 +23,49 @@
 #include "options.h"
 #include "scoring_matrix.h"
 
+#include <map>
 #include <cmath>
 #include <fstream>
 #include <algorithm>
 
 #define MIN(x,y)  (x < y ? x : y)
 
-JensenStat :: ~JensenStat()
-{
-	if (proba != NULL){
-		for (int i(0); i < ncol; ++i) {
-			if (proba[i] != NULL){
-				free (proba[i]);	
-			}
-		}
-		free(proba);
-	}
-}
 
 /* Calculate the weight of sequence i in the msa 
  * by the formula from Henikoff & Henikoff (1994)
  * w_i = \frac{1}{L}\sum_{x=1}^{L}\frac{1}{k_x n_{x_i}}
  * We use these notations in the code below
  */
-double 
+float 
 JensenStat :: calcSeqWeight(Msa & msa, int i)
 {
 	int x, seq;
 	int k;								    /**< number of symbol types in a column */
 	int n;								    /**< number of occurence of aa[i][x] in column x */
 	int L = msa.getNcol();    /**< number of columns (i.e. length of the alignment) */
-	int nseq = msa.getNseq(); /**< number of rows (i.e. number of sequences in the alignment) */
-	double w;						    	/**< weight of sequence i */
+	int N = msa.getNseq(); /**< number of rows (i.e. number of sequences in the alignment) */
+	float w;						    	/**< weight of sequence i */
 	
 	w = 0.0;
 	for	(x = 0; x < L; ++x){
 		k = msa.getNtype(x);
 		/* Calculate the number of aa[i][x] in current column */
 		n = 0;
-		for(seq = 0; seq < nseq; ++seq){
+		for(seq = 0; seq < N; ++seq){
 		  if (msa.getSymbol(i, x) == msa.getSymbol(seq, x)){
 				n++;
 			}
 		}
-		w += (double) 1 / (double) (n * k); 
+		w += (float) 1 / (float) (n * k); 
 	}
-	w /= (double) L;
+	w /= (float) L;
 	return w ;
 }
 
 /*
  * Calculate statistics based on the measure 
- * proposed by Jensen et al. (2007)
- * S = λ * R(p,r) + (1 - λ) * R(q,r)
+ * proposed by Capra and Singh (2007)
+ * S = (1 - gapFreq) * (λ * R(p,r) + (1 - λ) * R(q,r))
  * with R(p,r) : \sum_{a=1}^{K} p(a) log (p(a)/r(a))
  * i.e. a Kullback-Leibler divergence with probability
  * p and background probability r
@@ -84,48 +74,65 @@ void
 JensenStat :: calculateStatistic(Msa & msa)
 {
 	/* Init size */
-	ncol = msa.getNcol();
-	nseq = msa.getNseq();
 	string alphabet = msa.getAlphabet();
+	int L = msa.getNcol();
+	int N = msa.getNseq();
+	int K = alphabet.size();
 	
 	/* Allocate proba array */
-	proba = (double **) calloc(ncol, sizeof(double*));
+	float **proba = (float **) calloc(L, sizeof(float*));
 	if (proba == NULL){
 		fprintf(stderr,"Cannot Allocate probability matrix\n");
 		exit(0);
 	}
-	for (int i(0); i < ncol; i++){
-		proba[i] = (double *) calloc(alphabet.size(), sizeof(double));
+	for (int i(0); i < L; i++){
+		proba[i] = (float *) calloc(K, sizeof(float));
 		if (proba[i] == NULL){
 			fprintf(stderr,"Cannot Allocate probability submatrix\n");
 			exit(0);
 		}
 	}
-	
+
 	/* Calculate Sequence Weights */
-	for (int seq(0); seq < nseq; ++seq){
-		seq_weight.push_back(calcSeqWeight(msa,seq));
+	vector<float> w;
+	for (int seq(0); seq < N; ++seq){
+		w.push_back(calcSeqWeight(msa,seq));
 	}
-	
-	/* Print if verbose mode on */
-	if (Options::Get().verbose){
-		cout << "Seq weights :\n";
-		for (int seq(0); seq < nseq; ++seq){
-		  cout.width(10);
-		  cout << seq_weight[seq] << "\n";
-		}
-		cout << "\n";
-	}
+
+	/* Background distribution of amino acids 
+	 * These background frequencies are used in sca paper
+	 */
+	map<char,float> q;
+	q['A'] = 0.073;
+	q['C'] = 0.025;
+	q['D'] = 0.050;
+	q['E'] = 0.061;
+	q['F'] = 0.042;
+	q['G'] = 0.072;
+	q['H'] = 0.023;
+	q['I'] = 0.053;
+	q['K'] = 0.064;
+	q['L'] = 0.089;
+	q['M'] = 0.023;
+	q['N'] = 0.043;
+	q['P'] = 0.052;
+	q['Q'] = 0.040;
+	q['R'] = 0.052;
+	q['S'] = 0.073;
+	q['T'] = 0.056;
+	q['V'] = 0.063;
+	q['W'] = 0.013;
+	q['Y'] = 0.033;
 	
 	/* Calculate aa proba by columns */
-	double lambda = 0.5;
+	float lambda = 0.5;
 	
-  for (int x(0); x < ncol; ++x){
+  for (int x(0); x < L; ++x){
 		int nb_abs = 0;
-		for (int a(0); a < alphabet.size(); a++){
-		  for (int j(0); j < nseq; ++j){
+		for (int a(0); a < K; a++){
+		  for (int j(0); j < N; ++j){
 				if(msa.getSymbol(j, x) == alphabet[a]){
-					proba[x][a] += seq_weight[j];
+					proba[x][a] += w[j];
 				}
 			}
 			if (proba[x][a] == 0.0){
@@ -134,8 +141,8 @@ JensenStat :: calculateStatistic(Msa & msa)
 			}
 		}
 		/* reduce by the pseudo counts in order to have sum-of-proba = 1 */
-		double pseudo_counts = (double) nb_abs * pow(10.0,-6.0) / (double) (alphabet.size() - nb_abs);
-		for (int a(0); a < alphabet.size(); a++){
+		float pseudo_counts = (float) nb_abs * pow(10.0,-6.0) / (float) (K - nb_abs);
+		for (int a(0); a < K; a++){
 			if (proba[x][a] > pow(10.0,-6.0)){
 				proba[x][a] -= pseudo_counts;
 			}
@@ -143,38 +150,43 @@ JensenStat :: calculateStatistic(Msa & msa)
 	}
 	
 	/* Calculate conservation score by columns */
-	for (int x(0); x < ncol; ++x){
-		float score_left(0.0);
-		float score_right(0.0);
-		for (int a(0); a < alphabet.size(); a++){
-			float q = msa.getFreq(alphabet[a]);
-			
-			score_left  += proba[x][a] * log(proba[x][a] / (0.5 * proba[x][a] + 0.5 * q));
-			score_right += q * log(q / (0.5 * proba[x][a] + 0.5 * q));
+	for (int x(0); x < L; ++x){
+		float score_left = 0.0;
+		float score_right = 0.0;
+		for (int a(0); a < K; a++){
+			char aa = alphabet[a];
+			if (aa != '-' && aa != 'X' && aa != 'Z' && aa != 'B'){
+				score_left  += proba[x][a] * log(proba[x][a] / (lambda * proba[x][a] + (1.0 - lambda) * q[aa]));
+				score_right += q[aa] * log(q[aa] / (lambda * proba[x][a] + (1.0 - lambda) * q[aa]));
+			}
 		}
-		col_cons.push_back(0.5 * (score_left + score_right));
+		col_cons.push_back((1 - (lambda * score_left + (1.0 - lambda) * score_right)) * (1 - ((float) msa.getGap(x) / (float) N)));
 	}
 	
 	/* Add Side columns effect */
-	int window = Options::Get().window;
-	for (int x(0); x < ncol; ++x){
+	/*int window = Options::Get().window;
+	for (int x(0); x < L; ++x){
 		float score = col_cons[x];
 		float side_score = 0.0;
 		for (int i(x-1); i >= 0 && i >= x - window; i--) {
 			side_score += col_cons[i];
 		}
-		for (int i(x+1); i < ncol && i <= x + window; i++) {
+		for (int i(x+1); i < L && i <= x + window; i++) {
 			side_score += col_cons[i];
 		}
 		side_score /= (2 * window);
 		cout << 0.5 * (score + side_score) <<"\n";
 		col_cons[x] = 0.5 * (score + side_score);
-	}
+	}*/
 	
 	cout << "\nScore is based on Jensen-Shannon measure\n";
 	cout << "S = λ R(p,r) + (1 - λ) R(q,r)\n\n";
 	
 	
+	for (int i(0); i < L; ++i) {
+		free (proba[i]);	
+	}
+	free(proba);
 }
 
 void 
@@ -187,13 +199,13 @@ JensenStat :: printStatistic(Msa & msa){
 	}
 	if (Options::Get().global){
 		float total = 0.0;
-		for (int col(0); col < ncol; ++col){
-			total += col_cons[col] * (1 - ((float) msa.getGap(col) / (float) nseq));
+		for (int col(0); col < col_cons.size(); ++col){
+			total += col_cons[col];
 		}
-		file << total / ncol << "\n";
+		file << total / col_cons.size() << "\n";
 	} else {
-		for (int col(0); col < ncol; ++col){
-			file << col_cons[col] * (1 - ((float) msa.getGap(col) / (float) nseq)) << "\n";
+		for (int col(0); col < col_cons.size(); ++col){
+			file << col_cons[col] << "\n";
 		}
 	}
 	file.close();
