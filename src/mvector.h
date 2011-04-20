@@ -27,12 +27,8 @@
 class MVectStat  : public Statistic 
 {
 private:
-	int ncol;
-	int nseq;
-  string sm_alphabet;
-	vector<vector<float> > means;
-	float normVect(vector<float> vect); /**< Normalized vector of each column of the msa (size = ncol * 20) */
-	
+	string sm_alphabet;
+	vector<vector<float> > means; /**< mean vector of each columns (Size = nb columns * nb symbols in alphabet)*/
 public:
 	void calculateStatistic(Msa & msa);
 	void printStatistic(Msa & msa);

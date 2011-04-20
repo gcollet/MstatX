@@ -28,42 +28,36 @@
 
 using namespace std;
 
-float 
-MVectStat :: normVect(vector<float> vect){
-	float score= 0.0;
-	for(int i(0); i < vect.size(); ++i){
-		score += vect[i] * vect[i];
-	}
-	return sqrt(score);
-}
-
 void
 MVectStat :: calculateStatistic(Msa & msa)
 {
-	ncol = msa.getNcol();
-	nseq = msa.getNseq();
+	int L = msa.getNcol();
+	int N = msa.getNseq();
+	
 	/* Get the scoring matrix */
 	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/" + Options::Get().score_matrix_fname);
+	
 	/* Remove the unknown symbol from msa (consider them as gaps)*/
 	sm_alphabet = score_mat.getAlphabet();
 	msa.fitToAlphabet(sm_alphabet);
 	
 	/* Calculate the mean vector for each column */
-	int alph_size = score_mat.getAlphabetSize();
-	means = vector<vector<float> >(ncol);
-	vector<float> mean_col(alph_size, 0.0);
-	for (int col(0); col < ncol; col++) {
-		for (int seq(0); seq < nseq; ++seq) {
+	int K = sm_alphabet.size();
+	means = vector<vector<float> >(L);
+	
+	for (int col(0); col < L; col++) {
+		vector<float> mean_col(K, 0.0);
+		for (int seq(0); seq < N; ++seq) {
 			if (msa.getSymbol(seq,col) == '-'){
 				continue;
 			} else {
-				for (int a(0); a < alph_size; ++a) {
+				for (int a(0); a < K; ++a) {
 					mean_col[a] += score_mat.normScore(sm_alphabet[a],msa.getSymbol(seq,col));
 				}
 			}
 		}
-		for (int a(0); a < alph_size; ++a) {
-			mean_col[a] /= (float) nseq;
+		for (int a(0); a < K; ++a) {
+			mean_col[a] /= (float) N;
 		}
 		means[col] = mean_col;
 	}
@@ -78,9 +72,9 @@ MVectStat :: printStatistic(Msa & msa)
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
 		exit(0);
 	}
-	int alph_size = sm_alphabet.size();
-	for (int col(0); col < ncol; col++) {
-  	for (int a(0); a < alph_size; ++a) {
+	int K = sm_alphabet.size();
+	for (int col(0); col < means.size(); col++) {
+  	for (int a(0); a < K; ++a) {
 	  	file << means[col][a] << " ";
 		}
 		file << "\n";
