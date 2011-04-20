@@ -256,7 +256,7 @@ private:
 			 */
 			
 			//1 - create the argument as a ValueArg or SwitchArg.
-			ValueArg<string>	smArg("-sm",	"--score_matrix", "Score matrix file", "VTML250.mat");
+			ValueArg<string>	smArg("-sm",	"--score_matrix", "Score matrix file", "mclachlan71.mat");
 			ValueArg<string>	smpArg("-sp",	"--score_matrix_path", "Path to the score matrix", getEnvVar("SCORE_MAT_PATH"));
 			ValueArg<string>	mafArg("-m",	"--mult_ali", "File name of the multiple alignment");
 			ValueArg<string>	outArg("-o",	"--output", "Name of the output file [default=mali_file]", "output.txt");
