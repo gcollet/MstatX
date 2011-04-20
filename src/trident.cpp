@@ -78,9 +78,15 @@ TridStat :: normVect(vector<float> vect){
 void
 TridStat :: calculateStatistic(Msa & msa)
 {
+	/* Declare the vectors */
+	vector<float> w;					/**< Weight of each sequence in the msa (size = nb sequences) */
+	vector<float> t;					/**< t(x) = Shannon entropy score  + Weighted sequence Score */
+	vector<float> r;					/**< r(x) = Stereochemical score */
+	vector<float> g;					/**< g(x) = Gap Score */
+	
 	/* Init size */
-	ncol = msa.getNcol();
-	N = msa.getNseq();
+	int L = msa.getNcol();
+	int N = msa.getNseq();
 	string alphabet = msa.getAlphabet();
 	int K = alphabet.size();
 	
@@ -96,7 +102,7 @@ TridStat :: calculateStatistic(Msa & msa)
 	 */
 	float lambda = 1.0 / log(MIN(K,N));
 	
-  for (int x(0); x < ncol; x++){
+  for (int x(0); x < L; x++){
 		t.push_back(0.0);
 		for (int a(0); a < K; a++){
 			float tmp_proba(0.0);
@@ -123,7 +129,7 @@ TridStat :: calculateStatistic(Msa & msa)
 	
 	msa.fitToAlphabet(sm_alphabet);
 	
-	for (int x(0); x < ncol; x++){
+	for (int x(0); x < L; x++){
 		
 		int ntype = msa.getNtype(x);
 		string type_list = msa.getTypeList(x);
@@ -166,27 +172,35 @@ TridStat :: calculateStatistic(Msa & msa)
 	/* Calculate g(x) = nb_gap / nb_seq 
 	 * Represents the proportion of gaps in the column
 	 */
-	for (int x(0); x < ncol; x++){
+	for (int x(0); x < L; x++){
 		g.push_back((float) msa.getGap(x) / (float) N);
 	}
+}
 
+/** printStatistic(Msa & msa)
+ *
+ * Print Conservation score in output file 
+ */
+void 
+TridStat :: printStatistic(Msa & msa)
+{
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
 		exit(0);
 	}
-	
 	if (Options::Get().global){
 		float total = 0.0;
-		for (int col(0); col < ncol; ++col){
-			total += pow((float) (1.0 - t[col]), Options::Get().factor_a) * pow((float) (1.0 - r[col]), Options::Get().factor_b) * pow((float) (1.0 - g[col]), Options::Get().factor_c);
-		}		
-		file << total / ncol << "\n";
+		for (int col(0); col < col_cons.size(); ++col){
+			total += col_cons[col];
+		}
+		file << total / col_cons.size() << "\n"; 
 	} else {
-		for (int col(0); col < ncol; ++col){
-			file << pow((float) (1.0 - t[col]), Options::Get().factor_a) * pow((float) (1.0 - r[col]), Options::Get().factor_b) * pow((float) (1.0 - g[col]), Options::Get().factor_c) << "\n";
+		for (int col(0); col < col_cons.size(); ++col){
+			file << col_cons[col] << "\n";
 		}
 	}
-}
+	file.close();
+};
 
 
