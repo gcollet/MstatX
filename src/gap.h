@@ -19,24 +19,20 @@
  * THE SOFTWARE. 
  */
 
-#include "statistic.h"
-#include "wentropy.h"
-#include "mut_info.h"
-#include "trident.h"
-#include "mvector.h"
-#include "jensen.h"
-#include "kabat.h"
-#include "mlc.h"
-#include "gap.h"
+#ifndef __GAP_H__
+#define __GAP_H__
 
-void AddAllStatistics()
-{
-	StatisticFactory::Add<GapStat>("gap");
-	StatisticFactory::Add<MlcStat>("mlc");
-	StatisticFactory::Add<TridStat>("trident");
-	StatisticFactory::Add<WEntStat>("wentropy");
-	StatisticFactory::Add<MIStat>("mutual");
-	StatisticFactory::Add<KabatStat>("kabat");
-	StatisticFactory::Add<JensenStat>("jensen");
-	StatisticFactory::Add<MVectStat>("mvector");
-}
+#include "statistic.h"
+
+class GapStat  : public Statistic 
+	{
+	private:
+		vector<float> col_cons;		/**< Conservation score of each column (size = nb columns) */
+		
+	public:
+		void calculateStatistic(Msa & msa);
+		void printStatistic(Msa & msa);
+	};
+
+#endif
+

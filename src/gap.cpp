@@ -19,24 +19,43 @@
  * THE SOFTWARE. 
  */
 
-#include "statistic.h"
-#include "wentropy.h"
-#include "mut_info.h"
-#include "trident.h"
-#include "mvector.h"
-#include "jensen.h"
-#include "kabat.h"
-#include "mlc.h"
 #include "gap.h"
+#include "options.h"
 
-void AddAllStatistics()
+#include <fstream>
+
+void
+GapStat :: calculateStatistic(Msa & msa)
 {
-	StatisticFactory::Add<GapStat>("gap");
-	StatisticFactory::Add<MlcStat>("mlc");
-	StatisticFactory::Add<TridStat>("trident");
-	StatisticFactory::Add<WEntStat>("wentropy");
-	StatisticFactory::Add<MIStat>("mutual");
-	StatisticFactory::Add<KabatStat>("kabat");
-	StatisticFactory::Add<JensenStat>("jensen");
-	StatisticFactory::Add<MVectStat>("mvector");
+	int L = msa.getNcol();
+	int N = msa.getNseq();
+	for (int x(0); x < L; ++x){
+		col_cons.push_back((float) msa.getGap(x) / (float) N);
+	}
 }
+
+
+/** printStatistic(Msa & msa)
+ *
+ * Print Conservation score in output file 
+ */
+void 
+GapStat :: printStatistic(Msa & msa){
+	ofstream file(Options::Get().output_name.c_str());
+	if (!file.is_open()){
+	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
+		exit(0);
+	}
+	if (Options::Get().global){
+		float total = 0.0;
+		for (int col(0); col < col_cons.size(); ++col){
+			total += col_cons[col];
+		}
+		file << total / col_cons.size() << "\n"; 
+	} else {
+		for (int col(0); col < col_cons.size(); ++col){
+			file << col_cons[col] << "\n";
+		}
+	}
+	file.close();
+};
