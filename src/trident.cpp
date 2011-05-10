@@ -175,6 +175,11 @@ TridStat :: calculateStatistic(Msa & msa)
 	for (int x(0); x < L; x++){
 		g.push_back((float) msa.getGap(x) / (float) N);
 	}
+	
+	for (int x(0); x < L; x++){
+		col_cons.push_back(pow((1-t[x]),Options::Get().factor_a)*pow((1-r[x]),Options::Get().factor_b)*pow((1-g[x]),Options::Get().factor_c));
+	}
+	
 }
 
 /** printStatistic(Msa & msa)
