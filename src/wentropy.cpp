@@ -107,7 +107,7 @@ WEntStat :: calculate(Msa & msa)
 	float lambda = 1.0 / log(MIN(K,N));
 	
   for (int x(0); x < L; ++x){
-		col_cons.push_back(0.0);
+		col_stat.push_back(0.0);
 		for (int a(0); a < K; ++a){
 		  for (int j(0); j < N; ++j){
 				if(msa.getSymbol(j, x) == alphabet[a]){
@@ -115,10 +115,10 @@ WEntStat :: calculate(Msa & msa)
 				}
 			}
 			if (p[x][a] != 0.0){
-				col_cons[x] -= p[x][a] * log(p[x][a]);
+				col_stat[x] -= p[x][a] * log(p[x][a]);
 			}
 		}
-		col_cons[x] *= lambda;
+		col_stat[x] *= lambda;
 	}
 	
 	for (int i(0); i < L; ++i) {
@@ -126,29 +126,3 @@ WEntStat :: calculate(Msa & msa)
 	}
 	free(p);
 }
-
-
-/** print(Msa & msa)
- *
- * Print Conservation score in output file 
- */
-void 
-WEntStat :: print(Msa & msa){
-	ofstream file(Options::Get().output_name.c_str());
-	if (!file.is_open()){
-	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
-		exit(0);
-	}
-	if (Options::Get().global){
-		float total = 0.0;
-		for (int col(0); col < col_cons.size(); ++col){
-			total += col_cons[col];
-		}
-		file << total / col_cons.size() << "\n"; 
-	} else {
-		for (int col(0); col < col_cons.size(); ++col){
-			file << col_cons[col] << "\n";
-		}
-	}
-	file.close();
-};
