@@ -24,17 +24,13 @@
 
 #include "statistic.h"
 
-class TridStat : public Statistic {
+class TridStat : public Stat1D {
 private:
-
-	vector<float> col_cons;		/**< Conservation score = (1-t(x))^a * (1- r(x))^b * (1-g(x))^c */
-	
 	float calcSeqWeight(Msa & msa, int i);
 	float normVect(vector<float> vect);
 	
 public:
 	void calculate(Msa & msa);
-	void print(Msa & msa);
 };
 
 #endif

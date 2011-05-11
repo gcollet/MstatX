@@ -177,35 +177,7 @@ TridStat :: calculate(Msa & msa)
 	}
 	
 	for (int x(0); x < L; x++){
-		col_cons.push_back(pow((1-t[x]),Options::Get().factor_a)*pow((1-r[x]),Options::Get().factor_b)*pow((1-g[x]),Options::Get().factor_c));
+		col_stat.push_back(pow((1-t[x]),Options::Get().factor_a)*pow((1-r[x]),Options::Get().factor_b)*pow((1-g[x]),Options::Get().factor_c));
 	}
 	
 }
-
-/** print(Msa & msa)
- *
- * Print Conservation score in output file 
- */
-void 
-TridStat :: print(Msa & msa)
-{
-	ofstream file(Options::Get().output_name.c_str());
-	if (!file.is_open()){
-	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
-		exit(0);
-	}
-	if (Options::Get().global){
-		float total = 0.0;
-		for (int col(0); col < col_cons.size(); ++col){
-			total += col_cons[col];
-		}
-		file << total / col_cons.size() << "\n"; 
-	} else {
-		for (int col(0); col < col_cons.size(); ++col){
-			file << col_cons[col] << "\n";
-		}
-	}
-	file.close();
-};
-
-
