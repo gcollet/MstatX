@@ -6,8 +6,7 @@ Then you can specify the statistic with the flag -s.
 
 The default statistic is a weighted-entropy which means a Shannon 
 entropy based on probabilities computed with the sequence weighting 
-scheme defined by Henikoff & Henikoff. The description of all the 
-statistics available in MstatX are in the manual and also in the code.
+scheme defined by Henikoff & Henikoff (1994). The description of statistics available in MstatX are in the manual and also in the code.
 
 Statistics currently available are :
  - wentropy (1)
@@ -15,9 +14,7 @@ Statistics currently available are :
  - kabat (1)
  - jensen (1)
  - mvector (1)
- - mlc (2)
  - mutual (2)
- - sca (2)
 
 These statistics are divided in two. in one hand, statistics on one 
 column (1), in the other hand, statistics on pairs of columns (2).
@@ -25,8 +22,7 @@ column (1), in the other hand, statistics on pairs of columns (2).
 This application is not designed to validate a multiple alignment. 
 The given multiple alignment is supposed to be exact (obviously,
 this assumption is not true). Originally, MstatX was created to compute 
-statistics for each columns but with the flag -g, you can also output a global
-score of a multiple alignment (the mean of the column scores).
+statistics for each columns but with the flag -g, you can also output a global score of a multiple alignment (the mean of the column scores).
 
 Mstatx is distributed under the term of the MIT licence. For any bug 
 report or information, contact me at : gcollet [AT] ouvaton.org
