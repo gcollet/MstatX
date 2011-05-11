@@ -48,6 +48,7 @@ void AddAllStatistics();
 class Stat1D : public Statistic {
 protected:
 	vector<float> col_stat; /**< vector to store columns statistics */
+	
 public:
 	virtual ~Stat1D(){};
 	virtual void calculate(Msa & msa){};
@@ -67,6 +68,33 @@ public:
 			for (int col(0); col < col_stat.size(); ++col){
 				file << col_stat[col] << "\n";
 			}
+		}
+		file.close();
+	};
+};
+
+class Stat2D : public Statistic {
+protected:
+	vector< vector<float> > cor_stat; /**< vector to store pairs of columns statistics */
+	
+public:
+	virtual ~Stat2D(){};
+	virtual void calculate(Msa & msa){};
+	void print(Msa & msa){
+		ofstream file(Options::Get().output_name.c_str());
+		if (!file.is_open()){
+			cerr << "Cannot open file " << Options::Get().output_name << "\n";
+			exit(0);
+		}
+		for  (int x(0); x < cor_stat.size() - 1; ++x) {
+			for (int y(0); y < cor_stat.size(); ++y) {
+				if (y > x){
+					file << cor_stat[x][y] << " ";
+				} else {
+					file << 0.0 << " ";
+				}
+			}
+			file << "\n";
 		}
 		file.close();
 	};

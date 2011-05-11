@@ -25,17 +25,13 @@
 
 #include "statistic.h"
 
-class MIStat  : public Statistic 
+class MIStat  : public Stat2D 
 {
 private:
-	
-	vector< vector<float> > mi; /**< matrix of the mutual information of all pairs of columns (Size = nbcol * nbcol) */
-	
 	float calcSeqWeight(Msa & msa, int i);
 	
 public:
 	void calculate(Msa & msa);
-	void print(Msa & msa);
 };
 
 #endif

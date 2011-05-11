@@ -110,10 +110,9 @@ MIStat :: calculate(Msa & msa)
 	/* Calculate aa proba and conservation score by columns */
 	float lambda = 1.0 / log(MIN(K,N));
 	float max = 0.0;
-	vector<float> t;
+	vector<float> t(L,0.0);
 	int x;
 	for (x = 0; x < L; ++x){
-		t.push_back(0.0);
 		for (int a(0); a < K; ++a){
 		  for (int j(0); j < N; ++j){
 				if(msa.getSymbol(j, x) == alphabet[a]){
@@ -130,12 +129,15 @@ MIStat :: calculate(Msa & msa)
 		//t[x] *= lambda;
 	}
 	
+	cerr << "column probabilities are calculated\n";
+	
 	/* Calculate joint shannon-entropy values */
 	vector< vector<float> > joint(L);
 #pragma omp parallel for
 	for  (x = 0; x < L-1; ++x) {
 		joint[x] = vector<float>(L,0.0);
-		for (int y(x+1); y < L; ++y) {
+		int y;
+		for (y = x + 1; y < L; ++y) {
 			for (int a(0); a < K; ++a) {
 				for (int b(0); b < K; ++b) {
 					float p = 0.0;
@@ -153,12 +155,19 @@ MIStat :: calculate(Msa & msa)
 		}
 	}
 	
+	cerr << "joint probabilities are calculated\n";
+	
 	/* Calculate mutual information */
-	mi = vector< vector<float> >(L);
+	cor_stat = vector< vector<float> >(L);
 	for  (int x(0); x < L-1; ++x) {
-		mi[x] = vector<float>(L,0.0);
-		for (int y(x+1); y < L; ++y) {
-			mi[x][y] = (t[x] + t[y] - joint[x][y]) / max;
+		cor_stat[x] = vector<float>(L,0.0);
+	}
+	
+	for  (x = 0; x < L-1; ++x) {
+		int y;
+#pragma omp parallel for
+		for (y = x + 1; y < L; ++y) {
+			cor_stat[x][y] = (t[x] + t[y] - joint[x][y]) / max;
 		}
 	}
 	
@@ -168,30 +177,4 @@ MIStat :: calculate(Msa & msa)
 	}
 	free(p);
 }
-
-
-/** print(Msa & msa)
- *
- * Print Mutual information scores in output file 
- */
-void 
-MIStat :: print(Msa & msa){
-	ofstream file(Options::Get().output_name.c_str());
-	if (!file.is_open()){
-	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
-		exit(0);
-	}
-	for  (int x(0); x < mi.size() - 1; ++x) {
-		for (int y(0); y < mi.size(); ++y) {
-			if (y>x){
-				file << mi[x][y] << " ";
-			} else {
-				file << 0.0 << " ";
-			}
-		}
-		file << "\n";
-	}
-	file.close();
-}
-
 
