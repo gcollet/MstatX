@@ -11,13 +11,13 @@ scheme defined by Henikoff & Henikoff (1994). The description of statistics avai
 Statistics currently available are :
  - wentropy (1)
  - trident (1)
- - kabat (1)
- - jensen (1)
  - mvector (1)
- - mutual (2)
+ - jensen (1)
+ - kabat (1)
+ - gap (1)
 
 These statistics are divided in two. in one hand, statistics on one 
-column (1), in the other hand, statistics on pairs of columns (2).
+column (1), in the other hand, statistics on pairs of columns (2). For the first release, we choose to propose only (1) type of statistics. 
 
 This application is not designed to validate a multiple alignment. 
 The given multiple alignment is supposed to be exact (obviously,
