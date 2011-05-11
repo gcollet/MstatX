@@ -24,15 +24,11 @@
 
 #include "statistic.h"
 
-class GapStat  : public Statistic 
-	{
-	private:
-		vector<float> col_cons;		/**< Conservation score of each column (size = nb columns) */
-		
+class GapStat  : public Stat1D
+{
 	public:
 		void calculate(Msa & msa);
-		void print(Msa & msa);
-	};
+};
 
 #endif
 
