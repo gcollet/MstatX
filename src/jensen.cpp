@@ -160,23 +160,23 @@ JensenStat :: calculate(Msa & msa)
 				score_right += q[aa] * log(q[aa] / (lambda * proba[x][a] + (1.0 - lambda) * q[aa]));
 			}
 		}
-		col_cons.push_back((1 - (lambda * score_left + (1.0 - lambda) * score_right)) * (1 - ((float) msa.getGap(x) / (float) N)));
+		col_stat.push_back((1 - (lambda * score_left + (1.0 - lambda) * score_right)) * (1 - ((float) msa.getGap(x) / (float) N)));
 	}
 	
 	/* Add Side columns effect */
 	/*int window = Options::Get().window;
 	for (int x(0); x < L; ++x){
-		float score = col_cons[x];
+		float score = col_stat[x];
 		float side_score = 0.0;
 		for (int i(x-1); i >= 0 && i >= x - window; i--) {
-			side_score += col_cons[i];
+			side_score += col_stat[i];
 		}
 		for (int i(x+1); i < L && i <= x + window; i++) {
-			side_score += col_cons[i];
+			side_score += col_stat[i];
 		}
 		side_score /= (2 * window);
 		cout << 0.5 * (score + side_score) <<"\n";
-		col_cons[x] = 0.5 * (score + side_score);
+		col_stat[x] = 0.5 * (score + side_score);
 	}*/
 	
 	cout << "\nScore is based on Jensen-Shannon measure\n";
@@ -188,26 +188,3 @@ JensenStat :: calculate(Msa & msa)
 	}
 	free(proba);
 }
-
-void 
-JensenStat :: print(Msa & msa){
-	/* Print Conservation score in output file */
-	ofstream file(Options::Get().output_name.c_str());
-	if (!file.is_open()){
-	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
-		exit(0);
-	}
-	if (Options::Get().global){
-		float total = 0.0;
-		for (int col(0); col < col_cons.size(); ++col){
-			total += col_cons[col];
-		}
-		file << total / col_cons.size() << "\n";
-	} else {
-		for (int col(0); col < col_cons.size(); ++col){
-			file << col_cons[col] << "\n";
-		}
-	}
-	file.close();
-}
-

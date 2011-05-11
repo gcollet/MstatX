@@ -24,16 +24,13 @@
 
 #include "statistic.h"
 
-class JensenStat  : public Statistic 
+class JensenStat  : public Stat1D
 {
 private:
-	vector<double> col_cons;		/**< Conservation score of each column (size = nb columns) */
-	
 	float calcSeqWeight(Msa & msa, int i);
 	
 public:
 	void calculate(Msa & msa);
-	void print(Msa & msa);
 };
 
 #endif
