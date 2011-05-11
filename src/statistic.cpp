@@ -21,22 +21,18 @@
 
 #include "statistic.h"
 #include "wentropy.h"
-#include "mut_info.h"
 #include "trident.h"
 #include "mvector.h"
 #include "jensen.h"
 #include "kabat.h"
-#include "mlc.h"
 #include "gap.h"
 
 void AddAllStatistics()
 {
-	StatisticFactory::Add<GapStat>("gap");
-	StatisticFactory::Add<MlcStat>("mlc");
-	StatisticFactory::Add<TridStat>("trident");
-	StatisticFactory::Add<WEntStat>("wentropy");
-	StatisticFactory::Add<MIStat>("mutual");
-	StatisticFactory::Add<KabatStat>("kabat");
+	StatisticFactory::Add<WEntStat>  ("wentropy");
+	StatisticFactory::Add<TridStat>  ("trident");
+	StatisticFactory::Add<MVectStat> ("mvector");
 	StatisticFactory::Add<JensenStat>("jensen");
-	StatisticFactory::Add<MVectStat>("mvector");
+	StatisticFactory::Add<KabatStat> ("kabat");
+	StatisticFactory::Add<GapStat>   ("gap");
 }
