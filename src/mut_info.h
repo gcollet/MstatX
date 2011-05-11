@@ -34,8 +34,8 @@ private:
 	float calcSeqWeight(Msa & msa, int i);
 	
 public:
-	void calculateStatistic(Msa & msa);
-	void printStatistic(Msa & msa);
+	void calculate(Msa & msa);
+	void print(Msa & msa);
 };
 
 #endif

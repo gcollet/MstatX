@@ -63,7 +63,7 @@ WEntStat :: calcSeqWeight(Msa & msa, int i)
 }
 
 
-/** calculateStatistic(Msa & msa)
+/** calculate(Msa & msa)
  *
  * Calculate wentropy statistic and print it in the output file
  * The wentropy score is calculated as presented by Valdar (2002)
@@ -74,7 +74,7 @@ WEntStat :: calcSeqWeight(Msa & msa, int i)
  * These notations are used in the code
  */
 void
-WEntStat :: calculateStatistic(Msa & msa)
+WEntStat :: calculate(Msa & msa)
 {
 	string alphabet = msa.getAlphabet();
 	
@@ -128,12 +128,12 @@ WEntStat :: calculateStatistic(Msa & msa)
 }
 
 
-/** printStatistic(Msa & msa)
+/** print(Msa & msa)
  *
  * Print Conservation score in output file 
  */
 void 
-WEntStat :: printStatistic(Msa & msa){
+WEntStat :: print(Msa & msa){
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";

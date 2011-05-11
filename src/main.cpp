@@ -73,8 +73,8 @@ int main (int argc, char **argv)
 	 * Calculate the statistic
 	 */
 	Statistic * stat = StatisticFactory::CreateByName(Options::Get().statistic);
-	stat->calculateStatistic(msa);
-	stat->printStatistic(msa);
+	stat->calculate(msa);
+	stat->print(msa);
 	delete stat;
 	
 	/*

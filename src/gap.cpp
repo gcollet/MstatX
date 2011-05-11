@@ -25,7 +25,7 @@
 #include <fstream>
 
 void
-GapStat :: calculateStatistic(Msa & msa)
+GapStat :: calculate(Msa & msa)
 {
 	int L = msa.getNcol();
 	int N = msa.getNseq();
@@ -35,12 +35,12 @@ GapStat :: calculateStatistic(Msa & msa)
 }
 
 
-/** printStatistic(Msa & msa)
+/** print(Msa & msa)
  *
  * Print Conservation score in output file 
  */
 void 
-GapStat :: printStatistic(Msa & msa){
+GapStat :: print(Msa & msa){
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";

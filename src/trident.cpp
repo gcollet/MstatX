@@ -76,7 +76,7 @@ TridStat :: normVect(vector<float> vect){
 
 
 void
-TridStat :: calculateStatistic(Msa & msa)
+TridStat :: calculate(Msa & msa)
 {
 	/* Declare the vectors */
 	vector<float> w;					/**< Weight of each sequence in the msa (size = nb sequences) */
@@ -182,12 +182,12 @@ TridStat :: calculateStatistic(Msa & msa)
 	
 }
 
-/** printStatistic(Msa & msa)
+/** print(Msa & msa)
  *
  * Print Conservation score in output file 
  */
 void 
-TridStat :: printStatistic(Msa & msa)
+TridStat :: print(Msa & msa)
 {
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){

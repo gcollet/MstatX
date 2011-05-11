@@ -32,7 +32,7 @@
  * We use these notations in the code below
  */
 void
-KabatStat :: calculateStatistic(Msa & msa)
+KabatStat :: calculate(Msa & msa)
 {
 	int k;	               /**< number of amino acid types in column */
 	int n1;                /**< number of occurences of the most represented amino acid in a column */
@@ -65,7 +65,7 @@ KabatStat :: calculateStatistic(Msa & msa)
 }
 
 void 
-KabatStat :: printStatistic(Msa & msa){
+KabatStat :: print(Msa & msa){
 	/* Print Conservation score in output file */
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){

@@ -65,7 +65,7 @@ MIStat :: calcSeqWeight(Msa & msa, int i)
 }
 
 
-/** calculateStatistic(Msa & msa)
+/** calculate(Msa & msa)
  *
  * Calculate Mutatual information statistic
  * First, a shannon-entropy score is calculated for each columns and for each pair of columns :
@@ -77,7 +77,7 @@ MIStat :: calcSeqWeight(Msa & msa, int i)
  * These notations are used in the code
  */
 void
-MIStat :: calculateStatistic(Msa & msa)
+MIStat :: calculate(Msa & msa)
 {
 	string alphabet = msa.getAlphabet();
 	
@@ -170,12 +170,12 @@ MIStat :: calculateStatistic(Msa & msa)
 }
 
 
-/** printStatistic(Msa & msa)
+/** print(Msa & msa)
  *
  * Print Mutual information scores in output file 
  */
 void 
-MIStat :: printStatistic(Msa & msa){
+MIStat :: print(Msa & msa){
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){
 	  cerr << "Cannot open file " << Options::Get().output_name << "\n";

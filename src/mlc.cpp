@@ -49,7 +49,7 @@ MlcStat :: ~MlcStat(){
 }
 
 void 
-MlcStat :: calculateStatistic(Msa & msa)
+MlcStat :: calculate(Msa & msa)
 {
   /* Create the McLachlan score matrix */
 	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/" + Options::Get().score_matrix_fname);
@@ -165,7 +165,7 @@ MlcStat :: calculateStatistic(Msa & msa)
 }
 
 void 
-MlcStat :: printStatistic(Msa & msa)
+MlcStat :: print(Msa & msa)
 {
 	/* Print Conservation score in output file */
 	ofstream file(Options::Get().output_name.c_str());

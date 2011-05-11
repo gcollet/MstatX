@@ -33,8 +33,8 @@ private:
 	float normVect(vector<float> vect);
 	
 public:
-	void calculateStatistic(Msa & msa);
-	void printStatistic(Msa & msa);
+	void calculate(Msa & msa);
+	void print(Msa & msa);
 };
 
 #endif

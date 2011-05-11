@@ -29,7 +29,7 @@
 using namespace std;
 
 void
-MVectStat :: calculateStatistic(Msa & msa)
+MVectStat :: calculate(Msa & msa)
 {
 	int L = msa.getNcol();
 	int N = msa.getNseq();
@@ -64,7 +64,7 @@ MVectStat :: calculateStatistic(Msa & msa)
 }
 
 void
-MVectStat :: printStatistic(Msa & msa)
+MVectStat :: print(Msa & msa)
 {
 	/* Print the output */
 	ofstream file(Options::Get().output_name.c_str());
