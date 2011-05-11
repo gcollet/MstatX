@@ -24,12 +24,8 @@
 
 #include "statistic.h"
 
-class KabatStat : public Statistic
+class KabatStat : public Stat1D
 {
-private:
-	
-	vector<float> col_cons;		/**< Conservation score of each column (size = nb columns) */
-
 public:
 	void calculate(Msa & msa);
 	void print(Msa & msa);
