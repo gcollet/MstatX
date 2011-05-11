@@ -22,8 +22,12 @@
 #ifndef __STATISTIC_H__
 #define __STATISTIC_H__
 
+#include <vector>
 #include <string>
+#include <fstream>
+
 #include "msa.h"
+#include "options.h"
 #include "factory.h"
 
 using namespace std;
@@ -40,6 +44,33 @@ public:
 class StatisticFactory : public Factory<Statistic>{};
 
 void AddAllStatistics();
+
+class Stat1D : public Statistic {
+protected:
+	vector<float> col_stat; /**< vector to store columns statistics */
+public:
+	virtual ~Stat1D(){};
+	virtual void calculateStatistic(Msa & msa){};
+	void printStatistic(Msa & msa){
+		ofstream file(Options::Get().output_name.c_str());
+		if (!file.is_open()){
+			cerr << "Cannot open file " << Options::Get().output_name << "\n";
+			exit(0);
+		}
+		if (Options::Get().global){
+			float total = 0.0;
+			for (int col(0); col < col_stat.size(); ++col){
+				total += col_stat[col];
+			}
+			file << total / col_stat.size() << "\n"; 
+		} else {
+			for (int col(0); col < col_stat.size(); ++col){
+				file << col_stat[col] << "\n";
+			}
+		}
+		file.close();
+	};
+};
 
 #endif
 
