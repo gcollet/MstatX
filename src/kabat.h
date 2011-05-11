@@ -31,8 +31,8 @@ private:
 	vector<float> col_cons;		/**< Conservation score of each column (size = nb columns) */
 
 public:
-	void calculateStatistic(Msa & msa);
-	void printStatistic(Msa & msa);
+	void calculate(Msa & msa);
+	void print(Msa & msa);
 };
 
 #endif

@@ -30,8 +30,8 @@ private:
 	string sm_alphabet;
 	vector<vector<float> > means; /**< mean vector of each columns (Size = nb columns * nb symbols in alphabet)*/
 public:
-	void calculateStatistic(Msa & msa);
-	void printStatistic(Msa & msa);
+	void calculate(Msa & msa);
+	void print(Msa & msa);
 };
 
 #endif

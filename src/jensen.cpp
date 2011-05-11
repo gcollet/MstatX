@@ -71,7 +71,7 @@ JensenStat :: calcSeqWeight(Msa & msa, int i)
  * p and background probability r
  */
 void
-JensenStat :: calculateStatistic(Msa & msa)
+JensenStat :: calculate(Msa & msa)
 {
 	/* Init size */
 	string alphabet = msa.getAlphabet();
@@ -190,7 +190,7 @@ JensenStat :: calculateStatistic(Msa & msa)
 }
 
 void 
-JensenStat :: printStatistic(Msa & msa){
+JensenStat :: print(Msa & msa){
 	/* Print Conservation score in output file */
 	ofstream file(Options::Get().output_name.c_str());
 	if (!file.is_open()){

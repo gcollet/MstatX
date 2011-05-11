@@ -37,8 +37,8 @@ class Statistic
 public:
 	Statistic(){};
 	virtual ~Statistic(){};
-	virtual void calculateStatistic(Msa & msa){};
-	virtual void printStatistic(Msa & msa){};
+	virtual void calculate(Msa & msa){};
+	virtual void print(Msa & msa){};
 };
 
 class StatisticFactory : public Factory<Statistic>{};
