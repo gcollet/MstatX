@@ -89,9 +89,9 @@ public:
 		for  (int x(0); x < cor_stat.size() - 1; ++x) {
 			for (int y(0); y < cor_stat.size(); ++y) {
 				if (y > x){
-					file << cor_stat[x][y] << " ";
+					file << cor_stat[x][y] << "\t";
 				} else {
-					file << 0.0 << " ";
+					file << 0.0 << "\t";
 				}
 			}
 			file << "\n";
