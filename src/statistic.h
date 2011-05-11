@@ -50,8 +50,8 @@ protected:
 	vector<float> col_stat; /**< vector to store columns statistics */
 public:
 	virtual ~Stat1D(){};
-	virtual void calculateStatistic(Msa & msa){};
-	void printStatistic(Msa & msa){
+	virtual void calculate(Msa & msa){};
+	void print(Msa & msa){
 		ofstream file(Options::Get().output_name.c_str());
 		if (!file.is_open()){
 			cerr << "Cannot open file " << Options::Get().output_name << "\n";
