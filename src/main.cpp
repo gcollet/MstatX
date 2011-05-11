@@ -23,7 +23,6 @@
 #include <ctime>
 
 #include "msa.h"
-#include "matrix.h"
 #include "options.h"
 #include "statistic.h"
 #include "scoring_matrix.h"
