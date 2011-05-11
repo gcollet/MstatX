@@ -25,6 +25,7 @@
 
 #include <cmath>
 #include <fstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -73,9 +74,19 @@ MVectStat :: print(Msa & msa)
 		exit(0);
 	}
 	int K = sm_alphabet.size();
+	file.precision(3);
+	file << setw(10) << " ";
+	for (int a(0); a < K; ++a) {
+		file.precision(3);
+		file << setw(10) << sm_alphabet[a];
+	}
+	file << "\n";
 	for (int col(0); col < means.size(); col++) {
+		file.precision(3);
+		file << setw(10) << col + 1;
   	for (int a(0); a < K; ++a) {
-	  	file << means[col][a] << " ";
+			file.precision(3);	
+			file << setw(10) << means[col][a];
 		}
 		file << "\n";
 	}

@@ -262,14 +262,14 @@ private:
 			ValueArg<string>	outArg("-o",	"--output", "Name of the output file [default=mali_file]", "output.txt");
 			ValueArg<string>	msArg("-s",		"--statistic", "Name of the statistic used [default=trident]", "trident");
 			ValueArg<float>		thArg( "-t",	"--threshold", "Threshold to print correlation [default=0.8]", 0.8);
-			ValueArg<float>		taArg( "-a",	"--trident_a", "Factor applied to the first member of trident score  [default=1.0]", 1.0);
-			ValueArg<float>		tbArg( "-b",	"--trident_b", "Factor applied to the second member of trident score [default=0.5]", 0.5);
-			ValueArg<float>		tcArg( "-c",	"--trident_c", "Factor applied to the third member of trident score  [default=3.0]", 3.0);
+			ValueArg<float>		taArg( "-a",	"--trident_a", "Factor applied to t(x) (see trident) [default=1.0]", 1.0);
+			ValueArg<float>		tbArg( "-b",	"--trident_b", "Factor applied to r(x) (see trident) [default=0.5]", 0.5);
+			ValueArg<float>		tcArg( "-c",	"--trident_c", "Factor applied to g(x) (see trident) [default=3.0]", 3.0);
 			SwitchArg					vArg(  "-v",	"--verbose", "Verbose mode", false);
 			SwitchArg					gArg(  "-g",	"--global", "Output only the global score of the multiple alignment", false);
 			SwitchArg					bArg(  "-ba",	"--basic", "Add a basic output nbAA/col", false);
 			SwitchArg					hArg(  "-h",	"--help", "Print this help", false);
-			ValueArg<int>			nsArg( "-n",	"--nb_seq", "Maximum number of sequences read in the multiple alignment  [default=500]", 500);
+			ValueArg<int>			nsArg( "-n",	"--nb_seq", "Maximum number of sequences read [default=500]", 500);
 			ValueArg<int>			wArg(  "-w",	"--window", "Number of side columns (jensen score)", 3);
 			
 			// 2 -  add the argument to the arg_list for further use (print_usage).
@@ -404,7 +404,16 @@ public:
 			}
 			it++;
 		}
-		cerr << " [options]\n\nOptions:\n";
+		
+		cerr << " [options]\n\n";
+		cerr << "Available statistics: \n";
+		cerr << "  wentropy (1)\n";
+		cerr << "  trident  (1)\n";
+		cerr << "  mvector  (1)\n";
+		cerr << "  jensen   (1)\n";
+		cerr << "  kabat    (1)\n";
+		cerr << "  gap      (1)\n";
+		cerr << "\nOptions:\n";
 		it = opt.arg_list.begin();
 		while (it != opt.arg_list.end()){
 			string flag = it->second.getSmallFlag() + ",";
