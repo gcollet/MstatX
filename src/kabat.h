@@ -28,7 +28,6 @@ class KabatStat : public Stat1D
 {
 public:
 	void calculate(Msa & msa);
-	void print(Msa & msa);
 };
 
 #endif
