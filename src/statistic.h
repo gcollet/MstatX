@@ -66,7 +66,7 @@ public:
 			file << total / col_stat.size() << "\n"; 
 		} else {
 			for (int col(0); col < col_stat.size(); ++col){
-				file << col_stat[col] << "\n";
+				file << col + 1 << "\t" << col_stat[col] << "\n";
 			}
 		}
 		file.close();
