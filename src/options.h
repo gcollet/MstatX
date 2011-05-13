@@ -260,7 +260,7 @@ private:
 			ValueArg<string>	smpArg("-sp",	"--score_matrix_path", "Path to the score matrix", getEnvVar("SCORE_MAT_PATH"));
 			ValueArg<string>	mafArg("-m",	"--mult_ali", "File name of the multiple alignment");
 			ValueArg<string>	outArg("-o",	"--output", "Name of the output file [default=mali_file]", "output.txt");
-			ValueArg<string>	msArg("-s",		"--statistic", "Name of the statistic used [default=trident]", "trident");
+			ValueArg<string>	msArg("-s",		"--statistic", "Name of the statistic used [default=trident]", "wentropy");
 			ValueArg<float>		thArg( "-t",	"--threshold", "Threshold to print correlation [default=0.8]", 0.8);
 			ValueArg<float>		taArg( "-a",	"--trident_a", "Factor applied to t(x) (see trident) [default=1.0]", 1.0);
 			ValueArg<float>		tbArg( "-b",	"--trident_b", "Factor applied to r(x) (see trident) [default=0.5]", 0.5);
