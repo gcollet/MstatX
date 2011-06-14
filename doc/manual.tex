@@ -87,7 +87,7 @@ This will compile MstatX with \verb g++ . So you need it in order to compile.\\
 
 MstatX uses only one environment variable: \verb SCORE_MAT_PATH . 
 This variable gives the path to the substitution matrices directory.
-You can set this variable in your \verb .bashrc  file or you can also use the \verb -sp  option to specify the substitution matrices directory to MstatX.
+You can set this variable in your \verb .bashrc  file or you can also use the \verb -sp  option to specify the substitution matrices directory to MstatX (default substitution matrices are in \verb data  repertory). 
 
 \newpage
 \section{User side} 
@@ -108,8 +108,33 @@ The trident statistic is defined in section \ref{trid_stat}.
 
 \subsection{Available statistics}
 \label{stat_sec}
-
+\paragraph{}
 Statistics proposed in MstatX comes from many articles. For a review of these statistics, you can refer to  \cite{Valdar-2002} and  \cite{Johansson-2010}. Some of the statistics use scoring matrices. We choose to use matrices in the AAindex format \cite{Kawashima-2008} from the AAindex website\footnote{\url{http://www.genome.jp/aaindex/}}. Although it has not been updated since 2008, this website provide a useful list of amino acids scoring matrices in a simple format. The user can use his own scoring matrix by the flag -sp and -sc.
+
+\paragraph{}
+To illustrate the results of MstatX, we will use the following multiple alignment example:
+\begin{table}
+\begin{center}
+\begin{tabular}{c|cccccccccc}
+  &1&2&3&4&5&6&7&8&9&10\\
+  \hline
+a&D&D&D&D&D&D&I&P&D&L\\
+b&D&D&D&D&D&D&I&P&V&L\\
+c&D&D&D&D&D&D&I&P&Y&L\\
+d&D&D&D&D&D&D&I&P&A&-\\
+e&D&D&D&D&D&D&L&W&T&-\\
+f&D&D&E&D&E&E&L&W&K&-\\
+g&D&D&E&D&E&E&L&W&P&-\\
+h&D&D&E&D&E&F&V&S&R&-\\
+i&D&E&E&F&F&F&V&S&H&-
+\end{tabular}
+\end{center}
+\caption{Multiple alignment example from Valdar \cite{Valdar-2002}. This multiple alignment is used to illustrates the available statistics in MstatX.}
+\end{table}
+
+\subsubsection{Gap}
+\label{gap_stat}
+The Gap statistic is simply the proportion of gaps in columns. 
 
 \subsubsection{Trident}
 \label{trid_stat}
