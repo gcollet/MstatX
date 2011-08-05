@@ -1,0 +1,15 @@
+H RNA matrix
+D RNA matrix by Mobarak Saif (copy from Lee Katz dna.mat)
+R 
+A 
+T
+J
+* matrix in 1/3 Bit Units
+M rows = AUCGN-, cols = AUCGN-
+      2.
+     -1.      2.
+     -1.     -1.      2.
+     -1.     -1.     -1.      2.
+     -1.     -1.     -1.     -1.     -2.
+     -2.     -2.     -2.     -2.     -2.     -2.
+
