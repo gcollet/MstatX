@@ -1,4 +1,4 @@
-/* Copyright (c) 2010 Guillaume Collet
+  /* Copyright (c) 2010 Guillaume Collet
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -75,34 +75,18 @@ ScoringMatrix :: ScoringMatrix(string fname)
 	
 	
 	/* Read the matrix */
+  min = 1000; max = -1000;
 	for (int i(0); i < alphabet_size; ++i) {
 		getline(file,s);
 		for (int j(0); j <=i ; j++){
 			matrix[i][j] = atof(s.substr(j*8, 8).c_str());
+      if (matrix[i][j] < min)
+        min = matrix[i][j];
+      if (matrix[i][j] > max)
+        max = matrix[i][j];
 		}
 	}
 	
-	if (Options::Get().verbose){
-		cout << "Alphabet : " << alphabet << " (size = " << alphabet_size << ")\n\n";
-		cout << "Matrix :\n";
-		for (int i(0); i < alphabet_size; ++i) {
-			cout.width(9);
-			cout << alphabet[i];
-			for (int j(0); j <=i ; j++){
-				cout.width(9);
-				cout << matrix[i][j];
-			}
-			cout << "\n";
-		}
-		cout << "\n";
-		cout.width(9);
-		cout << ' ';
-		for (int j(0); j <= alphabet_size ; j++){
-			cout.width(9);
-			cout << alphabet[j];
-		} 
-		cout << "\n\n";
-	}	
 	
 	/* Allocate the norm_matrix */
 	norm_matrix = (float **) calloc (alphabet_size, sizeof(float *));
@@ -119,14 +103,10 @@ ScoringMatrix :: ScoringMatrix(string fname)
 	}
 	
 	/* Calculate normalized vector */
-	min = 1000; max = -1000;
+	
 	for (int i(0); i < alphabet_size; ++i) {
 		for (int j(0); j <= i; ++j){
-			norm_matrix[i][j] = score(alphabet[i], alphabet[j]) / sqrt(score(alphabet[i], alphabet[i]) * score(alphabet[j], alphabet[j]));
-			if (norm_matrix[i][j] < min) 
-				min = norm_matrix[i][j];
-			if (norm_matrix[i][j] > max) 
-				max = norm_matrix[i][j];
+			norm_matrix[i][j] = (score(alphabet[i], alphabet[j]) - min) / (max - min);
 		}
 	}
 	

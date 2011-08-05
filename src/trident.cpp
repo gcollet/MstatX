@@ -57,6 +57,7 @@ TridStat :: calcSeqWeight(Msa & msa, int i)
 		w += (float) 1 / (float) (n * k); 
 	}
 	w /= (float) L;
+  //cerr << "w = " << w << "\n";
 	return w ;
 }
 
@@ -90,6 +91,7 @@ TridStat :: calculate(Msa & msa)
 	string alphabet = msa.getAlphabet();
 	int K = alphabet.size();
 	
+  //cerr << "Seq Weights\n";
 	/* Calculate Sequence Weights */
 	for (int seq(0); seq < N; ++seq){
 		w.push_back(calcSeqWeight(msa,seq));
@@ -116,8 +118,10 @@ TridStat :: calculate(Msa & msa)
 			}
 		}
 		t[x] *= lambda;
+    //cerr << "t[" << x << "] = " << t[x] << "\n";
 	}
 	
+  
 	/* Calculate r(x) = \lambda_r \frac{1}{k_x}\sum_{a=1}^{k_x}|\bar{X}(x) - X_a|
 	 *      \lambda_r = \frac{1}{\sqrt{20(max(M)-min(M))^2}}
 	 *					  X_a = \left[ \begin{array}{c}M(a,a_1)\\M(a,a_2)\\.\\.\\.\\M(a,a_{20})\end{array}\right]
@@ -127,7 +131,7 @@ TridStat :: calculate(Msa & msa)
 	int alph_size = score_mat.getAlphabetSize();
 	string sm_alphabet = score_mat.getAlphabet();
 	
-	msa.fitToAlphabet(sm_alphabet);
+	//msa.fitToAlphabet(sm_alphabet);
 	
 	for (int x(0); x < L; x++){
 		
@@ -167,6 +171,7 @@ TridStat :: calculate(Msa & msa)
 		} else {
 			r.push_back(1.0);
 		}
+    //cerr << "r[" << x << "] = " << r[x] << "\n";
 	}
 
 	/* Calculate g(x) = nb_gap / nb_seq 
@@ -174,6 +179,7 @@ TridStat :: calculate(Msa & msa)
 	 */
 	for (int x(0); x < L; x++){
 		g.push_back((float) msa.getGap(x) / (float) N);
+    //cerr << "g[" << x << "] = " << g[x] << "\n";
 	}
 	
 	for (int x(0); x < L; x++){
