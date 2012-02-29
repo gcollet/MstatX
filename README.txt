@@ -1,13 +1,18 @@
 The aim of the MstatX project is to provide an easy-to-use and easy-to-extend application to derive statistics from a multiple alignment file.
 
-MstatX only takes a multiple alignment in input with the option flag -i or --input. The default statistic is the famous sum-of-pairs based on a blosum62 matrix. The description of the available statistics is in the manual and also in the code.
+MstatX only takes a multiple alignment in input with the option flag -i or --input. The default statistic is the wentropy. The description of the available statistics is in the manual and also in the code.
 
 The output of MstatX consists in two files:
  - The output file with the statistics asked by the user.
  - The information file (.info) which gives basic information about the alignment.
 
 Statistics currently available are :
- - sumofpairs (1)
+ - wentropy
+ - trident
+ - mvector
+ - jensen
+ - kabat
+ - gap
 
 This application is not designed to validate a multiple alignment but only to calculate a statistical score. In consequence, the multiple alignment, given in input, is supposed to be exact (obviously, this assumption is not true). MstatX was meant to compute statistics for each columns but with the flag -g, you can also output a global score of a multiple alignment (the mean of the column scores).
 
