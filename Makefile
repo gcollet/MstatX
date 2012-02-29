@@ -19,7 +19,7 @@
 # THE SOFTWARE.
 
 CC	= g++
-CFLAGS	= -O3
+CFLAGS	= -O3 -Wall
 LIBS	= -lm -lpthread  
 
 SRC=src/*.cpp
