@@ -16,7 +16,7 @@ report or information, contact me at gcollet[AT]ouvaton.org or through my github
 
 License:
 
-Copyright (c) 2010 Guillaume Collet
+Copyright (c) 2012 Guillaume Collet
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
