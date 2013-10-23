@@ -1,22 +1,22 @@
 /* Copyright (c) 2012 Guillaume Collet
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE. 
+ * THE SOFTWARE.
  */
 
 #include "wentropy.h"
@@ -31,32 +31,32 @@
 
 /** calcSeqWeight(Msa & msa, int i)
  *
- * Calculate the weight of sequence i in the msa 
+ * Calculate the weight of sequence i in the multiple sequence alignment
  * by the formula from Henikoff & Henikoff (1994)
  * w_i = \frac{1}{L}\sum_{x=1}^{L}\frac{1}{k_x n_{x_i}} (LateX code)
  * We use these notations in the code below
  */
-float 
+float
 WEntStat :: calcSeqWeight(Msa & msa, int i)
 {
-	int x;										/**< used to parse msa columns */
-	int seq;									/**< used to parse msa rows */
-	int k;								    /**< number of symbol types in a column */
-	int n;								    /**< number of occurence of aa[i][x] in column x */
-	int L = msa.getNcol();    /**< number of columns (i.e. length of the alignment) */
-	int N = msa.getNseq();    /**< number of rows (i.e. number of sequences in the alignment) */
-	float w;						    	/**< weight of sequence i */
+	int x;   /**< used to parse msa columns */
+	int seq; /**< used to parse msa rows */
+	int k;   /**< number of symbol types in a column */
+	int n;   /**< number of occurence of aa[i][x] in column x */
+	int L = msa.getNcol(); /**< number of columns (i.e. length of the alignment) */
+	int N = msa.getNseq(); /**< number of rows (i.e. number of sequences in the alignment) */
+	float w; /**< weight of sequence i */
 	
 	w = 0.0;
 	for	(x = 0; x < L; ++x){
 		k = msa.getNtype(x);
 		n = 0;
 		for(seq = 0; seq < N; ++seq){
-		  if (msa.getSymbol(i, x) == msa.getSymbol(seq, x)){
+			if (msa.getSymbol(i, x) == msa.getSymbol(seq, x)){
 				n++;
 			}
 		}
-		w += (float) 1 / (float) (n * k); 
+		w += (float) 1 / (float) (n * k);
 	}
 	w /= (float) L;
 	return w ;
@@ -106,10 +106,10 @@ WEntStat :: calculate(Msa & msa)
 	/* Calculate aa proba and conservation score by columns */
 	float lambda = 1.0 / log(MIN(K,N));
 	
-  for (int x(0); x < L; ++x){
+	for (int x(0); x < L; ++x){
 		col_stat.push_back(0.0);
 		for (int a(0); a < K; ++a){
-		  for (int j(0); j < N; ++j){
+			for (int j(0); j < N; ++j){
 				if(msa.getSymbol(j, x) == alphabet[a]){
 					p[x][a] += w[j];
 				}
@@ -122,7 +122,7 @@ WEntStat :: calculate(Msa & msa)
 	}
 	
 	for (int i(0); i < L; ++i) {
-		free (p[i]);	
+		free (p[i]);
 	}
 	free(p);
 }

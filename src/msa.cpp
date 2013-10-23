@@ -52,13 +52,13 @@ Msa :: Msa(string fname)
 	
 	/* Read file */
 	string s, tmp_seq;
-	while (file.good() && mali_seq.size() < Options::Get().nb_seq){
+	while (file.good() && (int) mali_seq.size() < Options::Get().nb_seq){
 		getline(file,s);
 		if (s[0] == '>'){
 			if (mali_name.size() != 0){
 			  mali_seq.push_back(tmp_seq);	
 			}
-			if (mali_seq.size() < Options::Get().nb_seq){
+			if ((int) mali_seq.size() < Options::Get().nb_seq){
   			mali_name.push_back(s.substr(1, s.find_first_of(' ') - 1));
 			}
 			tmp_seq.clear();
@@ -66,7 +66,7 @@ Msa :: Msa(string fname)
 			tmp_seq = tmp_seq + s;
 		}
 	}
-	if (mali_seq.size() < Options::Get().nb_seq){
+	if ((int) mali_seq.size() < Options::Get().nb_seq){
 	  mali_seq.push_back(tmp_seq);
 	}
 	
@@ -92,7 +92,7 @@ Msa :: Msa(string fname)
 	/* Print if verbose mode */
 	if (Options::Get().verbose){
 		cout << "\nAlphabet :\n";
-	  for(int i(0); i < alphabet.size(); ++i){
+	  for(int i(0); i < (int) alphabet.size(); ++i){
 			cout << alphabet[i] << ";";
 		}
 		cout << "\n";
@@ -101,17 +101,17 @@ Msa :: Msa(string fname)
 			cout << mali_seq[i] << "\n";
 		}
 		cout << "\nAA Frequencies :\n";
-		for (int i(0); i < aa_freq.size(); ++i){
+		for (int i(0); i < (int) aa_freq.size(); ++i){
 			cout << aa_freq[i] << ";";
 		}
 		cout << "\n";
 		cout << "\nGap counts :\n";
-		for (int i(0); i < gap_counts.size(); ++i){
+		for (int i(0); i < (int) gap_counts.size(); ++i){
 			cout << gap_counts[i] << ";";
 		}
 		cout << "\n";
 		cout << "\nAA Entropy :\n";
-		for (int i(0); i < entropy.size(); ++i){
+		for (int i(0); i < (int) entropy.size(); ++i){
 			if (gap_counts[i] < nseq/10){
 		  	cout << entropy[i] << ";";
 			} else {
@@ -120,7 +120,7 @@ Msa :: Msa(string fname)
 		}
 		cout << "\n";
 		cout << "\nAA Types :\n";
-		for (int i(0); i < nb_type.size(); ++i){
+		for (int i(0); i < (int) nb_type.size(); ++i){
 				cout << nb_type[i] << ";";
 		}
 		cout << "\n";
@@ -162,7 +162,7 @@ Msa :: countFreq(){
 				total++;
 			}
 			int pos = alphabet.find(mali_seq[row][col]);
-			if (pos >= alphabet.size()){
+			if (pos >= (int) alphabet.size()){
 			  cerr << "error : symbol is not in the alphabet\n";
 				exit(0);
 			}
@@ -171,7 +171,7 @@ Msa :: countFreq(){
 	}
 
 	/* Divide by the total */
-	for (int i(0); i < aa_freq.size(); ++i){
+	for (int i(0); i < (int) aa_freq.size(); ++i){
 		aa_freq[i] = (float) tmp_freq[i] ;
 		aa_freq[i] /= (float) total;
 	}
@@ -267,11 +267,11 @@ Msa :: countEntropy(){
 		for(int row(0); row < nseq; ++row){
 			lfreq[getAaPos(mali_seq[row][col])] += 1.0;
 		}
-		for (int i(0); i < lfreq.size(); ++i){
+		for (int i(0); i < (int) lfreq.size(); ++i){
 		  lfreq[i] /= (float) nseq;
 			if (lfreq[i] > 0.0){
 				if (lfreq[i] == 1.0){
-				  entropy[col] == 0.0;	
+				  entropy[col] = 0.0;	
 				} else {
 				  entropy[col] -= lfreq[i] * log(lfreq[i]);	
 				}
@@ -288,7 +288,7 @@ Msa :: countEntropy(){
  **************************************************************/
 bool
 Msa :: isInclude(string alph1){
-  for (int i(0); i < alphabet.size(); ++i){
+  for (int i(0); i < (int) alphabet.size(); ++i){
 		if (alph1.find(alphabet[i]) >= alph1.size() && alphabet[i] != '-' && alphabet[i] != ' '){
 		  return false;	
 		}
@@ -316,13 +316,13 @@ Msa :: fitToAlphabet(string alph1){
 	int alph_size = alph1.size();
 	for (int i(0); i < nseq; i++){
 		for (int j(0); j < ncol; j++){
-			if (mali_seq[i][j] != '-' && mali_seq[i][j] != ' ' && alph1.find(mali_seq[i][j]) >= alph_size){
+			if (mali_seq[i][j] != '-' && mali_seq[i][j] != ' ' && (int) alph1.find(mali_seq[i][j]) >= alph_size){
 				int k = alphabet.find(mali_seq[i][j]);
-				if (k < alphabet.size()){
+				if (k < (int) alphabet.size()){
 					alphabet.erase(alphabet.begin() + k);
 				}
 				int pos = aa_type_list[j].find(mali_seq[i][j]);
-				if (pos < aa_type_list[j].size()){
+				if (pos < (int) aa_type_list[j].size()){
 					aa_type_list[j].erase(aa_type_list[j].begin() + pos);
 					nb_type[j]--;
 				}
@@ -341,27 +341,27 @@ void
 Msa :: printBasic(){
 	string dictionary = "ARNDCQEGHILKMFPSTWYV-";
 	vector<int> counts(dictionary.size(), 0);
-	string out_name = Options::Get().output_name;
+	string out_name = Options::Get().output_fname;
 	out_name = out_name.substr(0,out_name.find('.')) + ".aa_count";
 	ofstream file(out_name.c_str());
 	if (!file.is_open()){
 	  cerr << "Cannot open file " << out_name << "\n";
 		exit(0);
 	}
-	for (int a(0); a < dictionary.size(); a++) {
+	for (int a(0); a < (int) dictionary.size(); a++) {
 		file << dictionary[a] << " ";
 	}
 	file << "\n";
 	for (int col(0); col < ncol; col++){
 		for (int seq(0); seq < nseq; seq++){
 			int pos = dictionary.find(mali_seq[seq][col]);
-			if (pos < dictionary.size()){
+			if (pos < (int) dictionary.size()){
 				counts[pos]++;
 			} else {
 				cerr << mali_seq[seq][col] << " is not in the dictionary\n";
 			}
 		}
-		for (int a(0); a < dictionary.size(); a++) {
+		for (int a(0); a < (int) dictionary.size(); a++) {
 			file << counts[a] << " ";
 			counts[a] = 0;
 		}

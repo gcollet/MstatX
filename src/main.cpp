@@ -59,31 +59,20 @@ int main (int argc, char **argv)
 	/*
 	 * Read the multiple alignment 
 	 */
-	Msa msa(Options::Get().mult_ali_fname);
-	
-	/*
-	 * If Basic, output basic information
-	 */
-	if (Options::Get().basic) {
-		msa.printBasic();
-	}
+	Msa msa(Options::Get().input_fname);
 	
 	/* 
-	 * Calculate the statistic
+	 * Calculate the statistic & print it
 	 */
 	Statistic * stat = StatisticFactory::CreateByName(Options::Get().statistic);
 	stat->calculate(msa);
-	if (Options::Get().basic){
-		msa.printBasic();
-	} else {
-		stat->print(msa);
-	}
+	stat->print(msa);
 	delete stat;
 	
 	/*
 	 * Print time
 	 */
 	t2 = clock();		
-	cout << "Mstatx computed in "<< (t2 - t1) / (double)CLOCKS_PER_SEC <<" seconds\nResults are written in " << Options::Get().output_name << "\n\n";
+	cout << "Mstatx computed in "<< (t2 - t1) / (double)CLOCKS_PER_SEC <<" seconds\nResults are written in " << Options::Get().output_fname << "\n\n";
 	return 0;
 }

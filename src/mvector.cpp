@@ -36,7 +36,7 @@ MVectStat :: calculate(Msa & msa)
 	int N = msa.getNseq();
 	
 	/* Get the scoring matrix */
-	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/" + Options::Get().score_matrix_fname);
+	ScoringMatrix score_mat(Options::Get().matrix_fname);
 	
 	/* Remove the unknown symbol from msa (consider them as gaps)*/
 	sm_alphabet = score_mat.getAlphabet();
@@ -68,9 +68,9 @@ void
 MVectStat :: print(Msa & msa)
 {
 	/* Print the output */
-	ofstream file(Options::Get().output_name.c_str());
+	ofstream file(Options::Get().output_fname.c_str());
 	if (!file.is_open()){
-	  cerr << "Cannot open file " << Options::Get().output_name << "\n";
+	  cerr << "Cannot open file " << Options::Get().output_fname << "\n";
 		exit(0);
 	}
 	int K = sm_alphabet.size();
@@ -81,7 +81,7 @@ MVectStat :: print(Msa & msa)
 		file << setw(10) << sm_alphabet[a];
 	}
 	file << "\n";
-	for (int col(0); col < means.size(); col++) {
+	for (int col(0); col < (int) means.size(); col++) {
 		file.precision(3);
 		file << setw(10) << col + 1;
   	for (int a(0); a < K; ++a) {

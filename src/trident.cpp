@@ -68,7 +68,7 @@ TridStat :: calcSeqWeight(Msa & msa, int i)
 float 
 TridStat :: normVect(vector<float> vect){
 	float score= 0.0;
-	for(int i(0); i < vect.size(); ++i){
+	for(int i(0); i < (int) vect.size(); ++i){
 		score += vect[i] * vect[i];
 	}
 	return sqrt(score);
@@ -127,7 +127,7 @@ TridStat :: calculate(Msa & msa)
 	 *					  X_a = \left[ \begin{array}{c}M(a,a_1)\\M(a,a_2)\\.\\.\\.\\M(a,a_{20})\end{array}\right]
 	 *							M is a normalized scoring matrix
 	 */
-	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/" + Options::Get().score_matrix_fname);
+	ScoringMatrix score_mat(Options::Get().matrix_fname);
 	int alph_size = score_mat.getAlphabetSize();
 	string sm_alphabet = score_mat.getAlphabet();
 	
@@ -139,7 +139,7 @@ TridStat :: calculate(Msa & msa)
 		string type_list = msa.getTypeList(x);
 		
 		int pos = type_list.find('-');
-		if (pos < type_list.size()){
+		if (pos < (int) type_list.size()){
 			type_list.erase(type_list.begin()+pos);
 			ntype--;
 		}
