@@ -249,7 +249,7 @@ class Options
 
 				//1 - create the argument as a ValueArg or SwitchArg.
 				ValueArg<string> iArg("-i", "--input",     "MSA input file name");
-				ValueArg<string> mArg("-m", "--matrix",    "Score matrix file name",                  "blosum62.mat");
+				ValueArg<string> mArg("-m", "--matrix",    "Score matrix file name",                  "data/blosum62.mat");
 				ValueArg<string> oArg("-o", "--output",    "Output file name [default=ouput.txt]",      "output.txt");
 				ValueArg<string> sArg("-s", "--statistic", "Statistics [default=wentropy]",               "wentropy");
 				ValueArg<int>    nArg("-n", "--nb_seq",    "Maximum number of sequences read [default=500]",     500);

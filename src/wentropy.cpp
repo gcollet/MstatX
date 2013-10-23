@@ -120,6 +120,7 @@ WEntStat :: calculate(Msa & msa)
 			}
 		}
 		col_stat[x] *= lambda;
+		col_stat[x] = 1 - col_stat[x];
 	}
 	
 	for (int i(0); i < L; ++i) {
