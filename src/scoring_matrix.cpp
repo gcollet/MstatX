@@ -1,4 +1,4 @@
-  /* Copyright (c) 2010 Guillaume Collet
+  /* Copyright (c) 2012 Guillaume Collet
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -138,11 +138,11 @@ ScoringMatrix :: ScoringMatrix(string fname)
 ScoringMatrix :: ~ScoringMatrix()
 {
 	if (is_set){
-		for (int i(0); i < alphabet.size(); ++i){
+		for (int i(0); i < (int) alphabet.size(); ++i){
 			free(matrix[i]);
 		}
 		free(matrix);
-		for (int i(0); i < alphabet.size(); ++i){
+		for (int i(0); i < (int) alphabet.size(); ++i){
 			free(norm_matrix[i]);
 		}
 		free(norm_matrix);
@@ -154,7 +154,7 @@ int
 ScoringMatrix :: index(char aa)
 {
 	int pos = alphabet.find(aa);
-	if (pos >= alphabet.size()){
+	if (pos >= (int) alphabet.size()){
 		cerr << "Symbol " << aa << " is not in alphabet\n";
 		exit(0);
 	} 

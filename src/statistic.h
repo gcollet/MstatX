@@ -1,4 +1,4 @@
-/* Copyright (c) 2010 Guillaume Collet
+/* Copyright (c) 2012 Guillaume Collet
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,19 +53,19 @@ public:
 	virtual ~Stat1D(){};
 	virtual void calculate(Msa & msa){};
 	void print(Msa & msa){
-		ofstream file(Options::Get().output_name.c_str());
+		ofstream file(Options::Get().output_fname.c_str());
 		if (!file.is_open()){
-			cerr << "Cannot open file " << Options::Get().output_name << "\n";
+			cerr << "Cannot open file " << Options::Get().output_fname << "\n";
 			exit(0);
 		}
 		if (Options::Get().global){
 			float total = 0.0;
-			for (int col(0); col < col_stat.size(); ++col){
+			for (int col(0); col < (int) col_stat.size(); ++col){
 				total += col_stat[col];
 			}
-			file << total / col_stat.size() << "\n"; 
+			file << total / (int) col_stat.size() << "\n"; 
 		} else {
-			for (int col(0); col < col_stat.size(); ++col){
+			for (int col(0); col < (int) col_stat.size(); ++col){
 				file << col + 1 << "\t" << col_stat[col] << "\n";
 			}
 		}
@@ -81,13 +81,13 @@ public:
 	virtual ~Stat2D(){};
 	virtual void calculate(Msa & msa){};
 	void print(Msa & msa){
-		ofstream file(Options::Get().output_name.c_str());
+		ofstream file(Options::Get().output_fname.c_str());
 		if (!file.is_open()){
-			cerr << "Cannot open file " << Options::Get().output_name << "\n";
+			cerr << "Cannot open file " << Options::Get().output_fname << "\n";
 			exit(0);
 		}
-		for  (int x(0); x < cor_stat.size() - 1; ++x) {
-			for (int y(0); y < cor_stat.size(); ++y) {
+		for  (int x(0); x < (int) cor_stat.size() - 1; ++x) {
+			for (int y(0); y < (int) cor_stat.size(); ++y) {
 				if (y > x){
 					file << cor_stat[x][y] << "\t";
 				} else {

@@ -1,4 +1,4 @@
-/* Copyright (c) 2010 Guillaume Collet
+/* Copyright (c) 2012 Guillaume Collet
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,35 +29,36 @@
 
 #define MIN(x,y)  (x < y ? x : y)
 
-/* Calculate the weight of sequence i in the msa 
+/** calcSeqWeight(Msa & msa, int i)
+ *
+ * Calculate the weight of sequence i in the multiple sequence alignment
  * by the formula from Henikoff & Henikoff (1994)
- * w_i = \frac{1}{L}\sum_{x=1}^{L}\frac{1}{k_x n_{x_i}}
+ * w_i = \frac{1}{L}\sum_{x=1}^{L}\frac{1}{k_x n_{x_i}} (LateX code)
  * We use these notations in the code below
  */
-float 
+float
 TridStat :: calcSeqWeight(Msa & msa, int i)
 {
-	int x, seq;
-	int k;								    /**< number of symbol types in a column */
-	int n;								    /**< number of occurence of aa[i][x] in column x */
-	int L = msa.getNcol();    /**< number of columns (i.e. length of the alignment) */
-	int N = msa.getNseq(); /**< number of rows (i.e. number of sequences in the alignment) */
-	float w;						    	/**< weight of sequence i */
+	int x;                 /**< used to parse msa columns */
+	int seq;               /**< used to parse msa rows */
+	int k;                 /**< number of symbol types in a column */
+	int n;                 /**< number of occurence of aa[i][x] in the full column x */
+	int L = msa.getNcol(); /**< number of columns (length of the alignment) */
+	int N = msa.getNseq(); /**< number of rows (number of sequences in the alignment) */
+	float w;               /**< weight of sequence i */
 	
 	w = 0.0;
 	for	(x = 0; x < L; ++x){
 		k = msa.getNtype(x);
-		/* Calculate the number of aa[i][x] in current column */
 		n = 0;
 		for(seq = 0; seq < N; ++seq){
-		  if (msa.getSymbol(i, x) == msa.getSymbol(seq, x)){
+			if (msa.getSymbol(i, x) == msa.getSymbol(seq, x)){
 				n++;
 			}
 		}
-		w += (float) 1 / (float) (n * k); 
+		w += (float) 1 / (float) (n * k);
 	}
 	w /= (float) L;
-  //cerr << "w = " << w << "\n";
 	return w ;
 }
 
@@ -68,14 +69,25 @@ TridStat :: calcSeqWeight(Msa & msa, int i)
 float 
 TridStat :: normVect(vector<float> vect){
 	float score= 0.0;
-	for(int i(0); i < vect.size(); ++i){
+	for(int i(0); i < (int) vect.size(); ++i){
 		score += vect[i] * vect[i];
 	}
 	return sqrt(score);
 }
 
-
-
+/** calculate(Msa & msa)
+ *
+ * Calculate trident statistic and print it in the output file
+ * The trident score is calculated as presented by Valdar (2002)
+ * in equations (50) to (56) :
+ * For each column x : 
+ *   t(x) = \lambda_t \sum_{a \in K} p_a log(p_a)
+ *     With : \lambda_t = \frac{1.0}{log(min(K,N))}
+ *     With : p_a = \sum_{i = 1}^{N}\left\{\begin{array}{l}w_i \mbox{ if }a=msa[i][x]\\0 \mbox{ else}\end{array}\right.
+ *   g(x) = proportion of gaps in the column x
+ *   r(x) = \lambda_r \frac{1}{k_x}\sum_{a}^{k_x}|\bar{X}(x)-X_a|
+ * These notations are used in the code
+ */
 void
 TridStat :: calculate(Msa & msa)
 {
@@ -127,7 +139,7 @@ TridStat :: calculate(Msa & msa)
 	 *					  X_a = \left[ \begin{array}{c}M(a,a_1)\\M(a,a_2)\\.\\.\\.\\M(a,a_{20})\end{array}\right]
 	 *							M is a normalized scoring matrix
 	 */
-	ScoringMatrix score_mat(Options::Get().score_matrix_path + "/" + Options::Get().score_matrix_fname);
+	ScoringMatrix score_mat(Options::Get().matrix_fname);
 	int alph_size = score_mat.getAlphabetSize();
 	string sm_alphabet = score_mat.getAlphabet();
 	
@@ -139,7 +151,7 @@ TridStat :: calculate(Msa & msa)
 		string type_list = msa.getTypeList(x);
 		
 		int pos = type_list.find('-');
-		if (pos < type_list.size()){
+		if (pos < (int) type_list.size()){
 			type_list.erase(type_list.begin()+pos);
 			ntype--;
 		}
@@ -169,7 +181,7 @@ TridStat :: calculate(Msa & msa)
 			tmp_score /= lambda;
 			r.push_back(tmp_score);
 		} else {
-			r.push_back(1.0);
+			r.push_back(0.0);
 		}
     //cerr << "r[" << x << "] = " << r[x] << "\n";
 	}
@@ -182,6 +194,9 @@ TridStat :: calculate(Msa & msa)
     //cerr << "g[" << x << "] = " << g[x] << "\n";
 	}
 	
+	/*
+	 * Combine the three scores
+	 */
 	for (int x(0); x < L; x++){
 		col_stat.push_back(pow((1-t[x]),Options::Get().factor_a)*pow((1-r[x]),Options::Get().factor_b)*pow((1-g[x]),Options::Get().factor_c));
 	}
