@@ -39,13 +39,13 @@
 float
 WEntStat :: calcSeqWeight(Msa & msa, int i)
 {
-	int x;   /**< used to parse msa columns */
-	int seq; /**< used to parse msa rows */
-	int k;   /**< number of symbol types in a column */
-	int n;   /**< number of occurence of aa[i][x] in column x */
-	int L = msa.getNcol(); /**< number of columns (i.e. length of the alignment) */
-	int N = msa.getNseq(); /**< number of rows (i.e. number of sequences in the alignment) */
-	float w; /**< weight of sequence i */
+	int x;                 /**< used to parse msa columns */
+	int seq;               /**< used to parse msa rows */
+	int k;                 /**< number of symbol types in a column */
+	int n;                 /**< number of occurence of aa[i][x] in the full column x */
+	int L = msa.getNcol(); /**< number of columns (length of the alignment) */
+	int N = msa.getNseq(); /**< number of rows (number of sequences in the alignment) */
+	float w;               /**< weight of sequence i */
 	
 	w = 0.0;
 	for	(x = 0; x < L; ++x){
@@ -68,7 +68,8 @@ WEntStat :: calcSeqWeight(Msa & msa, int i)
  * Calculate wentropy statistic and print it in the output file
  * The wentropy score is calculated as presented by Valdar (2002)
  * in equations (50), (51), and (52) :
- * For each column x : t(x) = \lambda_t \sum_{a \in K} p_a log p_a
+ * For each column x : t(x) = \lambda_t \sum_{a \in K} p_a log(p_a)
+ * With : \lambda_t = \frac{1.0}{log(min(K,N))}
  * With : p_a = \sum_{i = 1}^{N}\left\{\begin{array}{l}w_i \mbox{ if }a=msa[i][x]\\0 \mbox{ else}\end{array}\right.
  *
  * These notations are used in the code
@@ -84,13 +85,13 @@ WEntStat :: calculate(Msa & msa)
 	int K = alphabet.size();
 	
 	/* Allocate probabilities array */
-	float ** p = (float **) calloc(L, sizeof(float*));
+	float ** p = (float **) calloc (L, sizeof(float*));
 	if (p == NULL){
 		fprintf(stderr,"Cannot Allocate probability matrix\n");
 		exit(0);
 	}
 	for (int i(0); i < L; i++){
-		p[i] = (float *) calloc(K, sizeof(float));
+		p[i] = (float *) calloc (K, sizeof(float));
 		if (p[i] == NULL){
 			fprintf(stderr,"Cannot Allocate probability submatrix\n");
 			exit(0);
