@@ -44,8 +44,8 @@ public:
 	float   getMax(){return max;};
 	float		getMin(){return min;};
 	int			index(char aa);
-	float		score(char aa, char aa);
-	float		normScore(char aa, char aa);
+	float		score(char aa1, char aa2);
+	float		normScore(char aa1, char aa2);
 	bool		isSet(){return is_set;};
 	
 };
