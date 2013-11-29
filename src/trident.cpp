@@ -133,6 +133,14 @@ TridStat :: calculate(Msa & msa)
     //cerr << "t[" << x << "] = " << t[x] << "\n";
 	}
 	
+	/* Calculate g(x) = nb_gap / nb_seq
+	 * Represents the proportion of gaps in the column
+	 */
+	for (int x(0); x < L; x++){
+		g.push_back((float) msa.getGap(x) / (float) N);
+		//cerr << "g[" << x << "] = " << g[x] << "\n";
+	}
+	
   
 	/* Calculate r(x) = \lambda_r \frac{1}{k_x}\sum_{a=1}^{k_x}|\bar{X}(x) - X_a|
 	 *      \lambda_r = \frac{1}{\sqrt{20(max(M)-min(M))^2}}
@@ -149,10 +157,12 @@ TridStat :: calculate(Msa & msa)
 		
 		int ntype = msa.getNtype(x);
 		string type_list = msa.getTypeList(x);
-		
-		int pos = (int) type_list.find('-');
-		if (pos < (int) type_list.size()){
-			type_list.erase(type_list.begin()+pos);
+		if (type_list.empty()) {
+			std::cerr << "Error: type list is empty\n";
+			exit(1);
+		}
+		if (type_list.find("-") < (int) type_list.size()){
+			type_list.erase(type_list.find("-"), 1);
 			ntype--;
 		}
 		if (ntype){
@@ -186,13 +196,6 @@ TridStat :: calculate(Msa & msa)
     //cerr << "r[" << x << "] = " << r[x] << "\n";
 	}
 
-	/* Calculate g(x) = nb_gap / nb_seq 
-	 * Represents the proportion of gaps in the column
-	 */
-	for (int x(0); x < L; x++){
-		g.push_back((float) msa.getGap(x) / (float) N);
-    //cerr << "g[" << x << "] = " << g[x] << "\n";
-	}
 	
 	/*
 	 * Combine the three scores
