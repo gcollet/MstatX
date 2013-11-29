@@ -55,8 +55,8 @@ ScoringMatrix :: ScoringMatrix(string fname)
 	}
 	
 	/* Read Alphabet */
-	int alphabet_begin = s.find('=') + 2;
-	int alphabet_size = s.find(',') - alphabet_begin;
+	int alphabet_begin = (int) s.find('=') + 2;
+	int alphabet_size = (int) s.find(',') - alphabet_begin;
 	alphabet = s.substr(alphabet_begin,	alphabet_size);
 	
 	/* Allocate the matrix */
@@ -153,7 +153,7 @@ ScoringMatrix :: ~ScoringMatrix()
 int 
 ScoringMatrix :: index(char aa)
 {
-	int pos = alphabet.find(aa);
+	int pos = (int) alphabet.find(aa);
 	if (pos >= (int) alphabet.size()){
 		cerr << "Symbol " << aa << " is not in alphabet\n";
 		exit(0);

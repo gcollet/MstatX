@@ -101,7 +101,7 @@ TridStat :: calculate(Msa & msa)
 	int L = msa.getNcol();
 	int N = msa.getNseq();
 	string alphabet = msa.getAlphabet();
-	int K = alphabet.size();
+	int K = (int) alphabet.size();
 	
   //cerr << "Seq Weights\n";
 	/* Calculate Sequence Weights */
@@ -150,7 +150,7 @@ TridStat :: calculate(Msa & msa)
 		int ntype = msa.getNtype(x);
 		string type_list = msa.getTypeList(x);
 		
-		int pos = type_list.find('-');
+		int pos = (int) type_list.find('-');
 		if (pos < (int) type_list.size()){
 			type_list.erase(type_list.begin()+pos);
 			ntype--;
