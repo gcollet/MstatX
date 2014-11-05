@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Mstatx : A multiple alignment analyser">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Mstatx</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/gcollet/MstatX">View on GitHub</a>
+
+          <h1 id="project_title">Mstatx</h1>
+          <h2 id="project_tagline">A multiple alignment analyser</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/gcollet/MstatX/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/gcollet/MstatX/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="mstatx" class="anchor" href="#mstatx" aria-hidden="true"><span class="octicon octicon-link"></span></a>MStatX</h1>
+
+<p>The aim of the MStatX project is to provide an easy-to-use and easy-to-extend application to derive statistics from a multiple alignment file.</p>
+
+<p>MstatX only takes a multiple alignment in input with the option flag -i or --input. The default statistic is the wentropy. The description of the available statistics is in the manual and also in the code.</p>
+
+<p>The output of MstatX consists in two files:</p>
+
+<ul>
+<li>The output file with the statistics asked by the user.</li>
+<li>The information file (.info) which gives basic information about the alignment.</li>
+</ul>
+
+<p>Statistics currently available are :</p>
+
+<ul>
+<li>wentropy</li>
+<li>trident</li>
+<li>mvector</li>
+<li>jensen</li>
+<li>kabat</li>
+<li>gap</li>
+</ul>
+
+<p>This application is not designed to validate a multiple alignment but only to calculate a statistical score. In consequence, the multiple alignment, given in input, is supposed to be exact (obviously, this assumption is not true). MstatX was meant to compute statistics for each columns but with the flag -g, you can also output a global score of a multiple alignment (the mean of the column scores).</p>
+
+<p>Mstatx is distributed under the term of the MIT licence. For any bug 
+report or information, contact me at gcollet[AT]ouvaton.org or through my github account : <a href="https://github.com/gcollet">https://github.com/gcollet</a></p>
+
+<p>License:</p>
+
+<p>Copyright (c) 2012 Guillaume Collet</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Mstatx maintained by <a href="https://github.com/gcollet">gcollet</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
