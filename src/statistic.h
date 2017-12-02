@@ -1,22 +1,22 @@
 /* Copyright (c) 2012 Guillaume Collet
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE. 
+ * THE SOFTWARE.
  */
 
 #ifndef __STATISTIC_H__
@@ -32,7 +32,7 @@
 
 using namespace std;
 
-class Statistic 
+class Statistic
 {
 public:
 	Statistic(){};
@@ -48,7 +48,7 @@ void AddAllStatistics();
 class Stat1D : public Statistic {
 protected:
 	vector<float> col_stat; /**< vector to store columns statistics */
-	
+
 public:
 	virtual ~Stat1D(){};
 	virtual void calculate(Msa & msa){};
@@ -63,7 +63,7 @@ public:
 			for (int col(0); col < (int) col_stat.size(); ++col){
 				total += col_stat[col];
 			}
-			file << total / (int) col_stat.size() << "\n"; 
+			file << total / (int) col_stat.size() << "\n";
 		} else {
 			for (int col(0); col < (int) col_stat.size(); ++col){
 				file << col + 1 << "\t" << col_stat[col] << "\n";
@@ -76,7 +76,7 @@ public:
 class Stat2D : public Statistic {
 protected:
 	vector< vector<float> > cor_stat; /**< vector to store pairs of columns statistics */
-	
+
 public:
 	virtual ~Stat2D(){};
 	virtual void calculate(Msa & msa){};
@@ -101,4 +101,3 @@ public:
 };
 
 #endif
-

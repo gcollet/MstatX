@@ -1,22 +1,22 @@
 /* Copyright (c) 2012 Guillaume Collet
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE. 
+ * THE SOFTWARE.
  */
 
 #ifndef __OPTIONS_H_INCLUDED__
@@ -219,7 +219,7 @@ class Options
 				throw runtime_error("Error: Environment variable " + env + " is needed\n");
 			return env_s;
 		}
-    
+
 		// Reduce a pathname in a basename
 		string basename(string fname)
 		{
@@ -238,6 +238,9 @@ class Options
 				// Set the application name
 				appName = basename(argv[0]);
 
+				// Get the environment variable to find the scoring matrix
+				string smat_path = getEnvVar("SCORE_MAT_PATH");
+				if (smat_path.empty()) smat_path = "data/aaindex";
 				/*
 				 * 2 sorts of arguments can be added:
 				 *   - A ValueArg  which is for flags with values
@@ -249,7 +252,7 @@ class Options
 
 				//1 - create the argument as a ValueArg or SwitchArg.
 				ValueArg<string> iArg("-i", "--input",     "MSA input file name"                                    );
-				ValueArg<string> mArg("-m", "--matrix",    "Score matrix file name",   "data/aaindex/HENS920102.mat");
+				ValueArg<string> mArg("-m", "--matrix",    "Score matrix file name",   smat_path+"/HENS920102.mat");
 				ValueArg<string> oArg("-o", "--output",    "Output file name [default=ouput.txt]",      "output.txt");
 				ValueArg<string> sArg("-s", "--statistic", "Statistics [default=wentropy]",               "wentropy");
 				ValueArg<int>    nArg("-n", "--nb_seq",    "Maximum number of sequences read [default=500]",     500);
@@ -401,4 +404,3 @@ class Options
 };
 
 #endif
-
