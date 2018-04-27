@@ -216,7 +216,7 @@ class Options
 			if (env_p != NULL)
 				env_s = env_p;
 			else
-				throw runtime_error("Error: Environment variable " + env + " is needed\n");
+				cerr << "Warning: Environment variable " << env << " is not found\n";
 			return env_s;
 		}
 
