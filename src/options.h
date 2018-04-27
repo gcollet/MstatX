@@ -240,7 +240,10 @@ class Options
 
 				// Get the environment variable to find the scoring matrix
 				string smat_path = getEnvVar("SCORE_MAT_PATH");
-				if (smat_path.empty()) smat_path = "data/aaindex";
+				if (smat_path.empty()) {
+					smat_path = "data/aaindex";
+					cerr << "SCORE_MAT_PATH is not set, use data/aaindex instead\n";
+				}
 				/*
 				 * 2 sorts of arguments can be added:
 				 *   - A ValueArg  which is for flags with values
