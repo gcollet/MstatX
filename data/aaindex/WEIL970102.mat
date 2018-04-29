@@ -1,0 +1,30 @@
+H WEIL970102
+D Difference matrix obtained by subtracting the BLOSUM62 from the WAC
+matrix (Wei et al., 1997)
+R PMID:9390315
+A Wei, L., Altman, R.B. and Chang, J.T.
+T Using the radial distributions of physical features to compare amino
+acid environments and align amino acid sequences.
+J Pac. Symp. Biocomput. 1997 5, 465-476 (1997)
+M rows = ARNDCQEGHILKMFPSTWYV, cols = ARNDCQEGHILKMFPSTWYV
+0
+0      -1
+2       0      -2
+0       1      -1      -2
+0       2       3       1      -5
+1      -1       1      -1       3      -1
+-2      -1       0      -2       2      -2      -1
+-1       1       0      -1       3       2       0      -2
+2       0      -1       0       3       0      -1       1      -4
+1       1       2      -1       1       3      -1       2       2       0
+1       1       2       1       1       2       0       3       2      -1       0
+0       0       0       0       1      -1      -2       1       1       1       0      -1
+2       1       2       2       2       1       1       3       2       1       0       1      -1
+2       1       2      -1       2       3      -1       1       1       0       1       1       2      -2
+1       2       2       0       2       1       0       2       2       3       3       1       3       4      -3
+-1       0       0      -1       1       0      -2       0       0       1       1       0       1       0       1       0
+0       1       1       0       1       2       0       2       1       1       1       1       1       0       1       0      -1
+3       3       3       1       2       2       1       0       2       3       3       1       3      -1       4       2       1      -7
+2       1       2       0       2       2      -2       1      -2       1       1       0       1       0       2       1       1      -1      -3
+1       1       2       0       1       1      -2       1       2      -1       0      -1       0       1       2       1       0       3       1       0
+//

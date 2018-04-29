@@ -1,0 +1,29 @@
+H KANM000101
+D Substitution matrix (OPTIMA) derived by maximizing discrimination between
+homologs and non-homologs (Kann et al., 2000)
+R PMID:11056037
+A Kann, M., Qian, B. and Goldstein, R.A.
+T Optimization of a new score function for the detection of remote homologs
+J Proteins: Structure, Function, and Genetics 41, 498-503 (2000)
+M rows = ARNDCQEGHILKMFPSTWYV, cols = ARNDCQEGHILKMFPSTWYV
+36
+-9      56
+-19       4      59
+-20     -18      18      65
+6     -29     -30     -30      99
+-3      12       2       2     -30      46
+-10       3       3      20     -39      19      40
+4     -18       7     -10     -29     -20     -23      67
+-19       3      12      -7     -29       3       2     -18      86
+-5     -28     -32     -34      -6     -30     -33     -41     -28      35
+-7     -20     -32     -43      -6     -23     -31     -42     -27      28      32
+-10      31       1      -4     -29      15      14     -18      -7     -31     -21      37
+-9     -10     -19     -30      -8       1     -21     -30     -19      12      24     -12      51
+-19     -30     -29     -33     -18     -29     -32     -32      -8       8      17     -29       2      57
+-5     -18     -17      -7     -30     -11      -7     -18     -18     -30     -33     -10     -21     -39      74
+12     -11      10       4     -10       0      -1       2      -9     -20     -22       3     -10     -19      -8      36
+0      -8       0     -10      -7      -7      -6     -17     -20      -8     -13      -8      -7     -18     -11      18      48
+-29     -29     -39     -40     -18     -19     -29     -19     -18     -28     -15     -30      -8      14     -38     -29     -19     110
+-19     -15     -19     -20     -18      -9     -21     -29      20      -8      -2     -17      -9      37     -28     -19     -17      22      69
+6     -32     -31     -31      -6     -19     -28     -30     -29      35      18     -23      10       0     -18     -22       6     -28      -9      38
+//

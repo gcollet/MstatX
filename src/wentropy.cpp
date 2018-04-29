@@ -82,7 +82,7 @@ WEntStat :: calculate(Msa & msa)
 	/* Init sizes */
 	int L = msa.getNcol();
 	int N = msa.getNseq();
-	int K = alphabet.size();
+	int K = (int) alphabet.size();
 	
 	/* Allocate probabilities array */
 	float ** p = (float **) calloc (L, sizeof(float*));

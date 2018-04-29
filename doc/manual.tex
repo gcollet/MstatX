@@ -1,28 +1,28 @@
 % Copyright (c) 2010 Guillaume Collet
-% 
+%
 % Permission is hereby granted, free of charge, to any person obtaining a copy
 % of this software and associated documentation files (the "Software"), to deal
 % in the Software without restriction, including without limitation the rights
 % to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 % copies of the Software, and to permit persons to whom the Software is
 % furnished to do so, subject to the following conditions:
-% 
+%
 % The above copyright notice and this permission notice shall be included in
 % all copies or substantial portions of the Software.
-% 
+%
 % THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 % IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 % FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 % AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 % LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 % OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-% THE SOFTWARE. 
+% THE SOFTWARE.
 %
 
 
 \documentclass[12pt]{report}
 \usepackage{geometry}
-\geometry{a4paper} 
+\geometry{a4paper}
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{epstopdf}
@@ -47,7 +47,7 @@
 % Table of contents
 \setcounter{tocdepth}{3}
 \tableofcontents
-\thispagestyle{empty} 
+\thispagestyle{empty}
 \newpage
 
 % Begin the document
@@ -55,24 +55,24 @@
 \section{Introduction}
 MstatX provides a simple and easy-to-extend solution for multiple alignment scores calculation.\\
 
-A multiple alignment can be produced in many ways, including the use of an application like CLUSTALW 
-\cite{Larkin-2007} or MUSCLE \cite{Edgar0-2004}, but also manually. Once obtained, automatic methods 
-gives a global score for the alignment. But we often need to calculate the conservation on one or many 
+A multiple alignment can be produced in many ways, including the use of an application like CLUSTALW
+\cite{Larkin-2007} or MUSCLE \cite{Edgar0-2004}, but also manually. Once obtained, automatic methods
+gives a global score for the alignment. But we often need to calculate the conservation on one or many
 columns. Or we want to calculate a global score with another method or statistic.\\
 
-When we searched the web for such a tool, we found nothing. Many scores exist to evaluate a multiple 
+When we searched the web for such a tool, we found nothing. Many scores exist to evaluate a multiple
 alignment, but no simple command-line tool can do it easily. That is why we created MstatX.\\
 
-In MstatX, things are simple. A multiple alignment is simply defined by an alphabet of symbols and a list 
-of words made with this alphabet. The calculation of a given score is completely independent from the 
+In MstatX, things are simple. A multiple alignment is simply defined by an alphabet of symbols and a list
+of words made with this alphabet. The calculation of a given score is completely independent from the
 other scores. The output is a simple text file with the score of each column of the multiple alignment (or the
 global score only if asked).\\
 
 The default usage of MstatX is for multiple alignment of protein sequences, so, we implemented an "amino~acids~substitution~matrix" reader. In fact, it can read any substitution matrix of any size, so it can
 be used for DNA scoring.\\
 
-MstatX has two side: the end-user side and the programmer side. 
-If you wants to calculate statistics already available in MstatX, then read the section \ref{user_sec}. 
+MstatX has two side: the end-user side and the programmer side.
+If you wants to calculate statistics already available in MstatX, then read the section \ref{user_sec}.
 If you want to add a new statistics module in MstatX, then read the section \ref{prog_sec} to have some examples of
 already coded statistics modules.
 
@@ -85,23 +85,23 @@ make
 \end{verbatim}
 This will compile MstatX with \verb g++ . So you need it in order to compile.\\
 
-MstatX uses only one environment variable: \verb SCORE_MAT_PATH . 
+MstatX uses only one environment variable: \verb SCORE_MAT_PATH .
 This variable gives the path to the substitution matrices directory.
-You can set this variable in your \verb .bashrc  file or you can also use the \verb -sp  option to specify the substitution matrices directory to MstatX (default substitution matrices are in \verb data  repertory). 
+You can set this variable in your \verb .bashrc file (default substitution matrices are in \verb data  repertory).
 
 \newpage
-\section{User side} 
+\section{User side}
 \label{user_sec}
 This section is dedicated to the usage of MstatX. If you want to add a statistics module in MstatX, read section \ref{prog_sec}.\\
 
 \subsection{Getting started}
 The basic use of MstatX is like the following:
 \begin{verbatim}
-mstatx -ma example.mali
+mstatx -i example.mali
 \end{verbatim}
 This command will calculate the trident statistic of each columns in the multiple sequences alignment given in file \verb example.mali . The scores are written in file \verb example.stat. The score on line $1$ of this file is the score of column $1$, line $2$ is the score of column $2$, etc.\\
 
-The trident statistic is defined in section \ref{trid_stat}. 
+The trident statistic is defined in section \ref{trid_stat}.
 
 \subsection{Options}
 \label{opt_sec}
@@ -109,7 +109,9 @@ The trident statistic is defined in section \ref{trid_stat}.
 \subsection{Available statistics}
 \label{stat_sec}
 \paragraph{}
-Statistics proposed in MstatX comes from many articles. For a review of these statistics, you can refer to  \cite{Valdar-2002} and  \cite{Johansson-2010}. Some of the statistics use scoring matrices. We choose to use matrices in the AAindex format \cite{Kawashima-2008} from the AAindex website\footnote{\url{http://www.genome.jp/aaindex/}}. Although it has not been updated since 2008, this website provide a useful list of amino acids scoring matrices in a simple format. The user can use his own scoring matrix by the flag -sp and -sc.
+Statistics proposed in MstatX comes from many articles. For a review of these statistics, you can refer to  \cite{Valdar-2002} and  \cite{Johansson-2010}. Some of the statistics use scoring matrices. We choose to use matrices in the AAindex format \cite{Kawashima-2008} from the AAindex website\footnote{\url{http://www.genome.jp/aaindex/}}.
+Although it has not been updated since 2008, this website provide a useful list of amino acids scoring matrices in a simple format.
+The user can use his own scoring matrix by the flag -m.
 
 \paragraph{}
 To illustrate the results of MstatX, we will use the following multiple alignment example:
@@ -134,11 +136,11 @@ i&D&E&E&F&F&F&V&S&H&-
 
 \subsubsection{Gap}
 \label{gap_stat}
-The Gap statistic is simply the proportion of gaps in columns. 
+The Gap statistic is simply the proportion of gaps in columns.
 
 \subsubsection{Trident}
 \label{trid_stat}
-The trident statistic module is based on the work of William S.J. Valdar \cite{Valdar-2002}. 
+The trident statistic module is based on the work of William S.J. Valdar \cite{Valdar-2002}.
 It is composed of three parts, each measures a different aspect of column conservation.\\
 
 The first part, noted $t(x)$, measures the entropy of a column $x$ by the Shannon formula:
@@ -153,7 +155,7 @@ In this formula, $w_i$ is the weight of sequence $i$ and it is added to the prob
 \begin{equation}
 	w_i = \frac{1}{L} \sum_{x=1}^{L}\frac{1}{K_x n_{x_i}}
 \end{equation}
-In this formula, $L$ is the length of the alignment, 
+In this formula, $L$ is the length of the alignment,
 
 \newpage
 \section{Programmer side}
@@ -171,7 +173,7 @@ The main.cpp file contains the main function. This function simply:
 \item print some informations on standard output.\\
 \end{itemize}
 
-This simplicity is provided by the virtual class Statistic which allows the use of a factory design pattern 
+This simplicity is provided by the virtual class Statistic which allows the use of a factory design pattern
 to create the right sub-class. The virtual class Statistic is described in the next section.
 
 \subsection{The Statistics virtual class}
@@ -187,7 +189,7 @@ class Statistic {
 };
 \end{verbatim}
 In the Statistic class, only two methods are virtual: calculateStatistic(Msa \& msa) and printStatistic(Msa \& msa).
-So you have to rewrite only two methods to create a new statistic. 
+So you have to rewrite only two methods to create a new statistic.
 
 
 \bibliographystyle{plain}
@@ -195,7 +197,7 @@ So you have to rewrite only two methods to create a new statistic.
 \newpage
 \section*{Licence}
 Copyright (c) 2010 Guillaume Collet\\
- 
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -212,6 +214,6 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE. 
+THE SOFTWARE.
 
-\end{document}  
+\end{document}

@@ -54,5 +54,4 @@ KabatStat :: calculate(Msa & msa)
 		/* Calculate conservation from Wu & Kabat formula */
 		col_stat.push_back((float)k / (float) n1);
 	}
-	cout << "\nKabat score (S = k / n1) printed in %s\n\n", Options::Get().output_fname;
 }

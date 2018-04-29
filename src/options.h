@@ -1,22 +1,22 @@
 /* Copyright (c) 2012 Guillaume Collet
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE. 
+ * THE SOFTWARE.
  */
 
 #ifndef __OPTIONS_H_INCLUDED__
@@ -216,14 +216,14 @@ class Options
 			if (env_p != NULL)
 				env_s = env_p;
 			else
-				throw runtime_error("Error: Environment variable " + env + " is needed\n");
+				cerr << "Warning: Environment variable " << env << " is not found\n";
 			return env_s;
 		}
-    
+
 		// Reduce a pathname in a basename
 		string basename(string fname)
 		{
-			int pos = fname.find_last_of('/');
+			int pos = (int) fname.find_last_of('/');
 			return fname.substr(pos+1, fname.size() - pos);
 		};
 
@@ -238,6 +238,12 @@ class Options
 				// Set the application name
 				appName = basename(argv[0]);
 
+				// Get the environment variable to find the scoring matrix
+				string smat_path = getEnvVar("SCORE_MAT_PATH");
+				if (smat_path.empty()) {
+					smat_path = "data/aaindex";
+					cerr << "SCORE_MAT_PATH is not set, use data/aaindex instead\n";
+				}
 				/*
 				 * 2 sorts of arguments can be added:
 				 *   - A ValueArg  which is for flags with values
@@ -248,8 +254,8 @@ class Options
 				 */
 
 				//1 - create the argument as a ValueArg or SwitchArg.
-				ValueArg<string> iArg("-i", "--input",     "MSA input file name");
-				ValueArg<string> mArg("-m", "--matrix",    "Score matrix file name",                  "data/blosum62.mat");
+				ValueArg<string> iArg("-i", "--input",     "MSA input file name"                                    );
+				ValueArg<string> mArg("-m", "--matrix",    "Score matrix file name",   smat_path+"/HENS920102.mat");
 				ValueArg<string> oArg("-o", "--output",    "Output file name [default=ouput.txt]",      "output.txt");
 				ValueArg<string> sArg("-s", "--statistic", "Statistics [default=wentropy]",               "wentropy");
 				ValueArg<int>    nArg("-n", "--nb_seq",    "Maximum number of sequences read [default=500]",     500);
@@ -352,18 +358,18 @@ class Options
 		{
 			Options & opt = GetNC();
 			map<string,Arg>::iterator it = opt.arg_list.begin();
-			size_t sflag_size = 0;
-			size_t lflag_size = 0;
-			size_t desc_size  = 0;
+			int sflag_size = 0;
+			int lflag_size = 0;
+			int desc_size  = 0;
 			while (it != opt.arg_list.end()){
-				if (it->second.getSmallFlag().length() > sflag_size) {
-					sflag_size = it->second.getSmallFlag().size();
+				if (sflag_size < (int) it->second.getSmallFlag().length()) {
+					sflag_size = (int) it->second.getSmallFlag().size();
 				}
-				if (it->second.getLongFlag().size() > lflag_size) {
-					lflag_size = it->second.getLongFlag().size();
+				if (lflag_size < (int) it->second.getLongFlag().size() ) {
+					lflag_size = (int) it->second.getLongFlag().size();
 				}
-				if (it->second.getDescription().size() > desc_size) {
-					desc_size = it->second.getDescription().size();
+				if (desc_size < (int) it->second.getDescription().size()) {
+					desc_size = (int) it->second.getDescription().size();
 				}
 				it++;
 			}
@@ -390,7 +396,7 @@ class Options
 			it = opt.arg_list.begin();
 			while (it != opt.arg_list.end()){
 				string flag = it->second.getSmallFlag() + ",";
-				cerr << "   " << setw(sflag_size+1) << left << flag;
+				cerr << "   " << setw(sflag_size + 1) << left << flag;
 				cerr << " " << setw(lflag_size) << left << it->second.getLongFlag();
 				cerr << " : " << setw(desc_size) << left << it->second.getDescription();
 				cerr << "\n";
@@ -401,4 +407,3 @@ class Options
 };
 
 #endif
-

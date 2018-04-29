@@ -70,8 +70,8 @@ Msa :: Msa(string fname)
 	  mali_seq.push_back(tmp_seq);
 	}
 	
-	nseq = mali_name.size();
-	ncol = mali_seq[0].size();
+	nseq = (int) mali_name.size();
+	ncol = (int) mali_seq[0].size();
 	cout << "\nMultiple alignment : nb seq = "<<nseq<<", nb col = "<<ncol<<"\n";
 	
 	/* Change all mali.seq in upper case*/
@@ -161,7 +161,7 @@ Msa :: countFreq(){
 			if (mali_seq[row][col] != '-' && mali_seq[row][col] != ' '){
 				total++;
 			}
-			int pos = alphabet.find(mali_seq[row][col]);
+			int pos = (int) alphabet.find(mali_seq[row][col]);
 			if (pos >= (int) alphabet.size()){
 			  cerr << "error : symbol is not in the alphabet\n";
 				exit(0);
@@ -192,7 +192,7 @@ Msa :: countType(){
 			}
 		}
 		aa_type_list.push_back(aa_types);
-		nb_type.push_back(aa_types.size());
+		nb_type.push_back((int) aa_types.size());
 	}
 }
 
@@ -236,7 +236,7 @@ Msa :: getAaPos(char aa){
 	if (alphabet.find(aa) >= alphabet.size()){
 		return -1;
 	}
-	return alphabet.find(aa);
+	return (int) alphabet.find(aa);
 };
 
 
@@ -313,15 +313,15 @@ Msa :: getCol(int col)
  **************************************************************/
 void
 Msa :: fitToAlphabet(string alph1){
-	int alph_size = alph1.size();
+	int alph_size = (int) alph1.size();
 	for (int i(0); i < nseq; i++){
 		for (int j(0); j < ncol; j++){
 			if (mali_seq[i][j] != '-' && mali_seq[i][j] != ' ' && (int) alph1.find(mali_seq[i][j]) >= alph_size){
-				int k = alphabet.find(mali_seq[i][j]);
+				int k = (int) alphabet.find(mali_seq[i][j]);
 				if (k < (int) alphabet.size()){
 					alphabet.erase(alphabet.begin() + k);
 				}
-				int pos = aa_type_list[j].find(mali_seq[i][j]);
+				int pos = (int) aa_type_list[j].find(mali_seq[i][j]);
 				if (pos < (int) aa_type_list[j].size()){
 					aa_type_list[j].erase(aa_type_list[j].begin() + pos);
 					nb_type[j]--;
@@ -354,7 +354,7 @@ Msa :: printBasic(){
 	file << "\n";
 	for (int col(0); col < ncol; col++){
 		for (int seq(0); seq < nseq; seq++){
-			int pos = dictionary.find(mali_seq[seq][col]);
+			int pos = (int) dictionary.find(mali_seq[seq][col]);
 			if (pos < (int) dictionary.size()){
 				counts[pos]++;
 			} else {

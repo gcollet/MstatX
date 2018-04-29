@@ -45,7 +45,7 @@ int main (int argc, char **argv)
 		Options::Get().print_usage();
 		exit(0);
 	}
-	
+	cout << "Statistic: " << Options::Get().statistic << "\n";
 	/* 
 	 * Initiates Statistic factory
 	 */

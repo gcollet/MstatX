@@ -1,22 +1,22 @@
 /* Copyright (c) 2012 Guillaume Collet
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE. 
+ * THE SOFTWARE.
  */
 
 #include "trident.h"
@@ -46,7 +46,7 @@ TridStat :: calcSeqWeight(Msa & msa, int i)
 	int L = msa.getNcol(); /**< number of columns (length of the alignment) */
 	int N = msa.getNseq(); /**< number of rows (number of sequences in the alignment) */
 	float w;               /**< weight of sequence i */
-	
+
 	w = 0.0;
 	for	(x = 0; x < L; ++x){
 		k = msa.getNtype(x);
@@ -66,7 +66,7 @@ TridStat :: calcSeqWeight(Msa & msa, int i)
  *
  * Return the vector norm = √(∑v*v)
  */
-float 
+float
 TridStat :: normVect(vector<float> vect){
 	float score= 0.0;
 	for(int i(0); i < (int) vect.size(); ++i){
@@ -80,7 +80,7 @@ TridStat :: normVect(vector<float> vect){
  * Calculate trident statistic and print it in the output file
  * The trident score is calculated as presented by Valdar (2002)
  * in equations (50) to (56) :
- * For each column x : 
+ * For each column x :
  *   t(x) = \lambda_t \sum_{a \in K} p_a log(p_a)
  *     With : \lambda_t = \frac{1.0}{log(min(K,N))}
  *     With : p_a = \sum_{i = 1}^{N}\left\{\begin{array}{l}w_i \mbox{ if }a=msa[i][x]\\0 \mbox{ else}\end{array}\right.
@@ -96,13 +96,13 @@ TridStat :: calculate(Msa & msa)
 	vector<float> t;					/**< t(x) = Shannon entropy score  + Weighted sequence Score */
 	vector<float> r;					/**< r(x) = Stereochemical score */
 	vector<float> g;					/**< g(x) = Gap Score */
-	
+
 	/* Init size */
 	int L = msa.getNcol();
 	int N = msa.getNseq();
 	string alphabet = msa.getAlphabet();
-	int K = alphabet.size();
-	
+	int K = (int) alphabet.size();
+
   //cerr << "Seq Weights\n";
 	/* Calculate Sequence Weights */
 	for (int seq(0); seq < N; ++seq){
@@ -115,7 +115,7 @@ TridStat :: calculate(Msa & msa)
 	 * Like in wentropy
 	 */
 	float lambda = 1.0 / log(MIN(K,N));
-	
+
   for (int x(0); x < L; x++){
 		t.push_back(0.0);
 		for (int a(0); a < K; a++){
@@ -132,8 +132,16 @@ TridStat :: calculate(Msa & msa)
 		t[x] *= lambda;
     //cerr << "t[" << x << "] = " << t[x] << "\n";
 	}
-	
-  
+
+	/* Calculate g(x) = nb_gap / nb_seq
+	 * Represents the proportion of gaps in the column
+	 */
+	for (int x(0); x < L; x++){
+		g.push_back((float) msa.getGap(x) / (float) N);
+		//cerr << "g[" << x << "] = " << g[x] << "\n";
+	}
+
+
 	/* Calculate r(x) = \lambda_r \frac{1}{k_x}\sum_{a=1}^{k_x}|\bar{X}(x) - X_a|
 	 *      \lambda_r = \frac{1}{\sqrt{20(max(M)-min(M))^2}}
 	 *					  X_a = \left[ \begin{array}{c}M(a,a_1)\\M(a,a_2)\\.\\.\\.\\M(a,a_{20})\end{array}\right]
@@ -142,17 +150,19 @@ TridStat :: calculate(Msa & msa)
 	ScoringMatrix score_mat(Options::Get().matrix_fname);
 	int alph_size = score_mat.getAlphabetSize();
 	string sm_alphabet = score_mat.getAlphabet();
-	
+
 	//msa.fitToAlphabet(sm_alphabet);
-	
+
 	for (int x(0); x < L; x++){
-		
+
 		int ntype = msa.getNtype(x);
 		string type_list = msa.getTypeList(x);
-		
-		int pos = type_list.find('-');
-		if (pos < (int) type_list.size()){
-			type_list.erase(type_list.begin()+pos);
+		if (type_list.empty()) {
+			std::cerr << "Error: No amino acid type found in column " << x << "\n";
+			exit(1);
+		}
+		if (type_list.find("-") < (int) type_list.size()){
+			type_list.erase(type_list.find("-"), 1);
 			ntype--;
 		}
 		if (ntype){
@@ -166,7 +176,7 @@ TridStat :: calculate(Msa & msa)
 			for (int a(0); a < alph_size; ++a){
 				mean[a] /= ntype;
 			}
-		
+
 			/* Calculate Score */
 			float lambda = sqrt(alph_size * (score_mat.getMax() - score_mat.getMin()) * (score_mat.getMax() - score_mat.getMin()));
 			float tmp_score = 0.0;
@@ -186,19 +196,12 @@ TridStat :: calculate(Msa & msa)
     //cerr << "r[" << x << "] = " << r[x] << "\n";
 	}
 
-	/* Calculate g(x) = nb_gap / nb_seq 
-	 * Represents the proportion of gaps in the column
-	 */
-	for (int x(0); x < L; x++){
-		g.push_back((float) msa.getGap(x) / (float) N);
-    //cerr << "g[" << x << "] = " << g[x] << "\n";
-	}
-	
+
 	/*
 	 * Combine the three scores
 	 */
 	for (int x(0); x < L; x++){
 		col_stat.push_back(pow((1-t[x]),Options::Get().factor_a)*pow((1-r[x]),Options::Get().factor_b)*pow((1-g[x]),Options::Get().factor_c));
 	}
-	
+
 }

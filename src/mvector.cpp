@@ -43,7 +43,7 @@ MVectStat :: calculate(Msa & msa)
 	msa.fitToAlphabet(sm_alphabet);
 	
 	/* Calculate the mean vector for each column */
-	int K = sm_alphabet.size();
+	int K = (int) sm_alphabet.size();
 	means = vector<vector<float> >(L);
 	
 	for (int col(0); col < L; col++) {
@@ -73,7 +73,7 @@ MVectStat :: print(Msa & msa)
 	  cerr << "Cannot open file " << Options::Get().output_fname << "\n";
 		exit(0);
 	}
-	int K = sm_alphabet.size();
+	int K = (int) sm_alphabet.size();
 	file.precision(3);
 	file << setw(10) << " ";
 	for (int a(0); a < K; ++a) {
