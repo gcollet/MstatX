@@ -19,10 +19,7 @@
  * THE SOFTWARE. 
  */
 
-#include "gap.h"
-#include "options.h"
-
-#include <fstream>
+#include <gap.h>
 
 void
 GapStat :: calculate(Msa & msa)

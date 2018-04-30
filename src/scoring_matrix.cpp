@@ -22,8 +22,8 @@
 #include <fstream>
 #include <cmath>
 
-#include "options.h"
-#include "scoring_matrix.h"
+#include <options.h>
+#include <scoring_matrix.h>
 
 using namespace std;
 

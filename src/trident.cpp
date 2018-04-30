@@ -19,9 +19,9 @@
  * THE SOFTWARE.
  */
 
-#include "trident.h"
-#include "options.h"
-#include "scoring_matrix.h"
+#include <trident.h>
+#include <options.h>
+#include <scoring_matrix.h>
 
 #include <cmath>
 #include <fstream>
@@ -161,7 +161,7 @@ TridStat :: calculate(Msa & msa)
 			std::cerr << "Error: No amino acid type found in column " << x << "\n";
 			exit(1);
 		}
-		if (type_list.find("-") < (int) type_list.size()){
+		if (type_list.find("-") < type_list.size()){
 			type_list.erase(type_list.find("-"), 1);
 			ntype--;
 		}

@@ -19,8 +19,8 @@
  * THE SOFTWARE.
  */
 
-#include "wentropy.h"
-#include "options.h"
+#include <wentropy.h>
+#include <options.h>
 
 #include <cmath>
 #include <fstream>
@@ -77,7 +77,7 @@ WEntStat :: calcSeqWeight(Msa & msa, int i)
 void
 WEntStat :: calculate(Msa & msa)
 {
-	string alphabet = msa.getAlphabet();
+	std::string alphabet = msa.getAlphabet();
 	
 	/* Init sizes */
 	int L = msa.getNcol();
@@ -99,7 +99,7 @@ WEntStat :: calculate(Msa & msa)
 	}
 	
 	/* Calculate Sequence Weights */
-	vector<float> w;
+	std::vector<float> w;
 	for (int seq(0); seq < N; ++seq){
 		w.push_back(calcSeqWeight(msa,seq));
 	}

@@ -19,9 +19,9 @@
  * THE SOFTWARE. 
  */
 
-#include "mvector.h"
-#include "options.h"
-#include "scoring_matrix.h"
+#include <mvector.h>
+#include <options.h>
+#include <scoring_matrix.h>
 
 #include <cmath>
 #include <fstream>
@@ -65,7 +65,7 @@ MVectStat :: calculate(Msa & msa)
 }
 
 void
-MVectStat :: print(Msa & msa)
+MVectStat :: print()
 {
 	/* Print the output */
 	ofstream file(Options::Get().output_fname.c_str());

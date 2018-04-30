@@ -24,8 +24,8 @@
 #include <fstream>
 #include <cmath>
 
-#include "msa.h"
-#include "options.h"
+#include <msa.h>
+#include <options.h>
 
 using namespace std;
 
@@ -43,7 +43,7 @@ Msa :: Msa(string fname)
 	if (Options::Get().verbose){
 		cout << "Read Multiple Alignment in " << fname << "\n";
 	}
-	ifstream file(fname.c_str());
+	ifstream file(fname);
 	if (!file.good()){
 	  cerr << "Cannot open file " << fname << "\n";
 		exit(0);
@@ -106,13 +106,13 @@ Msa :: Msa(string fname)
 		}
 		cout << "\n";
 		cout << "\nGap counts :\n";
-		for (int i(0); i < (int) gap_counts.size(); ++i){
-			cout << gap_counts[i] << ";";
+		for (int i(0); i < (int) _gap_counts.size(); ++i){
+			cout << _gap_counts[i] << ";";
 		}
 		cout << "\n";
 		cout << "\nAA Entropy :\n";
 		for (int i(0); i < (int) entropy.size(); ++i){
-			if (gap_counts[i] < nseq/10){
+			if (_gap_counts[i] < nseq/10){
 		  	cout << entropy[i] << ";";
 			} else {
 				cout << "-12.0;";
@@ -140,7 +140,7 @@ Msa :: countGap(){
 				gap++;
 			}
 		}
-		gap_counts.push_back(gap);
+		_gap_counts.push_back(gap);
 	}
 }
 
@@ -245,9 +245,16 @@ Msa :: getAaPos(char aa){
  **************************************************************/
 int
 Msa :: getGap(int col){
-	return gap_counts[col];
+	return _gap_counts[col];
 }
 
+/**************************************************************
+ * getGapCount(col) returns _gap_counts
+ **************************************************************/
+const vector<int> &
+Msa :: getGapCount() {
+	return _gap_counts;
+}
 
 /**************************************************************
  * countEntropy calculates the entropy of each column

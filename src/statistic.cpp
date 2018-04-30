@@ -19,13 +19,13 @@
  * THE SOFTWARE. 
  */
 
-#include "statistic.h"
-#include "wentropy.h"
-#include "trident.h"
-#include "mvector.h"
-#include "jensen.h"
-#include "kabat.h"
-#include "gap.h"
+#include <statistic.h>
+#include <wentropy.h>
+#include <trident.h>
+#include <mvector.h>
+#include <jensen.h>
+#include <kabat.h>
+#include <gap.h>
 
 void AddAllStatistics()
 {

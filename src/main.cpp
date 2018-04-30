@@ -22,10 +22,10 @@
 #include <iostream>
 #include <ctime>
 
-#include "msa.h"
-#include "options.h"
-#include "statistic.h"
-#include "scoring_matrix.h"
+#include <msa.h>
+#include <options.h>
+#include <statistic.h>
+#include <scoring_matrix.h>
 
 using namespace std;
 
@@ -66,7 +66,7 @@ int main (int argc, char **argv)
 	 */
 	Statistic * stat = StatisticFactory::CreateByName(Options::Get().statistic);
 	stat->calculate(msa);
-	stat->print(msa);
+	stat->print();
 	delete stat;
 	
 	/*

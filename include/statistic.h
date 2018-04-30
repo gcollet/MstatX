@@ -26,19 +26,16 @@
 #include <string>
 #include <fstream>
 
-#include "msa.h"
-#include "options.h"
-#include "factory.h"
-
-using namespace std;
+#include <msa.h>
+#include <options.h>
+#include <factory.h>
 
 class Statistic
 {
 public:
-	Statistic(){};
-	virtual ~Statistic(){};
-	virtual void calculate(Msa & msa){};
-	virtual void print(Msa & msa){};
+	virtual ~Statistic() {}
+	virtual void calculate(Msa & msa) = 0;
+	virtual void print() = 0;
 };
 
 class StatisticFactory : public Factory<Statistic>{};
@@ -47,15 +44,16 @@ void AddAllStatistics();
 
 class Stat1D : public Statistic {
 protected:
-	vector<float> col_stat; /**< vector to store columns statistics */
+	std::vector<float> col_stat; /**< vector to store columns statistics */
 
 public:
+	Stat1D(){};
 	virtual ~Stat1D(){};
-	virtual void calculate(Msa & msa){};
-	void print(Msa & msa){
-		ofstream file(Options::Get().output_fname.c_str());
+	virtual void calculate(Msa & msa) = 0;
+	virtual void print(){
+		std::ofstream file(Options::Get().output_fname); // @suppress("Use different overload that can take std::string directly.")
 		if (!file.is_open()){
-			cerr << "Cannot open file " << Options::Get().output_fname << "\n";
+			std::cerr << "Cannot open file " << Options::Get().output_fname << "\n";
 			exit(0);
 		}
 		if (Options::Get().global){
@@ -75,15 +73,15 @@ public:
 
 class Stat2D : public Statistic {
 protected:
-	vector< vector<float> > cor_stat; /**< vector to store pairs of columns statistics */
+	std::vector<std::vector<float> > cor_stat; /**< vector to store pairs of columns statistics */
 
 public:
 	virtual ~Stat2D(){};
-	virtual void calculate(Msa & msa){};
-	void print(Msa & msa){
-		ofstream file(Options::Get().output_fname.c_str());
+	virtual void calculate(Msa & msa) = 0;
+	virtual void print(){
+		std::ofstream file(Options::Get().output_fname.c_str());
 		if (!file.is_open()){
-			cerr << "Cannot open file " << Options::Get().output_fname << "\n";
+			std::cerr << "Cannot open file " << Options::Get().output_fname << "\n";
 			exit(0);
 		}
 		for  (int x(0); x < (int) cor_stat.size() - 1; ++x) {

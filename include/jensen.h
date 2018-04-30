@@ -19,16 +19,18 @@
  * THE SOFTWARE. 
  */
 
-#ifndef __GAP_H__
-#define __GAP_H__
+#ifndef __JENSEN_H__
+#define __JENSEN_H__
 
-#include "statistic.h"
+#include <statistic.h>
 
-class GapStat  : public Stat1D
+class JensenStat  : public Stat1D
 {
-	public:
-		void calculate(Msa & msa);
+private:
+	float calcSeqWeight(Msa & msa, int i);
+	
+public:
+	void calculate(Msa & msa);
 };
 
 #endif
-

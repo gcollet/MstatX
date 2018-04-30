@@ -18,15 +18,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-CC	= g++
-CFLAGS	= -O3 -Wall
-LIBS	= -lm -lpthread
+CC = g++
 
-SRC=src/*.cpp
-HDR=src/*.h
+EXEC = mstatx
 
-mstatx: $(SRC) $(HDR)
-	$(CC) $(CFLAGS) $(LIBS) -o mstatx $(SRC)
+CFLAGS  = -O3 -Wall -Wextra -I./include
+LDFLAGS = -lm
+
+SRC = $(wildcard src/*.cpp)
+OBJ = $(SRC:src/%.cpp=obj/%.o)
+
+all: $(EXEC)
+
+$(EXEC): $(OBJ)
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+obj/%.o: src/%.cpp
+	$(CC) -o $@ -c $< $(CFLAGS)
+
+.PHONY: all clean fclean
 
 clean:
-	rm -f mstatx
+	rm -f $(OBJ)
+
+fclean: clean
+	rm -f $(EXEC)

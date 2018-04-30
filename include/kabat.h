@@ -22,7 +22,7 @@
 #ifndef __KABAT_H__
 #define __KABAT_H__
 
-#include "statistic.h"
+#include <statistic.h>
 
 class KabatStat : public Stat1D
 {

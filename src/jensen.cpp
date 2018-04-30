@@ -19,9 +19,9 @@
  * THE SOFTWARE. 
  */
 
-#include "jensen.h"
-#include "options.h"
-#include "scoring_matrix.h"
+#include <jensen.h>
+#include <options.h>
+#include <scoring_matrix.h>
 
 #include <map>
 #include <cmath>

@@ -19,8 +19,8 @@
  * THE SOFTWARE. 
  */
 
-#include "options.h"
-#include "kabat.h"
+#include <options.h>
+#include <kabat.h>
 
 #include <cmath>
 #include <fstream>
@@ -37,13 +37,13 @@ KabatStat :: calculate(Msa & msa)
 	int n1;                   // number of occurences of the most represented residue in a column
 	int N = msa.getNseq();    // number of sequences in the msa
 	int ncol = msa.getNcol(); // number of columns in the multiple alignment
-	vector<int> naa;
+	std::vector<int> naa;
 
 	for (int x(0); x < ncol; ++x){
 		k = msa.getNtype(x);
   	/* Find the most represented amino acid type (n1) */
-		string aa_type = msa.getTypeList(x);
-		vector<int> nb_aa(aa_type.size(), 0);
+		std::string aa_type = msa.getTypeList(x);
+		std::vector<int> nb_aa(aa_type.size(), 0);
 		for (int s(0); s < N; ++s){
 			nb_aa[aa_type.find(msa.getSymbol(s, x))]++;
 		}

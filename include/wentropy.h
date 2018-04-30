@@ -22,7 +22,7 @@
 #ifndef __WENTROPY_H__
 #define __WENTROPY_H__
 
-#include "statistic.h"
+#include <statistic.h>
 
 class WEntStat  : public Stat1D
 {

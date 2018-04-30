@@ -19,19 +19,19 @@
  * THE SOFTWARE. 
  */
 
-#ifndef __MVECTOR_H__
-#define __MVECTOR_H__
+#ifndef __TRIDENT_H__
+#define __TRIDENT_H__
 
-#include "statistic.h"
+#include <statistic.h>
 
-class MVectStat  : public Statistic 
-{
+class TridStat : public Stat1D {
 private:
-	string sm_alphabet;
-	vector<vector<float> > means; /**< mean vector of each columns (Size = nb columns * nb symbols in alphabet)*/
+	float calcSeqWeight(Msa & msa, int i);
+	float normVect(std::vector<float> vect);
+	
 public:
 	void calculate(Msa & msa);
-	void print(Msa & msa);
 };
 
 #endif
+
