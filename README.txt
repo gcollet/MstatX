@@ -17,7 +17,7 @@ Statistics currently available are :
 This application is not designed to validate a multiple alignment but only to calculate a statistical score. In consequence, the multiple alignment, given in input, is supposed to be exact (obviously, this assumption is not true). MstatX was meant to compute statistics for each columns but with the flag -g, you can also output a global score of a multiple alignment (the mean of the column scores).
 
 Mstatx is distributed under the term of the MIT licence. For any bug 
-report or information, contact me at gcollet[AT]ouvaton.org or through my github account : https://github.com/gcollet
+report or information, contact me at guillaume[AT]gcollet.fr or through my github account : https://github.com/gcollet
 
 License:
 
