@@ -63,16 +63,16 @@ public:
 	int   getNcol() const {return ncol;};									/**< Returns ncol value */
 	int   getNseq() const {return nseq;};									/**< Returns nseq value */
 	int   nbGap(int col) const {return gap_counts[col];};	/**< Returns the number of gaps in column col */
-	bool  isInclude(string alph1);												/**< True if the alphabet of the multiple alignment is included in the alphabet alph1 */
+	bool  isInclude(std::string alph1);												/**< True if the alphabet of the multiple alignment is included in the alphabet alph1 */
 	
-	string getCol(int col);																/**< Returns a column as a string */
-	string getAlphabet() const{return alphabet;};					/**< Returns the alphabet of the msa */
+	std::string getCol(int col);																/**< Returns a column as a string */
+	std::string getAlphabet() const{return alphabet;};					/**< Returns the alphabet of the msa */
 	
 	char getSymbol(int seq, int col){return mali_seq[seq][col];};	/**< Return symbol row seq, column col */
 	int getNtype(int col){return nb_type[col];};									/**< Return the number of different amino acids in the column col */
-	string getTypeList(int col){return aa_type_list[col];};				/**< Return the list of amino acid types in the column col */
+	std::string getTypeList(int col){return aa_type_list[col];};				/**< Return the list of amino acid types in the column col */
 	
-	void fitToAlphabet(string alph1);																		/**< if a symbol of the msa is not in alphabet alph1, then it is changed in a gap '-' */
+	void fitToAlphabet(std::string alph1);																		/**< if a symbol of the msa is not in alphabet alph1, then it is changed in a gap '-' */
 	void printBasic();
 	
 	const std::vector<float> & getSeqWeights();		/**< Henikoff & Henikoff (1994) sequence weights, computed once in O(nseq*ncol) and cached */

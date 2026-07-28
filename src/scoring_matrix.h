@@ -44,7 +44,7 @@ public:
 	int		index(char aa);
 	float		score(char aa1, char aa2);
 	float		normScore(char aa1, char aa2);
-	[[nodiscard]] bool		isSet() const {return is_set};
+	[[nodiscard]] bool		isSet() const {return is_set;};
 	
 };
 

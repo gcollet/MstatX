@@ -46,7 +46,7 @@ void test_msa_basic_properties()
     expect(alphabet.size() == 6, "alphabet should contain 6 symbols");
     expect(alphabet.find('A') != std::string::npos, "alphabet should include A");
     expect(alphabet.find('C') != std::string::npos, "alphabet should include C");
-    expect(alphabet.find('-') != string::npos, "alphabet should include gaps");
+    expect(alphabet.find('-') != std::string::npos, "alphabet should include gaps");
     expect(msa.getAaPos('A') == 0, "A should index to 0");
     expect(msa.getAaPos('C') == 1, "C should index to 1");
     expect(msa.getAaPos('-') == 2, "gap should index to 2");
@@ -101,7 +101,7 @@ void test_fit_to_alphabet_converts_unknown_symbols_to_gaps()
     expect(msa.getSymbol(0, 2) == '-', "symbol outside alphabet should be converted to a gap");
     expect(msa.getSymbol(1, 2) == '-', "symbol outside alphabet should be converted to a gap");
     expect(msa.getSymbol(0, 3) == '-', "symbol outside alphabet should be converted to a gap");
-    expect(msa.getAlphabet().find('D') == string::npos, "removed symbol should no longer be in the alphabet");
+    expect(msa.getAlphabet().find('D') == std::string::npos, "removed symbol should no longer be in the alphabet");
 }
 
 } // namespace
