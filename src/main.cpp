@@ -27,8 +27,6 @@
 #include "statistic.h"
 #include "scoring_matrix.h"
 
-using namespace std;
-
 int main (int argc, char **argv)
 {
 	clock_t t1,t2;
@@ -40,20 +38,20 @@ int main (int argc, char **argv)
 	try {
 		Options::Get().Parse(argc, argv);
 	}
-	catch (exception &e) {
-		cerr << e.what() << "\n";
+	catch (std::exception &e) {
+		std::cerr << e.what() << "\n";
 		Options::Get().print_usage();
-		exit(0);
+		return 1;
 	}
-	cout << "Statistic: " << Options::Get().statistic << "\n";
+	std::cout << "Statistic: " << Options::Get().statistic << "\n";
 	/* 
 	 * Initiates Statistic factory
 	 */
 	try {
 	  AddAllStatistics();
-	} catch (exception &e){ 
-		cerr << e.what() << "\n";
-		exit(0);
+	} catch (std::exception &e){ 
+		std::cerr << e.what() << "\n";
+		return 1;
 	}
 	
 	/*
@@ -73,6 +71,6 @@ int main (int argc, char **argv)
 	 * Print time
 	 */
 	t2 = clock();		
-	cout << "Mstatx computed in "<< (t2 - t1) / (double)CLOCKS_PER_SEC <<" seconds\nResults are written in " << Options::Get().output_fname << "\n\n";
+	std::cout << "Mstatx computed in "<< (t2 - t1) / (double)CLOCKS_PER_SEC <<" seconds\nResults are written in " << Options::Get().output_fname << "\n\n";
 	return 0;
 }

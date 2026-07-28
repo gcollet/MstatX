@@ -8,8 +8,6 @@
 #include "../src/scoring_matrix.h"
 #include "../src/options.h"
 
-using namespace std;
-
 namespace {
 
 bool almost_equal(float a, float b, float eps = 1e-5f)
@@ -17,11 +15,11 @@ bool almost_equal(float a, float b, float eps = 1e-5f)
     return fabsf(a - b) <= eps;
 }
 
-void expect(bool condition, const string & message)
+void expect(bool condition, const std::string & message)
 {
     if (!condition) {
-        cerr << "FAIL: " << message << "\n";
-        exit(1);
+        std::cerr << "FAIL: " << message << "\n";
+        std::exit(1);
     }
 }
 
@@ -44,10 +42,10 @@ void test_msa_basic_properties()
 
     expect(msa.getNseq() == 3, "expected 3 sequences");
     expect(msa.getNcol() == 4, "expected 4 columns");
-    const string alphabet = msa.getAlphabet();
+    const std::string alphabet = msa.getAlphabet();
     expect(alphabet.size() == 6, "alphabet should contain 6 symbols");
-    expect(alphabet.find('A') != string::npos, "alphabet should include A");
-    expect(alphabet.find('C') != string::npos, "alphabet should include C");
+    expect(alphabet.find('A') != std::string::npos, "alphabet should include A");
+    expect(alphabet.find('C') != std::string::npos, "alphabet should include C");
     expect(alphabet.find('-') != string::npos, "alphabet should include gaps");
     expect(msa.getAaPos('A') == 0, "A should index to 0");
     expect(msa.getAaPos('C') == 1, "C should index to 1");
@@ -72,7 +70,7 @@ void test_msa_seq_weights()
     parse_test_options();
     Msa msa("tests/fixtures/simple_alignment.fasta");
 
-    const vector<float> & weights = msa.getSeqWeights();
+    const std::vector<float> & weights = msa.getSeqWeights();
     expect(weights.size() == 3, "weights vector should contain 3 values");
     expect(weights[0] > 0.0f, "first weight should be positive");
     expect(weights[1] > 0.0f, "second weight should be positive");
@@ -114,6 +112,7 @@ int main()
     test_msa_gap_and_frequency();
     test_msa_seq_weights();
     test_scoring_matrix();
-    cout << "All tests passed\n";
+    test_fit_to_alphabet_converts_unknown_symbols_to_gaps();
+    std::cout << "All tests passed\n";
     return 0;
 }

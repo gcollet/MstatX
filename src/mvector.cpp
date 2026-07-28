@@ -44,10 +44,10 @@ MVectStat :: calculate(Msa & msa)
 	
 	/* Calculate the mean vector for each column */
 	int K = (int) sm_alphabet.size();
-	means = vector<vector<float> >(L);
+	means = std::vector<std::vector<float> >(L);
 	
 	for (int col(0); col < L; col++) {
-		vector<float> mean_col(K, 0.0);
+		std::vector<float> mean_col(K, 0.0);
 		for (int seq(0); seq < N; ++seq) {
 			if (msa.getSymbol(seq,col) == '-'){
 				continue;
@@ -68,17 +68,17 @@ void
 MVectStat :: print(Msa & msa)
 {
 	/* Print the output */
-	ofstream file(Options::Get().output_fname.c_str());
+	std::ofstream file(Options::Get().output_fname.c_str());
 	if (!file.is_open()){
-	  cerr << "Cannot open file " << Options::Get().output_fname << "\n";
-		exit(0);
+	  std::cerr << "Cannot open file " << Options::Get().output_fname << "\n";
+		std::exit(0);
 	}
 	int K = (int) sm_alphabet.size();
 	file.precision(3);
-	file << setw(10) << " ";
+	file << std::setw(10) << " ";
 	for (int a(0); a < K; ++a) {
 		file.precision(3);
-		file << setw(10) << sm_alphabet[a];
+		file << std::setw(10) << sm_alphabet[a];
 	}
 	file << "\n";
 	for (int col(0); col < (int) means.size(); col++) {

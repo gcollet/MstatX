@@ -27,6 +27,8 @@
 #include <fstream>
 #include <algorithm>
 
+using namespace std;
+
 #define MIN(x,y)  (x < y ? x : y)
 
 /** normVect(vector<float> vect)

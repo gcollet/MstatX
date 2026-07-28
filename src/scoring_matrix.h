@@ -24,12 +24,10 @@
 
 #include <string>
 
-using namespace std;
-
 class ScoringMatrix
 {
 protected:
-	string alphabet;
+	std::string alphabet;
 	float ** matrix;
   bool is_set;
 	float **norm_matrix;  /**< Normalized vector of each amino acid type */
@@ -37,16 +35,16 @@ protected:
 	float min;
 	
 public:
-	ScoringMatrix(string fname);
+	explicit ScoringMatrix(std::string fname);
 	virtual ~ScoringMatrix();
-	int			getAlphabetSize(){return (int) alphabet.size();};
-	string	getAlphabet(){return alphabet;};
-	float   getMax(){return max;};
-	float		getMin(){return min;};
-	int			index(char aa);
+	[[nodiscard]] int		getAlphabetSize() const {return (int) alphabet.size();};
+	[[nodiscard]] std::string	getAlphabet() const {return alphabet;};
+	[[nodiscard]] float   getMax() const {return max;};
+	[[nodiscard]] float		getMin() const {return min;};
+	int		index(char aa);
 	float		score(char aa1, char aa2);
 	float		normScore(char aa1, char aa2);
-	bool		isSet(){return is_set;};
+	[[nodiscard]] bool		isSet() const {return is_set};
 	
 };
 

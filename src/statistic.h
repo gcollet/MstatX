@@ -24,13 +24,12 @@
 
 #include <vector>
 #include <string>
+#include <vector>
 #include <fstream>
 
 #include "msa.h"
 #include "options.h"
 #include "factory.h"
-
-using namespace std;
 
 class Statistic
 {
@@ -47,16 +46,16 @@ void AddAllStatistics();
 
 class Stat1D : public Statistic {
 protected:
-	vector<float> col_stat; /**< vector to store columns statistics */
+	std::vector<float> col_stat; /**< vector to store columns statistics */
 
 public:
 	virtual ~Stat1D(){};
 	virtual void calculate(Msa & msa){};
 	void print(Msa & msa){
-		ofstream file(Options::Get().output_fname.c_str());
+		std::ofstream file(Options::Get().output_fname.c_str());
 		if (!file.is_open()){
-			cerr << "Cannot open file " << Options::Get().output_fname << "\n";
-			exit(0);
+			std::cerr << "Cannot open file " << Options::Get().output_fname << "\n";
+			std::exit(0);
 		}
 		if (Options::Get().global){
 			float total = 0.0;
@@ -75,16 +74,16 @@ public:
 
 class Stat2D : public Statistic {
 protected:
-	vector< vector<float> > cor_stat; /**< vector to store pairs of columns statistics */
+	std::vector<std::vector<float> > cor_stat; /**< vector to store pairs of columns statistics */
 
 public:
 	virtual ~Stat2D(){};
 	virtual void calculate(Msa & msa){};
 	void print(Msa & msa){
-		ofstream file(Options::Get().output_fname.c_str());
+		std::ofstream file(Options::Get().output_fname.c_str());
 		if (!file.is_open()){
-			cerr << "Cannot open file " << Options::Get().output_fname << "\n";
-			exit(0);
+			std::cerr << "Cannot open file " << Options::Get().output_fname << "\n";
+			std::exit(0);
 		}
 		for  (int x(0); x < (int) cor_stat.size() - 1; ++x) {
 			for (int y(0); y < (int) cor_stat.size(); ++y) {

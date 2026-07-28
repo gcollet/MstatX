@@ -25,6 +25,8 @@
 #include <cmath>
 #include <fstream>
 
+using namespace std;
+
 /* Calculate the conservation of columns in the msa by the formula from 
  * Wu & Kabat (1970) : V(i) = k / n1 
  * in the original function, this score is multiplicated by N

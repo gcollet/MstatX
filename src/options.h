@@ -31,23 +31,21 @@
 #include <iostream>
 #include <stdexcept>
 
-using namespace std;
-
 /* This class is a virtual interface for the arguments */
 class Arg
 {
 	protected:
-		string _small_flag;  // The small version of the argument flag
-		string _long_flag;   // The long  version of the argument flag
-		string _description; // The description of the argument
+		std::string _small_flag;  // The small version of the argument flag
+		std::string _long_flag;   // The long  version of the argument flag
+		std::string _description; // The description of the argument
 		bool   _needValue;   // This boolean value is true when a value is needed
 		bool   _isSet;       // This boolean value is true if the value is setted
 
 		// Protected constructor, only called by inherited classes
 		Arg(
-			const string & small_flag,
-			const string & long_flag,
-			const string & description,
+			const std::string & small_flag,
+			const std::string & long_flag,
+			const std::string & description,
 			const bool & needed,
 			const bool & set
 			):
@@ -65,20 +63,20 @@ class Arg
 		virtual ~Arg(){};
 
 		// Getters
-		string getSmallFlag()   const {return _small_flag;};
-		string getLongFlag()    const {return _long_flag;};
-		string getDescription() const {return _description;};
+		std::string getSmallFlag()   const {return _small_flag;};
+		std::string getLongFlag()    const {return _long_flag;};
+		std::string getDescription() const {return _description;};
 		bool   isNeeded()       const {return _needValue;};
 		bool   isSetted()       const {return _isSet;};
 
 		/* The only one setter of the value is virtual because it depends
 		 * on the argument type */
-		virtual void setValue(string val){};
+		virtual void setValue(std::string val){};
 
 		/* Try to find the flag in the command_line given in argument,
 		 * if the argument is needed but not found in the command_line,
 		 * then an runtime_error exception is returned */
-		virtual void find(vector<string> & command_line){};
+		virtual void find(std::vector<std::string> & command_line){};
 };
 
 
@@ -92,9 +90,9 @@ class ValueArg : public Arg
 	public:
 		// The constructor with a default value
 		ValueArg(
-			const string & small_flag,
-      const string & long_flag,
-      const string & description,
+			const std::string & small_flag,
+      const std::string & long_flag,
+      const std::string & description,
       const T value
 			):
 			Arg(small_flag, long_flag, description, false, true),
@@ -103,9 +101,9 @@ class ValueArg : public Arg
 
 		// The constructor without a default value
 		ValueArg(
-			const string & small_flag,
-      const string & long_flag,
-      const string & description
+			const std::string & small_flag,
+      const std::string & long_flag,
+      const std::string & description
       ):
 			Arg(small_flag, long_flag, description, true, false)
 		{};
@@ -114,23 +112,23 @@ class ValueArg : public Arg
 		T getValue() const {return _value;};
 
 		// The setter automaticaly converts the string in the T value
-		void setValue(string val)
+		void setValue(std::string val)
 		{
-			istringstream is(val);
+			std::istringstream is(val);
 			while (is.good())
 				is >> _value;
 		}
 
 		// The implementation of the "find" virtual function
-		void find(vector<string> & command_line)
+		void find(std::vector<std::string> & command_line)
 		{
-			vector<string>::iterator it = command_line.begin();
+			std::vector<std::string>::iterator it = command_line.begin();
 			while (it != command_line.end()){
 				if (*it == _small_flag || *it == _long_flag){
 					it = command_line.erase(it);
 					if (it == command_line.end())
-						throw runtime_error("Value of argument " + _small_flag + ", " + _long_flag + " is missing\n");
-					istringstream is(*it);
+						throw std::runtime_error("Value of argument " + _small_flag + ", " + _long_flag + " is missing\n");
+					std::istringstream is(*it);
 					while (is.good())
 						is >> _value;
 					command_line.erase(it);
@@ -140,7 +138,7 @@ class ValueArg : public Arg
 				it++;
 			}
 			if (_needValue && !_isSet)
-				throw runtime_error("Argument " + _small_flag + ", " + _long_flag + " is needed\n");
+				throw std::runtime_error("Argument " + _small_flag + ", " + _long_flag + " is needed\n");
 		}
 };
 
@@ -153,9 +151,9 @@ class SwitchArg : public Arg
 
 	public:
 		SwitchArg(
-			const string & small_flag,
-      const string & long_flag,
-      const string & description,
+			const std::string & small_flag,
+      const std::string & long_flag,
+      const std::string & description,
       const bool   & value
 			):
 			Arg(small_flag,long_flag,description,false,false),
@@ -166,16 +164,16 @@ class SwitchArg : public Arg
 		bool getValue() const {return _value;};
 
 		// The setter switch the argument to true
-		void setValue(string val) {_value = true;};
+		void setValue(std::string val) {_value = true;};
 
 		// The implementation of the "find" virtual function
-		void find(vector<string> & command_line)
+		void find(std::vector<std::string> & command_line)
 		{
-			vector<string>::iterator it = command_line.begin();
+			std::vector<std::string>::iterator it = command_line.begin();
 			while (it != command_line.end()){
 				if (*it == _small_flag || *it == _long_flag){
 					if (_small_flag == "-h"){
-						throw runtime_error("");
+						throw std::runtime_error("");
 					}
 					command_line.erase(it);
 					_value = true;
@@ -193,9 +191,9 @@ class SwitchArg : public Arg
 class Options
 {
 	private:
-		string appName;
-		vector<string> command_line;
-		map<string, Arg> arg_list; // Map of argument objects sorted by their flag
+		std::string appName;
+		std::vector<std::string> command_line;
+		std::map<std::string, Arg> arg_list; // Map of argument objects sorted by their flag
 
 		// The constructor is private
 		Options(){};
@@ -208,20 +206,20 @@ class Options
 		}
 
 		// getEnvVar : Get an environment variable of name env
-		string getEnvVar(string env)
+		std::string getEnvVar(std::string env)
 		{
 			char * env_p;
-			string env_s;
+			std::string env_s;
 			env_p = getenv(env.c_str());
 			if (env_p != NULL)
 				env_s = env_p;
 			else
-				cerr << "Warning: Environment variable " << env << " is not found\n";
+				std::cerr << "Warning: Environment variable " << env << " is not found\n";
 			return env_s;
 		}
 
 		// Reduce a pathname in a basename
-		string basename(string fname)
+		std::string basename(std::string fname)
 		{
 			int pos = (int) fname.find_last_of('/');
 			return fname.substr(pos+1, fname.size() - pos);
@@ -233,16 +231,16 @@ class Options
 			try {
 				// Set the command_line object
 				for (int i = 1; i < argc; i++){
-					command_line.push_back(string(argv[i]));
+					command_line.push_back(std::string(argv[i]));
 				}
 				// Set the application name
 				appName = basename(argv[0]);
 
 				// Get the environment variable to find the scoring matrix
-				string smat_path = getEnvVar("SCORE_MAT_PATH");
+				std::string smat_path = getEnvVar("SCORE_MAT_PATH");
 				if (smat_path.empty()) {
 					smat_path = "data/aaindex";
-					cerr << "SCORE_MAT_PATH is not set, use data/aaindex instead\n";
+					std::cerr << "SCORE_MAT_PATH is not set, use data/aaindex instead\n";
 				}
 				/*
 				 * 2 sorts of arguments can be added:
@@ -254,10 +252,10 @@ class Options
 				 */
 
 				//1 - create the argument as a ValueArg or SwitchArg.
-				ValueArg<string> iArg("-i", "--input",     "MSA input file name"                                    );
-				ValueArg<string> mArg("-m", "--matrix",    "Score matrix file name",   smat_path+"/HENS920102.mat");
-				ValueArg<string> oArg("-o", "--output",    "Output file name [default=ouput.txt]",      "output.txt");
-				ValueArg<string> sArg("-s", "--statistic", "Statistics [default=wentropy]",               "wentropy");
+				ValueArg<std::string> iArg("-i", "--input",     "MSA input file name"                                    );
+				ValueArg<std::string> mArg("-m", "--matrix",    "Score matrix file name",   smat_path+"/HENS920102.mat");
+				ValueArg<std::string> oArg("-o", "--output",    "Output file name [default=ouput.txt]",      "output.txt");
+				ValueArg<std::string> sArg("-s", "--statistic", "Statistics [default=wentropy]",               "wentropy");
 				ValueArg<int>    nArg("-n", "--nb_seq",    "Maximum number of sequences read [default=500]",     500);
 				SwitchArg        vArg("-v", "--verbose",   "Verbose mode",                                     false);
 				SwitchArg        gArg("-g", "--global",    "Output the global score",                          false);
@@ -300,7 +298,7 @@ class Options
 
 				// If something is left in the command line... It is not an argument of the program -> error
 				if (command_line.size() > 0){
-					throw runtime_error("Unknown flag: " + command_line[0] + "\n");
+					throw std::runtime_error("Unknown flag: " + command_line[0] + "\n");
 				}
 
 				// Get arguments
@@ -316,17 +314,17 @@ class Options
 				factor_b     = bArg.getValue();
 				factor_c     = cArg.getValue();
 				window       = wArg.getValue();
-			} catch (exception &e) {
+			} catch (std::exception &e) {
 				throw;
 			}
 		}
 
 	public:
 		/* List of options */
-	string input_fname;  // The file name of the multiple alignment */
-	string matrix_fname; // The file name of the scoring matrix */
-		string output_fname; // The name of the output file */
-		string statistic;    // The name of the statistic */
+	std::string input_fname;  // The file name of the multiple alignment */
+	std::string matrix_fname; // The file name of the scoring matrix */
+		std::string output_fname; // The name of the output file */
+		std::string statistic;    // The name of the statistic */
 		int    nb_seq;       // The number of sequences to read in the multiple alignment */
 		bool   verbose;      // The switch for verbose mode */
 		bool   global;       // The switch to output only the global alignment score */
@@ -348,7 +346,7 @@ class Options
 			Options & opt = GetNC();
 			try{
 				opt.Init(argc_,argv_);
-			} catch (exception &e) {
+			} catch (std::exception &e) {
 				throw;
 			}
 		}
@@ -357,7 +355,7 @@ class Options
 		static void print_usage()
 		{
 			Options & opt = GetNC();
-			map<string,Arg>::iterator it = opt.arg_list.begin();
+			std::map<std::string,Arg>::iterator it = opt.arg_list.begin();
 			int sflag_size = 0;
 			int lflag_size = 0;
 			int desc_size  = 0;
@@ -373,36 +371,36 @@ class Options
 				}
 				it++;
 			}
-			cerr << "Usage: " << opt.appName ;
+			std::cerr << "Usage: " << opt.appName ;
 			it = opt.arg_list.begin();
 			int nb = 1;
 			while (it != opt.arg_list.end()){
 				if (it->second.isNeeded()) {
-					cerr << " " << it->second.getSmallFlag() << " file";
+					std::cerr << " " << it->second.getSmallFlag() << " file";
 					nb++;
 				}
 				it++;
 			}
-			cerr << " [options]\n\n";
-			cerr << "Available statistics: \n";
-			cerr << "  sumofpairs (1)\n";
-			cerr << "  wentropy (1)\n";
-			cerr << "  trident  (1)\n";
-			cerr << "  mvector  (1)\n";
-			cerr << "  jensen   (1)\n";
-			cerr << "  kabat    (1)\n";
-			cerr << "  gap      (1)\n";
-			cerr << "\nOptions:\n";
+			std::cerr << " [options]\n\n";
+			std::cerr << "Available statistics: \n";
+			std::cerr << "  sumofpairs (1)\n";
+			std::cerr << "  wentropy (1)\n";
+			std::cerr << "  trident  (1)\n";
+			std::cerr << "  mvector  (1)\n";
+			std::cerr << "  jensen   (1)\n";
+			std::cerr << "  kabat    (1)\n";
+			std::cerr << "  gap      (1)\n";
+			std::cerr << "\nOptions:\n";
 			it = opt.arg_list.begin();
 			while (it != opt.arg_list.end()){
-				string flag = it->second.getSmallFlag() + ",";
-				cerr << "   " << setw(sflag_size + 1) << left << flag;
-				cerr << " " << setw(lflag_size) << left << it->second.getLongFlag();
-				cerr << " : " << setw(desc_size) << left << it->second.getDescription();
-				cerr << "\n";
+				std::string flag = it->second.getSmallFlag() + ",";
+				std::cerr << "   " << std::setw(sflag_size + 1) << std::left << flag;
+				std::cerr << " " << std::setw(lflag_size) << std::left << it->second.getLongFlag();
+				std::cerr << " : " << std::setw(desc_size) << std::left << it->second.getDescription();
+				std::cerr << "\n";
 				it++;
 			}
-			cerr << "\n";
+			std::cerr << "\n";
 		}
 };
 

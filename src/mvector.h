@@ -27,8 +27,8 @@
 class MVectStat  : public Statistic 
 {
 private:
-	string sm_alphabet;
-	vector<vector<float> > means; /**< mean vector of each columns (Size = nb columns * nb symbols in alphabet)*/
+	std::string sm_alphabet;
+	std::vector<std::vector<float> > means; /**< mean vector of each columns (Size = nb columns * nb symbols in alphabet)*/
 public:
 	void calculate(Msa & msa);
 	void print(Msa & msa);

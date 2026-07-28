@@ -23,6 +23,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <stdexcept>
 
 #include "msa.h"
 #include "options.h"
@@ -37,24 +38,23 @@ using namespace std;
  * the alphabet used, the number of gaps and the entropy of 
  * each column, and the frequency of each amino acid type.
  **************************************************************/
-Msa :: Msa(string fname)
+Msa :: Msa(std::string fname)
 {
 	seq_weight_computed = false;
 	alpha_index.fill(-1);
 	
 	/* Open file */
 	if (Options::Get().verbose){
-		cout << "Read Multiple Alignment in " << fname << "\n";
+		std::cout << "Read Multiple Alignment in " << fname << "\n";
 	}
-	ifstream file(fname.c_str());
+	std::ifstream file(fname.c_str());
 	if (!file.good()){
-	  cerr << "Cannot open file " << fname << "\n";
-		exit(0);
+		throw std::runtime_error("Cannot open file " + fname);
 	}
 
 	
 	/* Read file */
-	string s, tmp_seq;
+	std::string s, tmp_seq;
 	while (file.good() && (int) mali_seq.size() < Options::Get().nb_seq){
 		getline(file,s);
 		if (s[0] == '>'){
@@ -75,7 +75,7 @@ Msa :: Msa(string fname)
 	
 	nseq = (int) mali_name.size();
 	ncol = (int) mali_seq[0].size();
-	cout << "\nMultiple alignment : nb seq = "<<nseq<<", nb col = "<<ncol<<"\n";
+	std::cout << "\nMultiple alignment : nb seq = "<<nseq<<", nb col = "<<ncol<<"\n";
 	
 	/* Change all mali.seq in upper case*/
 	for (int i(0); i < nseq; ++i){
@@ -155,9 +155,9 @@ Msa :: countGap(){
 void
 Msa :: countFreq(){
 	int total = 0;
-	vector<int> tmp_freq(alphabet.size(), 0);
+	std::vector<int> tmp_freq(alphabet.size(), 0);
 	
-	aa_freq = vector<float>(alphabet.size());
+	aa_freq = std::vector<float>(alphabet.size());
 	/* Count the number of each amino acid type defined in alphabet */
 	for(int col(0); col < ncol; ++col){
 		for(int row(0); row < nseq; ++row){
@@ -166,8 +166,7 @@ Msa :: countFreq(){
 			}
 			int pos = alpha_index[(unsigned char) mali_seq[row][col]];
 			if (pos < 0){
-			  cerr << "error : symbol is not in the alphabet\n";
-				exit(1);
+				throw std::runtime_error("symbol is not in the alphabet");
 			}
 			tmp_freq[pos]++;
 		}
@@ -186,7 +185,7 @@ Msa :: countFreq(){
  **************************************************************/
 void
 Msa :: countType(){
-	string aa_types;
+	std::string aa_types;
 	for(int col(0); col < ncol; ++col){
 		aa_types.clear();
 		for(int row(0); row < nseq; ++row){
@@ -242,8 +241,7 @@ float
 Msa :: getFreq(char aa){
   int pos = getAaPos(aa);
 	if (pos == -1){
-	  cerr << "Error, symbol not in alphabet\n";
-		exit(0);
+		throw std::runtime_error("symbol not in alphabet");
 	}
 	return aa_freq[pos];
 }
@@ -278,10 +276,10 @@ Msa :: getGap(int col){
  **************************************************************/
 void 
 Msa :: countEntropy(){
-	entropy = vector<float>(ncol,0.0);
+	entropy = std::vector<float>(ncol,0.0);
  
   for(int col(0); col < ncol; ++col){
-		vector<float> lfreq(alphabet.size(), 0.0);
+		std::vector<float> lfreq(alphabet.size(), 0.0);
 		for(int row(0); row < nseq; ++row){
 			lfreq[getAaPos(mali_seq[row][col])] += 1.0;
 		}
@@ -305,7 +303,7 @@ Msa :: countEntropy(){
  * multiple alignment is include in the alphabet alph1
  **************************************************************/
 bool
-Msa :: isInclude(string alph1){
+Msa :: isInclude(std::string alph1){
   for (int i(0); i < (int) alphabet.size(); ++i){
 		if (alph1.find(alphabet[i]) >= alph1.size() && alphabet[i] != '-' && alphabet[i] != ' '){
 		  return false;	
@@ -314,10 +312,10 @@ Msa :: isInclude(string alph1){
 	return true;
 }
 
-string 
+std::string 
 Msa :: getCol(int col)
 {
-  string column;
+  std::string column;
 	for (int i(0); i < nseq; ++i){
 		column.push_back(mali_seq[i][col]);
 	}
@@ -330,14 +328,14 @@ Msa :: getCol(int col)
  * if a symbol from msa is not in alph1 then it is a gap
  **************************************************************/
 void
-Msa :: fitToAlphabet(string alph1){
+Msa :: fitToAlphabet(std::string alph1){
 	array<bool,256> allowed;
 	allowed.fill(false);
 	for (size_t i(0); i < alph1.size(); ++i){
 		allowed[(unsigned char) alph1[i]] = true;
 	}
 
-	string removed_symbols;
+	std::string removed_symbols;
 	array<bool,256> seen_removed;
 	seen_removed.fill(false);
 	for (int i(0); i < nseq; ++i){
@@ -360,12 +358,12 @@ Msa :: fitToAlphabet(string alph1){
 	for (size_t i(0); i < removed_symbols.size(); ++i){
 		const char symbol = removed_symbols[i];
 		const size_t pos = alphabet.find(symbol);
-		if (pos != string::npos){
+		if (pos != std::string::npos){
 			alphabet.erase(alphabet.begin() + pos);
 		}
 		for (int col(0); col < ncol; ++col){
 			const size_t aa_pos = aa_type_list[col].find(symbol);
-			if (aa_pos != string::npos){
+			if (aa_pos != std::string::npos){
 				aa_type_list[col].erase(aa_type_list[col].begin() + aa_pos);
 				nb_type[col]--;
 			}
@@ -381,14 +379,13 @@ Msa :: fitToAlphabet(string alph1){
  **************************************************************/
 void
 Msa :: printBasic(){
-	string dictionary = "ARNDCQEGHILKMFPSTWYV-";
-	vector<int> counts(dictionary.size(), 0);
-	string out_name = Options::Get().output_fname;
+	std::string dictionary = "ARNDCQEGHILKMFPSTWYV-";
+	std::vector<int> counts(dictionary.size(), 0);
+	std::string out_name = Options::Get().output_fname;
 	out_name = out_name.substr(0,out_name.find('.')) + ".aa_count";
 	ofstream file(out_name.c_str());
 	if (!file.is_open()){
-	  cerr << "Cannot open file " << out_name << "\n";
-		exit(0);
+		throw std::runtime_error("Cannot open file " + out_name);
 	}
 	for (int a(0); a < (int) dictionary.size(); a++) {
 		file << dictionary[a] << " ";
@@ -431,14 +428,14 @@ Msa :: printBasic(){
  * for every sequence. The result is cached: repeated calls (e.g.
  * from several statistics) cost nothing after the first one.
  **************************************************************/
-const vector<float> &
+const std::vector<float> &
 Msa :: getSeqWeights(){
 	if (seq_weight_computed){
 		return seq_weight;
 	}
 	
-	seq_weight = vector<float>(nseq, 0.0);
-	vector<int> col_count(alphabet.size(), 0);
+	seq_weight = std::vector<float>(nseq, 0.0);
+	std::vector<int> col_count(alphabet.size(), 0);
 	
 	for (int col(0); col < ncol; ++col){
 		fill(col_count.begin(), col_count.end(), 0);

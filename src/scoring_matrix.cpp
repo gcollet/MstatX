@@ -21,34 +21,31 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <stdexcept>
 
 #include "options.h"
 #include "scoring_matrix.h"
-
-using namespace std;
 
 /** Constructor from a filename fname.
  *  Matrices are all in format defined by AAindex web site :
  *  http://www.genome.jp/aaindex/
  */
-ScoringMatrix :: ScoringMatrix(string fname)
+ScoringMatrix :: ScoringMatrix(std::string fname)
 {
   /* Open file */
 	if(fname.empty()){
-		cerr << "Error, score matrix file name is empty\n";
-		exit(0);
+		throw std::runtime_error("score matrix file name is empty");
 	}
 	if (Options::Get().verbose){
-		cout << "Read Scoring Matrix in " << fname << "\n";
+		std::cout << "Read Scoring Matrix in " << fname << "\n";
 	}
-	ifstream file(fname.c_str());
+	std::ifstream file(fname.c_str());
 	if (!file.good()){
-	  cerr << "Cannot open file " << fname << "\n";
-		exit(0);
+		throw std::runtime_error("Cannot open file " + fname);
 	}
 	
 	/* Read file */
-	string s;
+	std::string s;
 	getline(file,s);
 	while (file.good() && s[0] != 'M'){
 	  getline(file,s);
@@ -62,14 +59,12 @@ ScoringMatrix :: ScoringMatrix(string fname)
 	/* Allocate the matrix */
 	matrix = (float **) calloc (alphabet_size, sizeof(float *));
 	if (matrix == NULL){
-	  cerr << "Cannot allocate scoring matrix\n";
-		exit(0);
+		throw std::runtime_error("cannot allocate scoring matrix");
 	}
 	for (int i(0); i < alphabet_size; ++i) {
 		matrix[i] = (float *) calloc(i + 1, sizeof(float));
 		if (matrix[i] == NULL){
-			cerr << "Cannot allocate scoring matrix[" << i << "]\n";
-			exit(0);
+			throw std::runtime_error("cannot allocate scoring matrix");
 		}
 	}
 	
@@ -91,14 +86,12 @@ ScoringMatrix :: ScoringMatrix(string fname)
 	/* Allocate the norm_matrix */
 	norm_matrix = (float **) calloc (alphabet_size, sizeof(float *));
 	if (norm_matrix == NULL){
-	  cerr << "Cannot allocate the normalized amino acid vector\n";
-		exit(0);
+		throw std::runtime_error("cannot allocate the normalized amino acid vector");
 	}
 	for (int i(0); i < alphabet_size; ++i) {
 		norm_matrix[i] = (float *) calloc(i+1, sizeof(float));
 		if (norm_matrix[i] == NULL){
-			cerr << "Cannot allocate norm_matrix[" << i << "]\n";
-			exit(0);
+			throw std::runtime_error("cannot allocate norm_matrix");
 		}
 	}
 	
@@ -111,24 +104,24 @@ ScoringMatrix :: ScoringMatrix(string fname)
 	}
 	
 	if (Options::Get().verbose){
-		cout << "Normalized :\n";
+		std::cout << "Normalized :\n";
 		for (int i(0); i < alphabet_size; ++i) {
-			cout.width(9);
-			cout << alphabet[i];
+			std::cout.width(9);
+			std::cout << alphabet[i];
 			for (int j(0); j <= i; j++){
-				cout.width(9);
-				cout << norm_matrix[i][j];
+				std::cout.width(9);
+				std::cout << norm_matrix[i][j];
 			}
-			cout << "\n";
+			std::cout << "\n";
 		}
-		cout << "\n";
-		cout.width(9);
-		cout << ' ';
+		std::cout << "\n";
+		std::cout.width(9);
+		std::cout << ' ';
 		for (int j(0); j <= alphabet_size ; j++){
-			cout.width(9);
-			cout << alphabet[j];
+			std::cout.width(9);
+			std::cout << alphabet[j];
 		} 
-		cout << "\n\n";
+		std::cout << "\n\n";
 	}
 	
 	is_set = true;
@@ -155,8 +148,7 @@ ScoringMatrix :: index(char aa)
 {
 	int pos = (int) alphabet.find(aa);
 	if (pos >= (int) alphabet.size()){
-		cerr << "Symbol " << aa << " is not in alphabet\n";
-		exit(0);
+		throw std::runtime_error(std::string("symbol ") + aa + " is not in alphabet");
 	} 
 	return pos;
 }

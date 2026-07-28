@@ -26,7 +26,7 @@
 
 class TridStat : public Stat1D {
 private:
-	float normVect(vector<float> vect);
+	float normVect(std::vector<float> vect);
 	
 public:
 	void calculate(Msa & msa);

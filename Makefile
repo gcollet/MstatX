@@ -19,7 +19,7 @@
 # THE SOFTWARE.
 
 CC	= g++
-CFLAGS	= -O3 -Wall
+CFLAGS	= -std=c++17 -O3 -Wall
 LIBS	= -lm -lpthread
 
 SRC=$(wildcard src/*.cpp)

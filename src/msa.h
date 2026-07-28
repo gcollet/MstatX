@@ -26,21 +26,19 @@
 #include <vector>
 #include <string>
 
-using namespace std;
-
 class Msa
 {
 protected:
-	string alphabet;
-	array<int,256> alpha_index;	/**< alpha_index[(unsigned char)c] = position of c in `alphabet`, or -1. O(1) replacement for alphabet.find(c) */
-	vector<string> mali_name;			/**< Name of sequences of the multiple alignment */
-	vector<string> mali_seq;			/**< Sequences of the multiple alignment */
-	vector<string> aa_type_list;	/**< List of aa type in each column (size = ncol * 20) */
-	vector<int>    gap_counts;		/**< Number of gaps in each column */
-	vector<float>  aa_freq;				/**< Frequency of amino acids types in the overall multiple alignment */
-	vector<float>  entropy;				/**< Entropy of each column of the multiple alignment */
-	vector<int>    nb_type;				/**< Number of amino acid types in the column */
-	vector<float>  seq_weight;		/**< Cache for the Henikoff & Henikoff sequence weights, see getSeqWeights() */
+	std::string alphabet;
+	std::array<int,256> alpha_index;	/**< alpha_index[(unsigned char)c] = position of c in `alphabet`, or -1. O(1) replacement for alphabet.find(c) */
+	std::vector<std::string> mali_name;			/**< Name of sequences of the multiple alignment */
+	std::vector<std::string> mali_seq;			/**< Sequences of the multiple alignment */
+	std::vector<std::string> aa_type_list;	/**< List of aa type in each column (size = ncol * 20) */
+	std::vector<int>    gap_counts;		/**< Number of gaps in each column */
+	std::vector<float>  aa_freq;				/**< Frequency of amino acids types in the overall multiple alignment */
+	std::vector<float>  entropy;				/**< Entropy of each column of the multiple alignment */
+	std::vector<int>    nb_type;				/**< Number of amino acid types in the column */
+	std::vector<float>  seq_weight;		/**< Cache for the Henikoff & Henikoff sequence weights, see getSeqWeights() */
 	bool           seq_weight_computed;
 	
 	int nseq;											/**< Number of sequences in the multiple alignment */
@@ -54,13 +52,13 @@ protected:
 	void rebuildAlphaIndex();		/**< Rebuild alpha_index to match the current `alphabet` string */
 	
 public:
-	Msa(string fname);
-	~Msa(){};
+	Msa(std::string fname);
+	~Msa() = default;
 	
 	int   getAaPos(char aa);		/**< Converts a char in his position in alphabet */
 	float getFreq(char aa);			/**< Return the frequency of amino acid aa in the overall multiple alignment */
 	int   getGap(int col);			/**< Return the number of gaps in the column col */
-	vector<int> getGapCount(){return gap_counts;};
+	std::vector<int> getGapCount() const {return gap_counts;};
 	
 	int   getNcol() const {return ncol;};									/**< Returns ncol value */
 	int   getNseq() const {return nseq;};									/**< Returns nseq value */
@@ -77,7 +75,7 @@ public:
 	void fitToAlphabet(string alph1);																		/**< if a symbol of the msa is not in alphabet alph1, then it is changed in a gap '-' */
 	void printBasic();
 	
-	const vector<float> & getSeqWeights();		/**< Henikoff & Henikoff (1994) sequence weights, computed once in O(nseq*ncol) and cached */
+	const std::vector<float> & getSeqWeights();		/**< Henikoff & Henikoff (1994) sequence weights, computed once in O(nseq*ncol) and cached */
 };
 
 #endif
