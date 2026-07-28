@@ -22,11 +22,15 @@ CC	= g++
 CFLAGS	= -O3 -Wall
 LIBS	= -lm -lpthread
 
-SRC=src/*.cpp
+SRC=$(wildcard src/*.cpp)
+SRC_NO_MAIN=$(filter-out src/main.cpp,$(SRC))
 HDR=src/*.h
 
 mstatx: $(SRC) $(HDR)
 	$(CC) $(CFLAGS) $(LIBS) -o mstatx $(SRC)
 
+test: tests/test_msa_scoring.cpp $(SRC_NO_MAIN) $(HDR)
+	$(CC) $(CFLAGS) $(LIBS) -I. -o tests/test_msa_scoring tests/test_msa_scoring.cpp $(SRC_NO_MAIN)
+
 clean:
-	rm -f mstatx
+	rm -f mstatx tests/test_msa_scoring
