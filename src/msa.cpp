@@ -331,20 +331,43 @@ Msa :: getCol(int col)
  **************************************************************/
 void
 Msa :: fitToAlphabet(string alph1){
-	int alph_size = (int) alph1.size();
-	for (int i(0); i < nseq; i++){
-		for (int j(0); j < ncol; j++){
-			if (mali_seq[i][j] != '-' && mali_seq[i][j] != ' ' && (int) alph1.find(mali_seq[i][j]) >= alph_size){
-				int k = (int) alphabet.find(mali_seq[i][j]);
-				if (k < (int) alphabet.size()){
-					alphabet.erase(alphabet.begin() + k);
-				}
-				int pos = (int) aa_type_list[j].find(mali_seq[i][j]);
-				if (pos < (int) aa_type_list[j].size()){
-					aa_type_list[j].erase(aa_type_list[j].begin() + pos);
-					nb_type[j]--;
-				}
+	array<bool,256> allowed;
+	allowed.fill(false);
+	for (size_t i(0); i < alph1.size(); ++i){
+		allowed[(unsigned char) alph1[i]] = true;
+	}
+
+	string removed_symbols;
+	array<bool,256> seen_removed;
+	seen_removed.fill(false);
+	for (int i(0); i < nseq; ++i){
+		for (int j(0); j < ncol; ++j){
+			const char symbol = mali_seq[i][j];
+			if (symbol == '-' || symbol == ' '){
+				continue;
+			}
+			const unsigned char c = (unsigned char) symbol;
+			if (!allowed[c]){
 				mali_seq[i][j] = '-';
+				if (!seen_removed[c]){
+					seen_removed[c] = true;
+					removed_symbols.push_back(symbol);
+				}
+			}
+		}
+	}
+
+	for (size_t i(0); i < removed_symbols.size(); ++i){
+		const char symbol = removed_symbols[i];
+		const size_t pos = alphabet.find(symbol);
+		if (pos != string::npos){
+			alphabet.erase(alphabet.begin() + pos);
+		}
+		for (int col(0); col < ncol; ++col){
+			const size_t aa_pos = aa_type_list[col].find(symbol);
+			if (aa_pos != string::npos){
+				aa_type_list[col].erase(aa_type_list[col].begin() + aa_pos);
+				nb_type[col]--;
 			}
 		}
 	}
