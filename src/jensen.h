@@ -26,9 +26,6 @@
 
 class JensenStat  : public Stat1D
 {
-private:
-	float calcSeqWeight(Msa & msa, int i);
-	
 public:
 	void calculate(Msa & msa);
 };

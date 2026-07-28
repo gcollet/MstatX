@@ -29,39 +29,6 @@
 
 #define MIN(x,y)  (x < y ? x : y)
 
-/** calcSeqWeight(Msa & msa, int i)
- *
- * Calculate the weight of sequence i in the multiple sequence alignment
- * by the formula from Henikoff & Henikoff (1994)
- * w_i = \frac{1}{L}\sum_{x=1}^{L}\frac{1}{k_x n_{x_i}} (LateX code)
- * We use these notations in the code below
- */
-float
-TridStat :: calcSeqWeight(Msa & msa, int i)
-{
-	int x;                 /**< used to parse msa columns */
-	int seq;               /**< used to parse msa rows */
-	int k;                 /**< number of symbol types in a column */
-	int n;                 /**< number of occurence of aa[i][x] in the full column x */
-	int L = msa.getNcol(); /**< number of columns (length of the alignment) */
-	int N = msa.getNseq(); /**< number of rows (number of sequences in the alignment) */
-	float w;               /**< weight of sequence i */
-
-	w = 0.0;
-	for	(x = 0; x < L; ++x){
-		k = msa.getNtype(x);
-		n = 0;
-		for(seq = 0; seq < N; ++seq){
-			if (msa.getSymbol(i, x) == msa.getSymbol(seq, x)){
-				n++;
-			}
-		}
-		w += (float) 1 / (float) (n * k);
-	}
-	w /= (float) L;
-	return w ;
-}
-
 /** normVect(vector<float> vect)
  *
  * Return the vector norm = √(∑v*v)
@@ -103,11 +70,8 @@ TridStat :: calculate(Msa & msa)
 	string alphabet = msa.getAlphabet();
 	int K = (int) alphabet.size();
 
-  //cerr << "Seq Weights\n";
 	/* Calculate Sequence Weights */
-	for (int seq(0); seq < N; ++seq){
-		w.push_back(calcSeqWeight(msa,seq));
-	}
+	w = msa.getSeqWeights();
 
 	/* Calculate t(x) = \frac{\sum_{a=1}^{K}p_a log(p_a)}{log(min(N,K))}
 	 *						p_a = \sum_{i \in \{i|s(i) = a\}} w_i

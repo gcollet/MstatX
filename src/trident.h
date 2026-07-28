@@ -26,7 +26,6 @@
 
 class TridStat : public Stat1D {
 private:
-	float calcSeqWeight(Msa & msa, int i);
 	float normVect(vector<float> vect);
 	
 public:

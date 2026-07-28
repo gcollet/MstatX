@@ -39,6 +39,9 @@ using namespace std;
  **************************************************************/
 Msa :: Msa(string fname)
 {
+	seq_weight_computed = false;
+	alpha_index.fill(-1);
+	
 	/* Open file */
 	if (Options::Get().verbose){
 		cout << "Read Multiple Alignment in " << fname << "\n";
@@ -161,10 +164,10 @@ Msa :: countFreq(){
 			if (mali_seq[row][col] != '-' && mali_seq[row][col] != ' '){
 				total++;
 			}
-			int pos = (int) alphabet.find(mali_seq[row][col]);
-			if (pos >= (int) alphabet.size()){
+			int pos = alpha_index[(unsigned char) mali_seq[row][col]];
+			if (pos < 0){
 			  cerr << "error : symbol is not in the alphabet\n";
-				exit(0);
+				exit(1);
 			}
 			tmp_freq[pos]++;
 		}
@@ -203,12 +206,30 @@ Msa :: countType(){
 void
 Msa :: defineAlphabet(){
 	alphabet.clear();
+	array<bool,256> seen;
+	seen.fill(false);
 	for(int col(0); col < ncol; ++col){
 		for(int row(0); row < nseq; ++row){
-			if (alphabet.find(mali_seq[row][col]) >= alphabet.size()){
-				alphabet.push_back(mali_seq[row][col]);
+			unsigned char c = mali_seq[row][col];
+			if (!seen[c]){
+				seen[c] = true;
+				alphabet.push_back((char) c);
 			}
 		}
+	}
+	rebuildAlphaIndex();
+}
+
+/**************************************************************
+ * rebuildAlphaIndex() rebuilds the O(1) char -> position
+ * lookup table to match the current content of `alphabet`.
+ * Must be called every time `alphabet` is mutated.
+ **************************************************************/
+void
+Msa :: rebuildAlphaIndex(){
+	alpha_index.fill(-1);
+	for (int i(0); i < (int) alphabet.size(); ++i){
+		alpha_index[(unsigned char) alphabet[i]] = i;
 	}
 }
 
@@ -233,10 +254,7 @@ Msa :: getFreq(char aa){
  **************************************************************/
 int
 Msa :: getAaPos(char aa){
-	if (alphabet.find(aa) >= alphabet.size()){
-		return -1;
-	}
-	return (int) alphabet.find(aa);
+	return alpha_index[(unsigned char) aa];
 };
 
 
@@ -330,6 +348,7 @@ Msa :: fitToAlphabet(string alph1){
 			}
 		}
 	}
+	rebuildAlphaIndex();
 }
 
 
@@ -368,5 +387,52 @@ Msa :: printBasic(){
 		file << "\n";
 	}
 	file.close();
+}
+
+
+/**************************************************************
+ * getSeqWeights() calculates the weight of each sequence
+ * in the multiple alignment, following Henikoff & Henikoff (1994):
+ *   w_i = \frac{1}{L}\sum_{x=1}^{L}\frac{1}{k_x n_{x,i}}
+ * with
+ *   L    = number of columns
+ *   k_x  = number of distinct symbol types in column x (= nb_type[x])
+ *   n_{x,i} = number of sequences sharing the same symbol as
+ *             sequence i in column x
+ *
+ * Same formula as the calcSeqWeight() previously duplicated in
+ * wentropy.cpp, trident.cpp and jensen.cpp, but computed for all
+ * sequences at once in O(nseq*ncol) instead of O(nseq^2*ncol):
+ * for each column, the occurrence count of every symbol (n_{x,a})
+ * is precomputed once, instead of re-scanning the whole column
+ * for every sequence. The result is cached: repeated calls (e.g.
+ * from several statistics) cost nothing after the first one.
+ **************************************************************/
+const vector<float> &
+Msa :: getSeqWeights(){
+	if (seq_weight_computed){
+		return seq_weight;
+	}
+	
+	seq_weight = vector<float>(nseq, 0.0);
+	vector<int> col_count(alphabet.size(), 0);
+	
+	for (int col(0); col < ncol; ++col){
+		fill(col_count.begin(), col_count.end(), 0);
+		for (int seq(0); seq < nseq; ++seq){
+			col_count[getAaPos(mali_seq[seq][col])]++;
+		}
+		int k = nb_type[col];
+		for (int seq(0); seq < nseq; ++seq){
+			int n = col_count[getAaPos(mali_seq[seq][col])];
+			seq_weight[seq] += 1.0 / (float) (n * k);
+		}
+	}
+	for (int seq(0); seq < nseq; ++seq){
+		seq_weight[seq] /= (float) ncol;
+	}
+	
+	seq_weight_computed = true;
+	return seq_weight;
 }
 
