@@ -7,21 +7,9 @@
 #include "../src/msa.h"
 #include "../src/scoring_matrix.h"
 #include "../src/options.h"
+#include "test_helpers.h"
 
 namespace {
-
-bool almost_equal(float a, float b, float eps = 1e-5f)
-{
-    return fabsf(a - b) <= eps;
-}
-
-void expect(bool condition, const std::string & message)
-{
-    if (!condition) {
-        std::cerr << "FAIL: " << message << "\n";
-        std::exit(1);
-    }
-}
 
 void parse_test_options()
 {

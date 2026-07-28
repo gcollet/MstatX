@@ -26,11 +26,24 @@ SRC=$(wildcard src/*.cpp)
 SRC_NO_MAIN=$(filter-out src/main.cpp,$(SRC))
 HDR=src/*.h
 
+.PHONY: test clean
+
 mstatx: $(SRC) $(HDR)
 	$(CC) $(CFLAGS) $(LIBS) -o mstatx $(SRC)
 
-test: tests/test_msa_scoring.cpp $(SRC_NO_MAIN) $(HDR)
+# Every tests/test_XXX.cpp becomes its own standalone binary (its own main()),
+# sharing tests/test_helpers.h. Add a new file here as new modules get covered.
+TEST_BIN=tests/test_msa_scoring tests/test_jensen
+
+test: $(TEST_BIN)
+
+tests/test_msa_scoring: tests/test_msa_scoring.cpp tests/test_helpers.h $(SRC_NO_MAIN) $(HDR)
 	$(CC) $(CFLAGS) $(LIBS) -I. -o tests/test_msa_scoring tests/test_msa_scoring.cpp $(SRC_NO_MAIN)
+	./tests/test_msa_scoring
+
+tests/test_jensen: tests/test_jensen.cpp tests/test_helpers.h $(SRC_NO_MAIN) $(HDR)
+	$(CC) $(CFLAGS) $(LIBS) -I. -o tests/test_jensen tests/test_jensen.cpp $(SRC_NO_MAIN)
+	./tests/test_jensen
 
 clean:
-	rm -f mstatx tests/test_msa_scoring
+	rm -f mstatx tests/test_msa_scoring tests/test_jensen

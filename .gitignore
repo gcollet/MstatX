@@ -1,0 +1,4 @@
+mstatx
+tests/test_msa_scoring
+tests/test_jensen
+tests/fixtures/.*_test_output.txt
