@@ -229,7 +229,12 @@ class Options
 		void Init(int argc, char * const argv[])
 		{
 			try {
-				// Set the command_line object
+				// Set the command_line object. Cleared first: if a previous
+				// Parse() call threw partway through (e.g. a missing
+				// required argument), some of its tokens may still be sitting
+				// here unconsumed, and would otherwise silently leak into
+				// this parse and confuse it.
+				command_line.clear();
 				for (int i = 1; i < argc; i++){
 					command_line.push_back(std::string(argv[i]));
 				}

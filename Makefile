@@ -33,7 +33,7 @@ mstatx: $(SRC) $(HDR)
 
 # Every tests/test_XXX.cpp becomes its own standalone binary (its own main()),
 # sharing tests/test_helpers.h. Add a new file here as new modules get covered.
-TEST_BIN=tests/test_msa_scoring tests/test_jensen tests/test_kabat tests/test_wentropy tests/test_trident tests/test_gap tests/test_mvector tests/test_factory
+TEST_BIN=tests/test_msa_scoring tests/test_jensen tests/test_kabat tests/test_wentropy tests/test_trident tests/test_gap tests/test_mvector tests/test_factory tests/test_options
 
 test: $(TEST_BIN)
 
@@ -69,5 +69,9 @@ tests/test_factory: tests/test_factory.cpp tests/test_helpers.h $(SRC_NO_MAIN) $
 	$(CC) $(CFLAGS) $(LIBS) -I. -o tests/test_factory tests/test_factory.cpp $(SRC_NO_MAIN)
 	./tests/test_factory
 
+tests/test_options: tests/test_options.cpp tests/test_helpers.h $(SRC_NO_MAIN) $(HDR)
+	$(CC) $(CFLAGS) $(LIBS) -I. -o tests/test_options tests/test_options.cpp $(SRC_NO_MAIN)
+	./tests/test_options
+
 clean:
-	rm -f mstatx tests/test_msa_scoring tests/test_jensen tests/test_kabat tests/test_wentropy tests/test_trident tests/test_gap tests/test_mvector tests/test_factory
+	rm -f mstatx tests/test_msa_scoring tests/test_jensen tests/test_kabat tests/test_wentropy tests/test_trident tests/test_gap tests/test_mvector tests/test_factory tests/test_options
