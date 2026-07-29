@@ -79,6 +79,31 @@ void test_scoring_matrix()
     expect(sm.normScore('A', 'A') <= 1.0f, "normalized self score should be at most 1");
 }
 
+/* Regression test for a parsing bug found while building the trident
+ * unit tests: ScoringMatrix used to read each matrix row in fixed
+ * 8-character fields (`s.substr(j*8, 8)`). In HENS920102.mat, a value
+ * that prints one character shorter than its neighbours (e.g. "0." on
+ * the diagonal of G, S, T, V) shifts every following fixed-width field
+ * on that row, silently dropping the '-' sign of the next value. The
+ * four assertions below are pairs that used to come back positive
+ * instead of negative; verified by hand against the raw matrix file. */
+void test_scoring_matrix_handles_rows_with_short_leading_values()
+{
+    parse_test_options();
+    ScoringMatrix sm("data/aaindex/HENS920102.mat");
+
+    expect(almost_equal(sm.score('G', 'R'), -3.0f), "G-R score should be -3 (row G starts with the short value '0.')");
+    expect(almost_equal(sm.score('S', 'I'), -4.0f), "S-I score should be -4 (row S starts with '2.')");
+    expect(almost_equal(sm.score('T', 'H'), -3.0f), "T-H score should be -3 (row T starts with '0.')");
+    expect(almost_equal(sm.score('V', 'D'), -5.0f), "V-D score should be -5 (row V starts with '0.')");
+
+    /* The global min/max used to normalize the whole matrix happen to be
+     * unaffected for this particular file, but pin them down too: a
+     * future matrix file might not be so lucky. */
+    expect(almost_equal(sm.getMin(), -6.0f), "matrix min should be -6");
+    expect(almost_equal(sm.getMax(), 16.0f), "matrix max should be 16");
+}
+
 void test_fit_to_alphabet_converts_unknown_symbols_to_gaps()
 {
     parse_test_options();
@@ -100,6 +125,7 @@ int main()
     test_msa_gap_and_frequency();
     test_msa_seq_weights();
     test_scoring_matrix();
+    test_scoring_matrix_handles_rows_with_short_leading_values();
     test_fit_to_alphabet_converts_unknown_symbols_to_gaps();
     std::cout << "All tests passed\n";
     return 0;

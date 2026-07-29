@@ -20,6 +20,7 @@
  */
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <cmath>
 #include <stdexcept>
 
@@ -69,12 +70,24 @@ ScoringMatrix :: ScoringMatrix(std::string fname)
 	}
 	
 	
-	/* Read the matrix */
-  min = 1000; max = -1000;
+	/* Read the matrix
+	 * Each row is whitespace-separated (the AAindex format pads its
+	 * columns to a fixed width, but that padding is not reliable enough
+	 * to parse on: a value that prints one character shorter than its
+	 * neighbours shifts every following fixed-width field on that row.
+	 * Tokenizing on whitespace works regardless of column width, and
+	 * also degrades gracefully on files from other matrix databases
+	 * that don't pad at all. */
+	min = 1000; max = -1000;
 	for (int i(0); i < alphabet_size; ++i) {
 		getline(file,s);
+		std::istringstream row_stream(s);
 		for (int j(0); j <=i ; j++){
-			matrix[i][j] = atof(s.substr(j*8, 8).c_str());
+			if (!(row_stream >> matrix[i][j])){
+				throw std::runtime_error(
+					"malformed scoring matrix row for symbol '" + std::string(1, alphabet[i]) +
+					"': expected " + std::to_string(i + 1) + " values, could only read " + std::to_string(j));
+			}
       if (matrix[i][j] < min)
         min = matrix[i][j];
       if (matrix[i][j] > max)
