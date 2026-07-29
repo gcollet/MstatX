@@ -5,4 +5,5 @@ tests/test_kabat
 tests/test_wentropy
 tests/test_trident
 tests/test_gap
+tests/test_mvector
 tests/fixtures/.*_test_output.txt
