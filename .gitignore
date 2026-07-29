@@ -3,4 +3,5 @@ tests/test_msa_scoring
 tests/test_jensen
 tests/test_kabat
 tests/test_wentropy
+tests/test_trident
 tests/fixtures/.*_test_output.txt
