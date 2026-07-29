@@ -197,6 +197,42 @@ void test_options_help_flag_throws_immediately_with_empty_message()
 	expect(threw, "--help should throw even when -i is also given (help takes priority)");
 }
 
+/* Regression test for a second bug found while reading options.h:
+ * arg_list used to be a std::map<std::string, Arg> - storing each
+ * ValueArg<T>/SwitchArg BY VALUE as a plain Arg sliced away their
+ * derived _value member. It was harmless in practice only because
+ * print_usage() (arg_list's one caller) never touched anything beyond
+ * the base Arg getters (getSmallFlag, getLongFlag, getDescription,
+ * isNeeded) - but any future code calling a virtual method through
+ * arg_list, expecting polymorphism, would have silently gotten Arg's
+ * do-nothing base implementation instead.
+ *
+ * Fixed by giving Arg/ValueArg<T>/SwitchArg a virtual clone() and
+ * switching arg_list to std::map<std::string, std::unique_ptr<Arg>>,
+ * each holding a real heap-allocated copy of its actual derived type.
+ * This test exercises clone() directly - the mechanism the fix relies
+ * on - rather than only checking print_usage() still runs, which
+ * wouldn't have caught the original slicing bug either. */
+void test_arg_clone_preserves_the_derived_type_and_value()
+{
+	ValueArg<std::string> original_value_arg("-x", "--xxx", "a value arg", std::string("hello"));
+	Arg * cloned = original_value_arg.clone();
+
+	ValueArg<std::string> * typed_clone = dynamic_cast<ValueArg<std::string> *>(cloned);
+	expect(typed_clone != NULL, "cloning a ValueArg<std::string> should produce a ValueArg<std::string>, not a plain Arg");
+	expect(typed_clone->getValue() == "hello",
+	       "the clone should carry over the derived _value - this is exactly what plain slicing used to lose");
+	delete cloned;
+
+	SwitchArg original_switch_arg("-y", "--yyy", "a switch arg", true);
+	Arg * cloned_switch = original_switch_arg.clone();
+
+	SwitchArg * typed_switch_clone = dynamic_cast<SwitchArg *>(cloned_switch);
+	expect(typed_switch_clone != NULL, "cloning a SwitchArg should produce a SwitchArg, not a plain Arg");
+	expect(typed_switch_clone->getValue() == true, "the clone should carry over the derived _value");
+	delete cloned_switch;
+}
+
 } // namespace
 
 int main()
@@ -207,6 +243,7 @@ int main()
 	test_options_unknown_flag_throws();
 	test_options_parse_recovers_after_a_previous_failed_parse();
 	test_options_help_flag_throws_immediately_with_empty_message();
+	test_arg_clone_preserves_the_derived_type_and_value();
 	std::cout << "All options tests passed\n";
 	return 0;
 }

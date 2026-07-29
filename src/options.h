@@ -23,6 +23,7 @@
 #define __OPTIONS_H_INCLUDED__
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 #include <cstdlib>
@@ -77,6 +78,14 @@ class Arg
 		 * if the argument is needed but not found in the command_line,
 		 * then an runtime_error exception is returned */
 		virtual void find(std::vector<std::string> & command_line){};
+
+		/* Returns a heap-allocated copy of the actual (most-derived) type
+		 * of this object. Needed because arg_list stores Args polymorphically:
+		 * storing them by value (the old approach) would slice away the
+		 * derived _value member of ValueArg<T>/SwitchArg, silently
+		 * dropping it if anything other than the base Arg getters were
+		 * ever called through arg_list. */
+		virtual Arg * clone() const { return new Arg(*this); }
 };
 
 
@@ -140,6 +149,8 @@ class ValueArg : public Arg
 			if (_needValue && !_isSet)
 				throw std::runtime_error("Argument " + _small_flag + ", " + _long_flag + " is needed\n");
 		}
+
+		Arg * clone() const { return new ValueArg<T>(*this); }
 };
 
 
@@ -182,6 +193,8 @@ class SwitchArg : public Arg
 				it++;
 			}
 		}
+
+		Arg * clone() const { return new SwitchArg(*this); }
 };
 
 /*
@@ -193,7 +206,7 @@ class Options
 	private:
 		std::string appName;
 		std::vector<std::string> command_line;
-		std::map<std::string, Arg> arg_list; // Map of argument objects sorted by their flag
+		std::map<std::string, std::unique_ptr<Arg> > arg_list; // Map of argument objects sorted by their flag
 
 		// The constructor is private
 		Options(){};
@@ -272,19 +285,22 @@ class Options
 				ValueArg<int>    wArg("-w", "--window",    "Number of side columns (jensen score)",                3);
 
 				// 2 -  add the argument to the arg_list for further use (print_usage).
-				arg_list[iArg.getSmallFlag()] = iArg;
-				arg_list[mArg.getSmallFlag()] = mArg;
-				arg_list[oArg.getSmallFlag()] = oArg;
-				arg_list[sArg.getSmallFlag()] = sArg;
-				arg_list[nArg.getSmallFlag()] = nArg;
-				arg_list[vArg.getSmallFlag()] = vArg;
-				arg_list[gArg.getSmallFlag()] = gArg;
-				arg_list[hArg.getSmallFlag()] = hArg;
-				arg_list[tArg.getSmallFlag()] = tArg;
-				arg_list[aArg.getSmallFlag()] = aArg;
-				arg_list[bArg.getSmallFlag()] = bArg;
-				arg_list[cArg.getSmallFlag()] = cArg;
-				arg_list[wArg.getSmallFlag()] = wArg;
+				// Each entry is a heap-allocated clone of the argument's actual
+				// (most-derived) type - see Arg::clone() - so storing it here
+				// doesn't slice away its derived state.
+				arg_list[iArg.getSmallFlag()] = std::unique_ptr<Arg>(iArg.clone());
+				arg_list[mArg.getSmallFlag()] = std::unique_ptr<Arg>(mArg.clone());
+				arg_list[oArg.getSmallFlag()] = std::unique_ptr<Arg>(oArg.clone());
+				arg_list[sArg.getSmallFlag()] = std::unique_ptr<Arg>(sArg.clone());
+				arg_list[nArg.getSmallFlag()] = std::unique_ptr<Arg>(nArg.clone());
+				arg_list[vArg.getSmallFlag()] = std::unique_ptr<Arg>(vArg.clone());
+				arg_list[gArg.getSmallFlag()] = std::unique_ptr<Arg>(gArg.clone());
+				arg_list[hArg.getSmallFlag()] = std::unique_ptr<Arg>(hArg.clone());
+				arg_list[tArg.getSmallFlag()] = std::unique_ptr<Arg>(tArg.clone());
+				arg_list[aArg.getSmallFlag()] = std::unique_ptr<Arg>(aArg.clone());
+				arg_list[bArg.getSmallFlag()] = std::unique_ptr<Arg>(bArg.clone());
+				arg_list[cArg.getSmallFlag()] = std::unique_ptr<Arg>(cArg.clone());
+				arg_list[wArg.getSmallFlag()] = std::unique_ptr<Arg>(wArg.clone());
 
 				// 3 - try to find the argument in the command line to set up the value.
 				hArg.find(command_line);
@@ -360,19 +376,19 @@ class Options
 		static void print_usage()
 		{
 			Options & opt = GetNC();
-			std::map<std::string,Arg>::iterator it = opt.arg_list.begin();
+			std::map<std::string, std::unique_ptr<Arg> >::iterator it = opt.arg_list.begin();
 			int sflag_size = 0;
 			int lflag_size = 0;
 			int desc_size  = 0;
 			while (it != opt.arg_list.end()){
-				if (sflag_size < (int) it->second.getSmallFlag().length()) {
-					sflag_size = (int) it->second.getSmallFlag().size();
+				if (sflag_size < (int) it->second->getSmallFlag().length()) {
+					sflag_size = (int) it->second->getSmallFlag().size();
 				}
-				if (lflag_size < (int) it->second.getLongFlag().size() ) {
-					lflag_size = (int) it->second.getLongFlag().size();
+				if (lflag_size < (int) it->second->getLongFlag().size() ) {
+					lflag_size = (int) it->second->getLongFlag().size();
 				}
-				if (desc_size < (int) it->second.getDescription().size()) {
-					desc_size = (int) it->second.getDescription().size();
+				if (desc_size < (int) it->second->getDescription().size()) {
+					desc_size = (int) it->second->getDescription().size();
 				}
 				it++;
 			}
@@ -380,8 +396,8 @@ class Options
 			it = opt.arg_list.begin();
 			int nb = 1;
 			while (it != opt.arg_list.end()){
-				if (it->second.isNeeded()) {
-					std::cerr << " " << it->second.getSmallFlag() << " file";
+				if (it->second->isNeeded()) {
+					std::cerr << " " << it->second->getSmallFlag() << " file";
 					nb++;
 				}
 				it++;
@@ -398,10 +414,10 @@ class Options
 			std::cerr << "\nOptions:\n";
 			it = opt.arg_list.begin();
 			while (it != opt.arg_list.end()){
-				std::string flag = it->second.getSmallFlag() + ",";
+				std::string flag = it->second->getSmallFlag() + ",";
 				std::cerr << "   " << std::setw(sflag_size + 1) << std::left << flag;
-				std::cerr << " " << std::setw(lflag_size) << std::left << it->second.getLongFlag();
-				std::cerr << " : " << std::setw(desc_size) << std::left << it->second.getDescription();
+				std::cerr << " " << std::setw(lflag_size) << std::left << it->second->getLongFlag();
+				std::cerr << " : " << std::setw(desc_size) << std::left << it->second->getDescription();
 				std::cerr << "\n";
 				it++;
 			}
