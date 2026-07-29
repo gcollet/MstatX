@@ -154,6 +154,49 @@ void test_options_parse_recovers_after_a_previous_failed_parse()
 	       "output_fname after recovery should not be polluted by the previous failed call");
 }
 
+/* -h/--help is handled in an unusual, fragile way: rather than checking
+ * hArg.getValue() after all arguments have been parsed, SwitchArg::find()
+ * special-cases it internally with a hardcoded string comparison
+ * (`if (_small_flag == "-h") throw std::runtime_error("");`) as soon as
+ * either "-h" or "--help" is encountered - which is also why it takes
+ * priority over every other error: hArg.find() is the very first call
+ * in Init(), before -i is even checked. main.cpp relies on the message
+ * being empty to print only the usage text, with no extra error line.
+ *
+ * This is exactly the kind of behavior a future cleanup of SwitchArg
+ * could remove by accident, mistaking the hardcoded check for dead or
+ * leftover debugging code - hence a dedicated regression test, covering
+ * both spellings and confirming -h wins even over a missing -i. */
+void test_options_help_flag_throws_immediately_with_empty_message()
+{
+	char *short_argv[] = {
+		const_cast<char*>("mstatx"),
+		const_cast<char*>("-h")
+	};
+	bool threw = false;
+	try {
+		Options::Parse(sizeof(short_argv) / sizeof(short_argv[0]), short_argv);
+	} catch (const std::runtime_error & e) {
+		threw = true;
+		expect(std::string(e.what()).empty(), "-h should throw with an empty message");
+	}
+	expect(threw, "-h alone (no -i) should throw, not silently proceed");
+
+	char *long_argv[] = {
+		const_cast<char*>("mstatx"),
+		const_cast<char*>("--help"),
+		const_cast<char*>("-i"), const_cast<char*>("tests/fixtures/jensen_tiny.fasta")
+	};
+	threw = false;
+	try {
+		Options::Parse(sizeof(long_argv) / sizeof(long_argv[0]), long_argv);
+	} catch (const std::runtime_error & e) {
+		threw = true;
+		expect(std::string(e.what()).empty(), "--help should throw with an empty message");
+	}
+	expect(threw, "--help should throw even when -i is also given (help takes priority)");
+}
+
 } // namespace
 
 int main()
@@ -163,6 +206,7 @@ int main()
 	test_options_missing_required_input_throws();
 	test_options_unknown_flag_throws();
 	test_options_parse_recovers_after_a_previous_failed_parse();
+	test_options_help_flag_throws_immediately_with_empty_message();
 	std::cout << "All options tests passed\n";
 	return 0;
 }
