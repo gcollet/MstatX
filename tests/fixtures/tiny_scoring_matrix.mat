@@ -1,0 +1,6 @@
+H TINYTEST
+D Tiny 3-letter substitution matrix for unit tests
+M rows = ABC, cols = ABC
+5.0
+2.0 4.0
+-1.0 0.0 3.0

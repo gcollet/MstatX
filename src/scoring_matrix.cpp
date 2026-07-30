@@ -159,11 +159,17 @@ ScoringMatrix :: ~ScoringMatrix()
 int 
 ScoringMatrix :: index(char aa)
 {
-	int pos = (int) alphabet.find(aa);
-	if (pos >= (int) alphabet.size()){
+	/* alphabet.find() returns std::string::npos when aa is absent, not
+	 * some out-of-range int. Casting it to int (the previous check) wraps
+	 * around to -1, which is never >= alphabet.size(): the absent-symbol
+	 * error would silently never fire, and callers would go on to index
+	 * the score matrix with -1 - undefined behavior. Comparing against
+	 * std::string::npos directly, before any cast, avoids that. */
+	std::string::size_type pos = alphabet.find(aa);
+	if (pos == std::string::npos){
 		throw std::runtime_error(std::string("symbol ") + aa + " is not in alphabet");
 	} 
-	return pos;
+	return (int) pos;
 }
 
 
