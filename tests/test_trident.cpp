@@ -131,12 +131,47 @@ void test_trident_global_mode_is_the_mean_of_column_scores()
 	       "--global should output the mean of the per-column scores");
 }
 
+/* Regression test for a real crash found while auditing the code:
+ * trident.cpp used to have its call to msa.fitToAlphabet(sm_alphabet)
+ * commented out - unlike mvector.cpp, which correctly calls it. As long
+ * as ScoringMatrix::index() silently mishandled unknown symbols (its own
+ * now-fixed npos-cast bug), this went unnoticed: an out-of-alphabet
+ * residue (X, B, Z, U...) just produced silently wrong numbers instead
+ * of visibly failing. Once that bug was fixed and index() started
+ * throwing on unknown symbols instead, any real alignment containing
+ * such a residue made trident crash outright.
+ *
+ * Fixture: 4 sequences x 2 columns, with an 'X' in column 1 of the last
+ * sequence - a residue that's neither a standard amino acid nor a gap.
+ * The two assertions that matter here are: (1) this must not throw, and
+ * (2) 'X' must be treated like a gap (via fitToAlphabet converting it to
+ * '-'), which is why column 1 - three real A's plus one now-gap - scores
+ * lower than column 0's four real, identical A's. The exact numbers
+ * aren't pinned down here; test_trident_nominal_values_on_synthetic_alignment
+ * already does that kind of precise check on a cleaner fixture. */
+void test_trident_tolerates_symbols_outside_the_scoring_matrix_alphabet()
+{
+	parse_test_options(/* global = */ false);
+	Msa msa("tests/fixtures/trident_ambiguous.fasta");
+
+	TridStat stat;
+	stat.calculate(msa); // must not throw
+	stat.print(msa);
+
+	std::vector<float> values = read_col_stat_file(OUTPUT_FILE);
+	expect(values.size() == 2, "expected one score per column");
+	expect(almost_equal(values[0], 1.0f, 1e-4f), "column 0 (AAAA, no ambiguous symbol) should score 1");
+	expect(values[1] < values[0],
+	       "column 1 (AAA + one 'X') should score lower, since 'X' is treated like a gap");
+}
+
 } // namespace
 
 int main()
 {
 	test_trident_nominal_values_on_synthetic_alignment();
 	test_trident_global_mode_is_the_mean_of_column_scores();
+	test_trident_tolerates_symbols_outside_the_scoring_matrix_alphabet();
 	std::cout << "All trident tests passed\n";
 	return 0;
 }

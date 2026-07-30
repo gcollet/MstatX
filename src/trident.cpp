@@ -117,7 +117,7 @@ TridStat :: calculate(Msa & msa)
 	int alph_size = score_mat.getAlphabetSize();
 	string sm_alphabet = score_mat.getAlphabet();
 
-	//msa.fitToAlphabet(sm_alphabet);
+	msa.fitToAlphabet(sm_alphabet);
 
 	for (int x(0); x < L; x++){
 
