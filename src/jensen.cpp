@@ -27,6 +27,7 @@
 #include <cmath>
 #include <fstream>
 #include <algorithm>
+#include <stdexcept>
 
 using namespace std;
 
@@ -53,14 +54,12 @@ JensenStat :: calculate(Msa & msa)
 	/* Allocate proba array */
 	float **proba = (float **) calloc(L, sizeof(float*));
 	if (proba == nullptr){
-		fprintf(stderr,"Cannot Allocate probability matrix\n");
-		exit(0);
+		throw std::runtime_error("Cannot allocate probability matrix");
 	}
 	for (int i(0); i < L; i++){
 		proba[i] = (float *) calloc(K, sizeof(float));
 		if (proba[i] == nullptr){
-			fprintf(stderr,"Cannot Allocate probability submatrix\n");
-			exit(0);
+			throw std::runtime_error("Cannot allocate probability submatrix");
 		}
 	}
 

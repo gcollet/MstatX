@@ -1,6 +1,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -77,6 +78,28 @@ void test_fit_to_alphabet_converts_unknown_symbols_to_gaps()
     expect(msa.getAlphabet().find('D') == std::string::npos, "removed symbol should no longer be in the alphabet");
 }
 
+/* Regression test for a real crash found while cleaning up error paths:
+ * a nonexistent -i file used to make Msa's constructor throw
+ * std::runtime_error uncaught all the way up through main() (which
+ * never wrapped the Msa construction in a try/catch), producing an
+ * ugly "terminate called..." crash and exit code 134 instead of a clean
+ * error message and exit code 1. main.cpp now catches this; this test
+ * locks in that Msa itself still throws (rather than, say, silently
+ * building an empty alignment), which is the part of the contract this
+ * test suite can actually exercise directly. */
+void test_msa_nonexistent_file_throws()
+{
+    parse_test_options();
+
+    bool threw = false;
+    try {
+        Msa msa("tests/fixtures/does_not_exist.fasta");
+    } catch (const std::runtime_error &) {
+        threw = true;
+    }
+    expect(threw, "a nonexistent input file should throw std::runtime_error");
+}
+
 } // namespace
 
 int main()
@@ -85,6 +108,7 @@ int main()
     test_msa_gap_and_frequency();
     test_msa_seq_weights();
     test_fit_to_alphabet_converts_unknown_symbols_to_gaps();
+    test_msa_nonexistent_file_throws();
     std::cout << "All tests passed\n";
     return 0;
 }

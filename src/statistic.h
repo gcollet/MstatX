@@ -25,6 +25,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <stdexcept>
 
 #include "msa.h"
 #include "options.h"
@@ -53,8 +54,7 @@ public:
 	void print(Msa & msa) override {
 		std::ofstream file(Options::Get().output_fname.c_str());
 		if (!file.is_open()){
-			std::cerr << "Cannot open file " << Options::Get().output_fname << "\n";
-			std::exit(0);
+			throw std::runtime_error("Cannot open file " + Options::Get().output_fname);
 		}
 		if (Options::Get().global){
 			float total = 0.0;
@@ -81,8 +81,7 @@ public:
 	void print(Msa & msa) override {
 		std::ofstream file(Options::Get().output_fname.c_str());
 		if (!file.is_open()){
-			std::cerr << "Cannot open file " << Options::Get().output_fname << "\n";
-			std::exit(0);
+			throw std::runtime_error("Cannot open file " + Options::Get().output_fname);
 		}
 		for  (int x(0); x < static_cast<int>(cor_stat.size()) - 1; ++x) {
 			for (int y(0); y < static_cast<int>(cor_stat.size()); ++y) {

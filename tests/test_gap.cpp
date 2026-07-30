@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -92,12 +93,43 @@ void test_gap_global_mode_is_the_mean_of_column_scores()
 	       "--global should output the mean of the per-column scores");
 }
 
+/* Regression test for the exit(0) -> exception cleanup: Stat1D::print()
+ * used to call std::exit(0) directly when it couldn't open the output
+ * file - a silent "success" exit code on failure, and (since main.cpp
+ * didn't wrap print() in a try/catch either) not even a chance for a
+ * caller to react. It now throws std::runtime_error, consistent with
+ * every other error path in the codebase. An output path under a
+ * directory that doesn't exist is a reliable, portable way to make
+ * ofstream::open() fail. */
+void test_gap_print_throws_when_output_file_cannot_be_opened()
+{
+	char *argv[] = {
+		const_cast<char*>("mstatx"),
+		const_cast<char*>("-i"), const_cast<char*>(FIXTURE.c_str()),
+		const_cast<char*>("-o"), const_cast<char*>("tests/fixtures/no_such_directory/out.txt")
+	};
+	Options::Parse(sizeof(argv) / sizeof(argv[0]), argv);
+	Msa msa(FIXTURE);
+
+	GapStat stat;
+	stat.calculate(msa);
+
+	bool threw = false;
+	try {
+		stat.print(msa);
+	} catch (const std::runtime_error &) {
+		threw = true;
+	}
+	expect(threw, "print() should throw std::runtime_error when the output file can't be opened");
+}
+
 } // namespace
 
 int main()
 {
 	test_gap_nominal_values_on_synthetic_alignment();
 	test_gap_global_mode_is_the_mean_of_column_scores();
+	test_gap_print_throws_when_output_file_cannot_be_opened();
 	std::cout << "All gap tests passed\n";
 	return 0;
 }

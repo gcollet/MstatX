@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include <ctime>
+#include <memory>
 
 #include "msa.h"
 #include "options.h"
@@ -55,17 +56,18 @@ int main (int argc, char **argv)
 	}
 	
 	/*
-	 * Read the multiple alignment 
+	 * Read the multiple alignment, calculate the statistic & print it
 	 */
-	Msa msa(Options::Get().input_fname);
-	
-	/* 
-	 * Calculate the statistic & print it
-	 */
-	Statistic * stat = StatisticFactory::CreateByName(Options::Get().statistic);
-	stat->calculate(msa);
-	stat->print(msa);
-	delete stat;
+	try {
+		Msa msa(Options::Get().input_fname);
+
+		std::unique_ptr<Statistic> stat(StatisticFactory::CreateByName(Options::Get().statistic));
+		stat->calculate(msa);
+		stat->print(msa);
+	} catch (std::exception &e) {
+		std::cerr << e.what() << "\n";
+		return 1;
+	}
 	
 	/*
 	 * Print time

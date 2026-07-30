@@ -26,6 +26,7 @@
 #include <cmath>
 #include <fstream>
 #include <iomanip>
+#include <stdexcept>
 
 using namespace std;
 
@@ -70,8 +71,7 @@ MVectStat :: print(Msa & msa)
 	/* Print the output */
 	std::ofstream file(Options::Get().output_fname.c_str());
 	if (!file.is_open()){
-	  std::cerr << "Cannot open file " << Options::Get().output_fname << "\n";
-		std::exit(0);
+		throw std::runtime_error("Cannot open file " + Options::Get().output_fname);
 	}
 	int K = static_cast<int>(sm_alphabet.size());
 	file.precision(3);
