@@ -38,7 +38,7 @@ using namespace std;
 float
 TridStat :: normVect(vector<float> vect){
 	float score= 0.0;
-	for(int i(0); i < (int) vect.size(); ++i){
+	for(int i(0); i < static_cast<int>(vect.size()); ++i){
 		score += vect[i] * vect[i];
 	}
 	return sqrt(score);
@@ -70,7 +70,7 @@ TridStat :: calculate(Msa & msa)
 	int L = msa.getNcol();
 	int N = msa.getNseq();
 	string alphabet = msa.getAlphabet();
-	int K = (int) alphabet.size();
+	int K = static_cast<int>(alphabet.size());
 
 	/* Calculate Sequence Weights */
 	w = msa.getSeqWeights();
@@ -103,7 +103,7 @@ TridStat :: calculate(Msa & msa)
 	 * Represents the proportion of gaps in the column
 	 */
 	for (int x(0); x < L; x++){
-		g.push_back((float) msa.getGap(x) / (float) N);
+		g.push_back(static_cast<float>(msa.getGap(x)) / static_cast<float>(N));
 		//cerr << "g[" << x << "] = " << g[x] << "\n";
 	}
 
@@ -127,7 +127,7 @@ TridStat :: calculate(Msa & msa)
 			std::cerr << "Error: No amino acid type found in column " << x << "\n";
 			exit(1);
 		}
-		if (type_list.find("-") < (int) type_list.size()){
+		if (type_list.find("-") != std::string::npos){
 			type_list.erase(type_list.find("-"), 1);
 			ntype--;
 		}

@@ -38,7 +38,7 @@ using namespace std;
  * the alphabet used, the number of gaps and the entropy of 
  * each column, and the frequency of each amino acid type.
  **************************************************************/
-Msa :: Msa(std::string fname)
+Msa :: Msa(const std::string & fname)
 {
 	seq_weight_computed = false;
 	alpha_index.fill(-1);
@@ -55,13 +55,13 @@ Msa :: Msa(std::string fname)
 	
 	/* Read file */
 	std::string s, tmp_seq;
-	while (file.good() && (int) mali_seq.size() < Options::Get().nb_seq){
+	while (file.good() && static_cast<int>(mali_seq.size()) < Options::Get().nb_seq){
 		getline(file,s);
 		if (s[0] == '>'){
 			if (mali_name.size() != 0){
 			  mali_seq.push_back(tmp_seq);	
 			}
-			if ((int) mali_seq.size() < Options::Get().nb_seq){
+			if (static_cast<int>(mali_seq.size()) < Options::Get().nb_seq){
   			mali_name.push_back(s.substr(1, s.find_first_of(' ') - 1));
 			}
 			tmp_seq.clear();
@@ -69,12 +69,12 @@ Msa :: Msa(std::string fname)
 			tmp_seq = tmp_seq + s;
 		}
 	}
-	if ((int) mali_seq.size() < Options::Get().nb_seq){
+	if (static_cast<int>(mali_seq.size()) < Options::Get().nb_seq){
 	  mali_seq.push_back(tmp_seq);
 	}
 	
-	nseq = (int) mali_name.size();
-	ncol = (int) mali_seq[0].size();
+	nseq = static_cast<int>(mali_name.size());
+	ncol = static_cast<int>(mali_seq[0].size());
 	std::cout << "\nMultiple alignment : nb seq = "<<nseq<<", nb col = "<<ncol<<"\n";
 	
 	/* Change all mali.seq in upper case*/
@@ -95,26 +95,26 @@ Msa :: Msa(std::string fname)
 	/* Print if verbose mode */
 	if (Options::Get().verbose){
 		cout << "\nAlphabet :\n";
-	  for(int i(0); i < (int) alphabet.size(); ++i){
-			cout << alphabet[i] << ";";
+		for (char c : alphabet){
+			cout << c << ";";
 		}
 		cout << "\n";
 		cout << "\nMultiple Alignment :\n";
-	  for(int i(0); i <nseq; ++i){
-			cout << mali_seq[i] << "\n";
+		for (const auto & seq : mali_seq){
+			cout << seq << "\n";
 		}
 		cout << "\nAA Frequencies :\n";
-		for (int i(0); i < (int) aa_freq.size(); ++i){
-			cout << aa_freq[i] << ";";
+		for (float f : aa_freq){
+			cout << f << ";";
 		}
 		cout << "\n";
 		cout << "\nGap counts :\n";
-		for (int i(0); i < (int) gap_counts.size(); ++i){
-			cout << gap_counts[i] << ";";
+		for (int g : gap_counts){
+			cout << g << ";";
 		}
 		cout << "\n";
 		cout << "\nAA Entropy :\n";
-		for (int i(0); i < (int) entropy.size(); ++i){
+		for (int i(0); i < static_cast<int>(entropy.size()); ++i){
 			if (gap_counts[i] < nseq/10){
 		  	cout << entropy[i] << ";";
 			} else {
@@ -123,8 +123,8 @@ Msa :: Msa(std::string fname)
 		}
 		cout << "\n";
 		cout << "\nAA Types :\n";
-		for (int i(0); i < (int) nb_type.size(); ++i){
-				cout << nb_type[i] << ";";
+		for (int n : nb_type){
+				cout << n << ";";
 		}
 		cout << "\n";
 	}
@@ -164,7 +164,7 @@ Msa :: countFreq(){
 			if (mali_seq[row][col] != '-' && mali_seq[row][col] != ' '){
 				total++;
 			}
-			int pos = alpha_index[(unsigned char) mali_seq[row][col]];
+			int pos = alpha_index[static_cast<unsigned char>(mali_seq[row][col])];
 			if (pos < 0){
 				throw std::runtime_error("symbol is not in the alphabet");
 			}
@@ -173,9 +173,9 @@ Msa :: countFreq(){
 	}
 
 	/* Divide by the total */
-	for (int i(0); i < (int) aa_freq.size(); ++i){
-		aa_freq[i] = (float) tmp_freq[i] ;
-		aa_freq[i] /= (float) total;
+	for (int i(0); i < static_cast<int>(aa_freq.size()); ++i){
+		aa_freq[i] = static_cast<float>(tmp_freq[i]) ;
+		aa_freq[i] /= static_cast<float>(total);
 	}
 }
 
@@ -194,7 +194,7 @@ Msa :: countType(){
 			}
 		}
 		aa_type_list.push_back(aa_types);
-		nb_type.push_back((int) aa_types.size());
+		nb_type.push_back(static_cast<int>(aa_types.size()));
 	}
 }
 
@@ -212,7 +212,7 @@ Msa :: defineAlphabet(){
 			unsigned char c = mali_seq[row][col];
 			if (!seen[c]){
 				seen[c] = true;
-				alphabet.push_back((char) c);
+				alphabet.push_back(static_cast<char>(c));
 			}
 		}
 	}
@@ -227,8 +227,8 @@ Msa :: defineAlphabet(){
 void
 Msa :: rebuildAlphaIndex(){
 	alpha_index.fill(-1);
-	for (int i(0); i < (int) alphabet.size(); ++i){
-		alpha_index[(unsigned char) alphabet[i]] = i;
+	for (int i(0); i < static_cast<int>(alphabet.size()); ++i){
+		alpha_index[static_cast<unsigned char>(alphabet[i])] = i;
 	}
 }
 
@@ -252,7 +252,7 @@ Msa :: getFreq(char aa){
  **************************************************************/
 int
 Msa :: getAaPos(char aa){
-	return alpha_index[(unsigned char) aa];
+	return alpha_index[static_cast<unsigned char>(aa)];
 };
 
 
@@ -283,13 +283,13 @@ Msa :: countEntropy(){
 		for(int row(0); row < nseq; ++row){
 			lfreq[getAaPos(mali_seq[row][col])] += 1.0;
 		}
-		for (int i(0); i < (int) lfreq.size(); ++i){
-		  lfreq[i] /= (float) nseq;
-			if (lfreq[i] > 0.0){
-				if (lfreq[i] == 1.0){
+		for (float & f : lfreq){
+		  f /= static_cast<float>(nseq);
+			if (f > 0.0){
+				if (f == 1.0){
 				  entropy[col] = 0.0;	
 				} else {
-				  entropy[col] -= lfreq[i] * log(lfreq[i]);	
+				  entropy[col] -= f * log(f);	
 				}
 			}
 		}
@@ -303,9 +303,9 @@ Msa :: countEntropy(){
  * multiple alignment is include in the alphabet alph1
  **************************************************************/
 bool
-Msa :: isInclude(std::string alph1){
-  for (int i(0); i < (int) alphabet.size(); ++i){
-		if (alph1.find(alphabet[i]) >= alph1.size() && alphabet[i] != '-' && alphabet[i] != ' '){
+Msa :: isInclude(const std::string & alph1){
+  for (char c : alphabet){
+		if (alph1.find(c) == std::string::npos && c != '-' && c != ' '){
 		  return false;	
 		}
 	}
@@ -328,11 +328,11 @@ Msa :: getCol(int col)
  * if a symbol from msa is not in alph1 then it is a gap
  **************************************************************/
 void
-Msa :: fitToAlphabet(std::string alph1){
+Msa :: fitToAlphabet(const std::string & alph1){
 	array<bool,256> allowed;
 	allowed.fill(false);
 	for (size_t i(0); i < alph1.size(); ++i){
-		allowed[(unsigned char) alph1[i]] = true;
+		allowed[static_cast<unsigned char>(alph1[i])] = true;
 	}
 
 	std::string removed_symbols;
@@ -344,7 +344,7 @@ Msa :: fitToAlphabet(std::string alph1){
 			if (symbol == '-' || symbol == ' '){
 				continue;
 			}
-			const unsigned char c = (unsigned char) symbol;
+			const unsigned char c = static_cast<unsigned char>(symbol);
 			if (!allowed[c]){
 				mali_seq[i][j] = '-';
 				if (!seen_removed[c]){
@@ -387,20 +387,20 @@ Msa :: printBasic(){
 	if (!file.is_open()){
 		throw std::runtime_error("Cannot open file " + out_name);
 	}
-	for (int a(0); a < (int) dictionary.size(); a++) {
+	for (int a(0); a < static_cast<int>(dictionary.size()); a++) {
 		file << dictionary[a] << " ";
 	}
 	file << "\n";
 	for (int col(0); col < ncol; col++){
 		for (int seq(0); seq < nseq; seq++){
-			int pos = (int) dictionary.find(mali_seq[seq][col]);
-			if (pos < (int) dictionary.size()){
+			int pos = static_cast<int>(dictionary.find(mali_seq[seq][col]));
+			if (pos < static_cast<int>(dictionary.size())){
 				counts[pos]++;
 			} else {
 				cerr << mali_seq[seq][col] << " is not in the dictionary\n";
 			}
 		}
-		for (int a(0); a < (int) dictionary.size(); a++) {
+		for (int a(0); a < static_cast<int>(dictionary.size()); a++) {
 			file << counts[a] << " ";
 			counts[a] = 0;
 		}
@@ -449,7 +449,7 @@ Msa :: getSeqWeights(){
 		}
 	}
 	for (int seq(0); seq < nseq; ++seq){
-		seq_weight[seq] /= (float) ncol;
+		seq_weight[seq] /= static_cast<float>(ncol);
 	}
 	
 	seq_weight_computed = true;

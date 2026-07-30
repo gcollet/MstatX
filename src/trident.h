@@ -19,8 +19,7 @@
  * THE SOFTWARE. 
  */
 
-#ifndef __TRIDENT_H__
-#define __TRIDENT_H__
+#pragma once
 
 #include "statistic.h"
 
@@ -29,8 +28,6 @@ private:
 	float normVect(std::vector<float> vect);
 	
 public:
-	void calculate(Msa & msa);
+	void calculate(Msa & msa) override;
 };
-
-#endif
 

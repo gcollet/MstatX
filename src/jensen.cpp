@@ -48,17 +48,17 @@ JensenStat :: calculate(Msa & msa)
 	string alphabet = msa.getAlphabet();
 	int L = msa.getNcol();
 	int N = msa.getNseq();
-	int K = (int) alphabet.size();
+	int K = static_cast<int>(alphabet.size());
 	
 	/* Allocate proba array */
 	float **proba = (float **) calloc(L, sizeof(float*));
-	if (proba == NULL){
+	if (proba == nullptr){
 		fprintf(stderr,"Cannot Allocate probability matrix\n");
 		exit(0);
 	}
 	for (int i(0); i < L; i++){
 		proba[i] = (float *) calloc(K, sizeof(float));
-		if (proba[i] == NULL){
+		if (proba[i] == nullptr){
 			fprintf(stderr,"Cannot Allocate probability submatrix\n");
 			exit(0);
 		}
@@ -109,7 +109,7 @@ JensenStat :: calculate(Msa & msa)
 			}
 		}
 		/* reduce by the pseudo counts in order to have sum-of-proba = 1 */
-		float pseudo_counts = (float) nb_abs * pow(10.0,-6.0) / (float) (K - nb_abs);
+		float pseudo_counts = static_cast<float>(nb_abs) * pow(10.0,-6.0) / (float) (K - nb_abs);
 		for (int a(0); a < K; a++){
 			if (proba[x][a] > pow(10.0,-6.0)){
 				proba[x][a] -= pseudo_counts;
@@ -128,7 +128,7 @@ JensenStat :: calculate(Msa & msa)
 				score_right += q[aa] * log(q[aa] / (lambda * proba[x][a] + (1.0 - lambda) * q[aa]));
 			}
 		}
-		col_stat.push_back((1 - (lambda * score_left + (1.0 - lambda) * score_right)) * (1 - ((float) msa.getGap(x) / (float) N)));
+		col_stat.push_back((1 - (lambda * score_left + (1.0 - lambda) * score_right)) * (1 - (static_cast<float>(msa.getGap(x)) / static_cast<float>(N))));
 	}
 	
 	/* Add Side columns effect */

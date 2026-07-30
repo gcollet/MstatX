@@ -19,8 +19,7 @@
  * THE SOFTWARE. 
  */
 
-#ifndef __MSA_H__
-#define __MSA_H__
+#pragma once
 
 #include <array>
 #include <vector>
@@ -30,7 +29,7 @@ class Msa
 {
 protected:
 	std::string alphabet;
-	std::array<int,256> alpha_index;	/**< alpha_index[(unsigned char)c] = position of c in `alphabet`, or -1. O(1) replacement for alphabet.find(c) */
+	std::array<int,256> alpha_index;	/**< alpha_index[static_cast<unsigned char>(c)] = position of c in `alphabet`, or -1. O(1) replacement for alphabet.find(c) */
 	std::vector<std::string> mali_name;			/**< Name of sequences of the multiple alignment */
 	std::vector<std::string> mali_seq;			/**< Sequences of the multiple alignment */
 	std::vector<std::string> aa_type_list;	/**< List of aa type in each column (size = ncol * 20) */
@@ -52,7 +51,7 @@ protected:
 	void rebuildAlphaIndex();		/**< Rebuild alpha_index to match the current `alphabet` string */
 	
 public:
-	Msa(std::string fname);
+	explicit Msa(const std::string & fname);
 	~Msa() = default;
 	
 	int   getAaPos(char aa);		/**< Converts a char in his position in alphabet */
@@ -63,7 +62,7 @@ public:
 	int   getNcol() const {return ncol;};									/**< Returns ncol value */
 	int   getNseq() const {return nseq;};									/**< Returns nseq value */
 	int   nbGap(int col) const {return gap_counts[col];};	/**< Returns the number of gaps in column col */
-	bool  isInclude(std::string alph1);												/**< True if the alphabet of the multiple alignment is included in the alphabet alph1 */
+	bool  isInclude(const std::string & alph1);												/**< True if the alphabet of the multiple alignment is included in the alphabet alph1 */
 	
 	std::string getCol(int col);																/**< Returns a column as a string */
 	std::string getAlphabet() const{return alphabet;};					/**< Returns the alphabet of the msa */
@@ -72,11 +71,9 @@ public:
 	int getNtype(int col){return nb_type[col];};									/**< Return the number of different amino acids in the column col */
 	std::string getTypeList(int col){return aa_type_list[col];};				/**< Return the list of amino acid types in the column col */
 	
-	void fitToAlphabet(std::string alph1);																		/**< if a symbol of the msa is not in alphabet alph1, then it is changed in a gap '-' */
+	void fitToAlphabet(const std::string & alph1);																		/**< if a symbol of the msa is not in alphabet alph1, then it is changed in a gap '-' */
 	void printBasic();
 	
 	const std::vector<float> & getSeqWeights();		/**< Henikoff & Henikoff (1994) sequence weights, computed once in O(nseq*ncol) and cached */
 };
-
-#endif
 

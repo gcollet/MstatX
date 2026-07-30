@@ -19,16 +19,13 @@
  * THE SOFTWARE. 
  */
 
-#ifndef __WENTROPY_H__
-#define __WENTROPY_H__
+#pragma once
 
 #include "statistic.h"
 
 class WEntStat  : public Stat1D
 {
 public:
-	void calculate(Msa & msa);
+	void calculate(Msa & msa) override;
 };
-
-#endif
 

@@ -19,8 +19,7 @@
  * THE SOFTWARE. 
  */
 
-#ifndef __SCORING_MATRIX_H__
-#define __SCORING_MATRIX_H__
+#pragma once
 
 #include <string>
 
@@ -35,9 +34,9 @@ protected:
 	float min;
 	
 public:
-	explicit ScoringMatrix(std::string fname);
+	explicit ScoringMatrix(const std::string & fname);
 	virtual ~ScoringMatrix();
-	[[nodiscard]] int		getAlphabetSize() const {return (int) alphabet.size();};
+	[[nodiscard]] int		getAlphabetSize() const {return static_cast<int>(alphabet.size());};
 	[[nodiscard]] std::string	getAlphabet() const {return alphabet;};
 	[[nodiscard]] float   getMax() const {return max;};
 	[[nodiscard]] float		getMin() const {return min;};
@@ -47,6 +46,4 @@ public:
 	[[nodiscard]] bool		isSet() const {return is_set;};
 	
 };
-
-#endif
 

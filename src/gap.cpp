@@ -30,6 +30,6 @@ GapStat :: calculate(Msa & msa)
 	int L = msa.getNcol();
 	int N = msa.getNseq();
 	for (int x(0); x < L; ++x){
-		col_stat.push_back((float) msa.getGap(x) / (float) N);
+		col_stat.push_back(static_cast<float>(msa.getGap(x)) / static_cast<float>(N));
 	}
 }

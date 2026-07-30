@@ -50,10 +50,10 @@ KabatStat :: calculate(Msa & msa)
 			nb_aa[aa_type.find(msa.getSymbol(s, x))]++;
 		}
 		n1 = 0;
-		for (int i(0); i < (int) nb_aa.size(); ++i)
+		for (int i(0); i < static_cast<int>(nb_aa.size()); ++i)
 			if (nb_aa[i] > n1)
 				n1 = nb_aa[i];
 		/* Calculate conservation from Wu & Kabat formula */
-		col_stat.push_back((float)k / (float) n1);
+		col_stat.push_back(static_cast<float>(k) / static_cast<float>(n1));
 	}
 }

@@ -19,16 +19,13 @@
  * THE SOFTWARE. 
  */
 
-#ifndef __GAP_H__
-#define __GAP_H__
+#pragma once
 
 #include "statistic.h"
 
 class GapStat  : public Stat1D
 {
 	public:
-		void calculate(Msa & msa);
+		void calculate(Msa & msa) override;
 };
-
-#endif
 

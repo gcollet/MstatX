@@ -19,8 +19,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __OPTIONS_H_INCLUDED__
-#define __OPTIONS_H_INCLUDED__
+#pragma once
 
 #include <map>
 #include <memory>
@@ -72,7 +71,7 @@ class Arg
 
 		/* The only one setter of the value is virtual because it depends
 		 * on the argument type */
-		virtual void setValue(std::string val){};
+		virtual void setValue(const std::string & val){};
 
 		/* Try to find the flag in the command_line given in argument,
 		 * if the argument is needed but not found in the command_line,
@@ -121,7 +120,7 @@ class ValueArg : public Arg
 		T getValue() const {return _value;};
 
 		// The setter automaticaly converts the string in the T value
-		void setValue(std::string val)
+		void setValue(const std::string & val) override
 		{
 			std::istringstream is(val);
 			while (is.good())
@@ -129,9 +128,9 @@ class ValueArg : public Arg
 		}
 
 		// The implementation of the "find" virtual function
-		void find(std::vector<std::string> & command_line)
+		void find(std::vector<std::string> & command_line) override
 		{
-			std::vector<std::string>::iterator it = command_line.begin();
+			auto it = command_line.begin();
 			while (it != command_line.end()){
 				if (*it == _small_flag || *it == _long_flag){
 					it = command_line.erase(it);
@@ -150,7 +149,7 @@ class ValueArg : public Arg
 				throw std::runtime_error("Argument " + _small_flag + ", " + _long_flag + " is needed\n");
 		}
 
-		Arg * clone() const { return new ValueArg<T>(*this); }
+		Arg * clone() const override { return new ValueArg<T>(*this); }
 };
 
 
@@ -175,12 +174,12 @@ class SwitchArg : public Arg
 		bool getValue() const {return _value;};
 
 		// The setter switch the argument to true
-		void setValue(std::string val) {_value = true;};
+		void setValue(const std::string & val) override {_value = true;};
 
 		// The implementation of the "find" virtual function
-		void find(std::vector<std::string> & command_line)
+		void find(std::vector<std::string> & command_line) override
 		{
-			std::vector<std::string>::iterator it = command_line.begin();
+			auto it = command_line.begin();
 			while (it != command_line.end()){
 				if (*it == _small_flag || *it == _long_flag){
 					if (_small_flag == "-h"){
@@ -194,7 +193,7 @@ class SwitchArg : public Arg
 			}
 		}
 
-		Arg * clone() const { return new SwitchArg(*this); }
+		Arg * clone() const override { return new SwitchArg(*this); }
 };
 
 /*
@@ -219,12 +218,12 @@ class Options
 		}
 
 		// getEnvVar : Get an environment variable of name env
-		std::string getEnvVar(std::string env)
+		std::string getEnvVar(const std::string & env)
 		{
 			char * env_p;
 			std::string env_s;
 			env_p = getenv(env.c_str());
-			if (env_p != NULL)
+			if (env_p != nullptr)
 				env_s = env_p;
 			else
 				std::cerr << "Warning: Environment variable " << env << " is not found\n";
@@ -232,9 +231,9 @@ class Options
 		}
 
 		// Reduce a pathname in a basename
-		std::string basename(std::string fname)
+		std::string basename(const std::string & fname)
 		{
-			int pos = (int) fname.find_last_of('/');
+			int pos = static_cast<int>(fname.find_last_of('/'));
 			return fname.substr(pos+1, fname.size() - pos);
 		};
 
@@ -376,19 +375,19 @@ class Options
 		static void print_usage()
 		{
 			Options & opt = GetNC();
-			std::map<std::string, std::unique_ptr<Arg> >::iterator it = opt.arg_list.begin();
+			auto it = opt.arg_list.begin();
 			int sflag_size = 0;
 			int lflag_size = 0;
 			int desc_size  = 0;
 			while (it != opt.arg_list.end()){
-				if (sflag_size < (int) it->second->getSmallFlag().length()) {
-					sflag_size = (int) it->second->getSmallFlag().size();
+				if (sflag_size < static_cast<int>(it->second->getSmallFlag().length())) {
+					sflag_size = static_cast<int>(it->second->getSmallFlag().size());
 				}
-				if (lflag_size < (int) it->second->getLongFlag().size() ) {
-					lflag_size = (int) it->second->getLongFlag().size();
+				if (lflag_size < static_cast<int>(it->second->getLongFlag().size()) ) {
+					lflag_size = static_cast<int>(it->second->getLongFlag().size());
 				}
-				if (desc_size < (int) it->second->getDescription().size()) {
-					desc_size = (int) it->second->getDescription().size();
+				if (desc_size < static_cast<int>(it->second->getDescription().size())) {
+					desc_size = static_cast<int>(it->second->getDescription().size());
 				}
 				it++;
 			}
@@ -425,4 +424,3 @@ class Options
 		}
 };
 
-#endif

@@ -31,7 +31,7 @@
  *  Matrices are all in format defined by AAindex web site :
  *  http://www.genome.jp/aaindex/
  */
-ScoringMatrix :: ScoringMatrix(std::string fname)
+ScoringMatrix :: ScoringMatrix(const std::string & fname)
 {
   /* Open file */
 	if(fname.empty()){
@@ -53,18 +53,18 @@ ScoringMatrix :: ScoringMatrix(std::string fname)
 	}
 	
 	/* Read Alphabet */
-	int alphabet_begin = (int) s.find('=') + 2;
-	int alphabet_size = (int) s.find(',') - alphabet_begin;
+	int alphabet_begin = static_cast<int>(s.find('=')) + 2;
+	int alphabet_size = static_cast<int>(s.find(',')) - alphabet_begin;
 	alphabet = s.substr(alphabet_begin,	alphabet_size);
 	
 	/* Allocate the matrix */
 	matrix = (float **) calloc (alphabet_size, sizeof(float *));
-	if (matrix == NULL){
+	if (matrix == nullptr){
 		throw std::runtime_error("cannot allocate scoring matrix");
 	}
 	for (int i(0); i < alphabet_size; ++i) {
 		matrix[i] = (float *) calloc(i + 1, sizeof(float));
-		if (matrix[i] == NULL){
+		if (matrix[i] == nullptr){
 			throw std::runtime_error("cannot allocate scoring matrix");
 		}
 	}
@@ -98,12 +98,12 @@ ScoringMatrix :: ScoringMatrix(std::string fname)
 	
 	/* Allocate the norm_matrix */
 	norm_matrix = (float **) calloc (alphabet_size, sizeof(float *));
-	if (norm_matrix == NULL){
+	if (norm_matrix == nullptr){
 		throw std::runtime_error("cannot allocate the normalized amino acid vector");
 	}
 	for (int i(0); i < alphabet_size; ++i) {
 		norm_matrix[i] = (float *) calloc(i+1, sizeof(float));
-		if (norm_matrix[i] == NULL){
+		if (norm_matrix[i] == nullptr){
 			throw std::runtime_error("cannot allocate norm_matrix");
 		}
 	}
@@ -144,11 +144,11 @@ ScoringMatrix :: ScoringMatrix(std::string fname)
 ScoringMatrix :: ~ScoringMatrix()
 {
 	if (is_set){
-		for (int i(0); i < (int) alphabet.size(); ++i){
+		for (int i(0); i < static_cast<int>(alphabet.size()); ++i){
 			free(matrix[i]);
 		}
 		free(matrix);
-		for (int i(0); i < (int) alphabet.size(); ++i){
+		for (int i(0); i < static_cast<int>(alphabet.size()); ++i){
 			free(norm_matrix[i]);
 		}
 		free(norm_matrix);
@@ -169,7 +169,7 @@ ScoringMatrix :: index(char aa)
 	if (pos == std::string::npos){
 		throw std::runtime_error(std::string("symbol ") + aa + " is not in alphabet");
 	} 
-	return (int) pos;
+	return static_cast<int>(pos);
 }
 
 

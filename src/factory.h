@@ -19,8 +19,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __FACTORY_H_INCLUDED__
-#define __FACTORY_H_INCLUDED__
+#pragma once
 
 #include <stdexcept>
 #include <map>
@@ -73,4 +72,3 @@ class Factory
     }
 };
 
-#endif

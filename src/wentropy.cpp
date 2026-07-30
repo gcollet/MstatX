@@ -50,17 +50,17 @@ WEntStat :: calculate(Msa & msa)
 	/* Init sizes */
 	int L = msa.getNcol();
 	int N = msa.getNseq();
-	int K = (int) alphabet.size();
+	int K = static_cast<int>(alphabet.size());
 	
 	/* Allocate probabilities array */
 	float ** p = (float **) calloc (L, sizeof(float*));
-	if (p == NULL){
+	if (p == nullptr){
 		fprintf(stderr,"Cannot Allocate probability matrix\n");
 		exit(0);
 	}
 	for (int i(0); i < L; i++){
 		p[i] = (float *) calloc (K, sizeof(float));
-		if (p[i] == NULL){
+		if (p[i] == nullptr){
 			fprintf(stderr,"Cannot Allocate probability submatrix\n");
 			exit(0);
 		}

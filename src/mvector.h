@@ -19,8 +19,7 @@
  * THE SOFTWARE. 
  */
 
-#ifndef __MVECTOR_H__
-#define __MVECTOR_H__
+#pragma once
 
 #include "statistic.h"
 
@@ -30,8 +29,7 @@ private:
 	std::string sm_alphabet;
 	std::vector<std::vector<float> > means; /**< mean vector of each columns (Size = nb columns * nb symbols in alphabet)*/
 public:
-	void calculate(Msa & msa);
-	void print(Msa & msa);
+	void calculate(Msa & msa) override;
+	void print(Msa & msa) override;
 };
 
-#endif

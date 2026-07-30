@@ -19,8 +19,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __STATISTIC_H__
-#define __STATISTIC_H__
+#pragma once
 
 #include <vector>
 #include <string>
@@ -49,9 +48,9 @@ protected:
 	std::vector<float> col_stat; /**< vector to store columns statistics */
 
 public:
-	virtual ~Stat1D(){};
-	virtual void calculate(Msa & msa){};
-	void print(Msa & msa){
+	~Stat1D() override = default;
+	void calculate(Msa & msa) override {};
+	void print(Msa & msa) override {
 		std::ofstream file(Options::Get().output_fname.c_str());
 		if (!file.is_open()){
 			std::cerr << "Cannot open file " << Options::Get().output_fname << "\n";
@@ -59,12 +58,12 @@ public:
 		}
 		if (Options::Get().global){
 			float total = 0.0;
-			for (int col(0); col < (int) col_stat.size(); ++col){
+			for (int col(0); col < static_cast<int>(col_stat.size()); ++col){
 				total += col_stat[col];
 			}
-			file << total / (int) col_stat.size() << "\n";
+			file << total / static_cast<int>(col_stat.size()) << "\n";
 		} else {
-			for (int col(0); col < (int) col_stat.size(); ++col){
+			for (int col(0); col < static_cast<int>(col_stat.size()); ++col){
 				file << col + 1 << "\t" << col_stat[col] << "\n";
 			}
 		}
@@ -77,16 +76,16 @@ protected:
 	std::vector<std::vector<float> > cor_stat; /**< vector to store pairs of columns statistics */
 
 public:
-	virtual ~Stat2D(){};
-	virtual void calculate(Msa & msa){};
-	void print(Msa & msa){
+	~Stat2D() override = default;
+	void calculate(Msa & msa) override {};
+	void print(Msa & msa) override {
 		std::ofstream file(Options::Get().output_fname.c_str());
 		if (!file.is_open()){
 			std::cerr << "Cannot open file " << Options::Get().output_fname << "\n";
 			std::exit(0);
 		}
-		for  (int x(0); x < (int) cor_stat.size() - 1; ++x) {
-			for (int y(0); y < (int) cor_stat.size(); ++y) {
+		for  (int x(0); x < static_cast<int>(cor_stat.size()) - 1; ++x) {
+			for (int y(0); y < static_cast<int>(cor_stat.size()); ++y) {
 				if (y > x){
 					file << cor_stat[x][y] << "\t";
 				} else {
@@ -99,4 +98,3 @@ public:
 	};
 };
 
-#endif

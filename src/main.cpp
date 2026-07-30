@@ -71,6 +71,6 @@ int main (int argc, char **argv)
 	 * Print time
 	 */
 	t2 = clock();		
-	std::cout << "Mstatx computed in "<< (t2 - t1) / (double)CLOCKS_PER_SEC <<" seconds\nResults are written in " << Options::Get().output_fname << "\n\n";
+	std::cout << "Mstatx computed in "<< (t2 - t1) / static_cast<double>(CLOCKS_PER_SEC) <<" seconds\nResults are written in " << Options::Get().output_fname << "\n\n";
 	return 0;
 }

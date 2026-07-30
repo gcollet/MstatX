@@ -19,15 +19,13 @@
  * THE SOFTWARE. 
  */
 
-#ifndef __JENSEN_H__
-#define __JENSEN_H__
+#pragma once
 
 #include "statistic.h"
 
 class JensenStat  : public Stat1D
 {
 public:
-	void calculate(Msa & msa);
+	void calculate(Msa & msa) override;
 };
 
-#endif

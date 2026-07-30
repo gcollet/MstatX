@@ -43,7 +43,7 @@ MVectStat :: calculate(Msa & msa)
 	msa.fitToAlphabet(sm_alphabet);
 	
 	/* Calculate the mean vector for each column */
-	int K = (int) sm_alphabet.size();
+	int K = static_cast<int>(sm_alphabet.size());
 	means = std::vector<std::vector<float> >(L);
 	
 	for (int col(0); col < L; col++) {
@@ -58,7 +58,7 @@ MVectStat :: calculate(Msa & msa)
 			}
 		}
 		for (int a(0); a < K; ++a) {
-			mean_col[a] /= (float) N;
+			mean_col[a] /= static_cast<float>(N);
 		}
 		means[col] = mean_col;
 	}
@@ -73,7 +73,7 @@ MVectStat :: print(Msa & msa)
 	  std::cerr << "Cannot open file " << Options::Get().output_fname << "\n";
 		std::exit(0);
 	}
-	int K = (int) sm_alphabet.size();
+	int K = static_cast<int>(sm_alphabet.size());
 	file.precision(3);
 	file << std::setw(10) << " ";
 	for (int a(0); a < K; ++a) {
@@ -81,7 +81,7 @@ MVectStat :: print(Msa & msa)
 		file << std::setw(10) << sm_alphabet[a];
 	}
 	file << "\n";
-	for (int col(0); col < (int) means.size(); col++) {
+	for (int col(0); col < static_cast<int>(means.size()); col++) {
 		file.precision(3);
 		file << setw(10) << col + 1;
   	for (int a(0); a < K; ++a) {
