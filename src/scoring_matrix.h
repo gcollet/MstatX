@@ -22,20 +22,21 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 class ScoringMatrix
 {
 protected:
 	std::string alphabet;
-	float ** matrix;
+	std::vector<std::vector<float> > matrix;
   bool is_set;
-	float **norm_matrix;  /**< Normalized vector of each amino acid type */
+	std::vector<std::vector<float> > norm_matrix;  /**< Normalized vector of each amino acid type */
 	float max;
 	float min;
 	
 public:
 	explicit ScoringMatrix(const std::string & fname);
-	virtual ~ScoringMatrix();
+	virtual ~ScoringMatrix() = default;
 	[[nodiscard]] int		getAlphabetSize() const {return static_cast<int>(alphabet.size());};
 	[[nodiscard]] std::string	getAlphabet() const {return alphabet;};
 	[[nodiscard]] float   getMax() const {return max;};

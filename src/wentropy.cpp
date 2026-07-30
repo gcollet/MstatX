@@ -54,16 +54,7 @@ WEntStat :: calculate(Msa & msa)
 	int K = static_cast<int>(alphabet.size());
 	
 	/* Allocate probabilities array */
-	float ** p = (float **) calloc (L, sizeof(float*));
-	if (p == nullptr){
-		throw std::runtime_error("Cannot allocate probability matrix");
-	}
-	for (int i(0); i < L; i++){
-		p[i] = (float *) calloc (K, sizeof(float));
-		if (p[i] == nullptr){
-			throw std::runtime_error("Cannot allocate probability submatrix");
-		}
-	}
+	std::vector<std::vector<float> > p(L, std::vector<float>(K, 0.0f));
 	
 	/* Calculate Sequence Weights */
 	const vector<float> & w = msa.getSeqWeights();
@@ -85,9 +76,4 @@ WEntStat :: calculate(Msa & msa)
 		}
 		col_stat[x] *= lambda;
 	}
-	
-	for (int i(0); i < L; ++i) {
-		free (p[i]);
-	}
-	free(p);
 }

@@ -57,16 +57,11 @@ ScoringMatrix :: ScoringMatrix(const std::string & fname)
 	int alphabet_size = static_cast<int>(s.find(',')) - alphabet_begin;
 	alphabet = s.substr(alphabet_begin,	alphabet_size);
 	
-	/* Allocate the matrix */
-	matrix = (float **) calloc (alphabet_size, sizeof(float *));
-	if (matrix == nullptr){
-		throw std::runtime_error("cannot allocate scoring matrix");
-	}
+	/* Allocate the matrix (triangular: row i holds i+1 values, since
+	 * score()/normScore() always access it with the larger index first) */
+	matrix.assign(alphabet_size, std::vector<float>());
 	for (int i(0); i < alphabet_size; ++i) {
-		matrix[i] = (float *) calloc(i + 1, sizeof(float));
-		if (matrix[i] == nullptr){
-			throw std::runtime_error("cannot allocate scoring matrix");
-		}
+		matrix[i].assign(i + 1, 0.0f);
 	}
 	
 	
@@ -97,15 +92,9 @@ ScoringMatrix :: ScoringMatrix(const std::string & fname)
 	
 	
 	/* Allocate the norm_matrix */
-	norm_matrix = (float **) calloc (alphabet_size, sizeof(float *));
-	if (norm_matrix == nullptr){
-		throw std::runtime_error("cannot allocate the normalized amino acid vector");
-	}
+	norm_matrix.assign(alphabet_size, std::vector<float>());
 	for (int i(0); i < alphabet_size; ++i) {
-		norm_matrix[i] = (float *) calloc(i+1, sizeof(float));
-		if (norm_matrix[i] == nullptr){
-			throw std::runtime_error("cannot allocate norm_matrix");
-		}
+		norm_matrix[i].assign(i + 1, 0.0f);
 	}
 	
 	/* Calculate normalized vector */
@@ -138,22 +127,6 @@ ScoringMatrix :: ScoringMatrix(const std::string & fname)
 	}
 	
 	is_set = true;
-}
-
-/* Destructor */
-ScoringMatrix :: ~ScoringMatrix()
-{
-	if (is_set){
-		for (int i(0); i < static_cast<int>(alphabet.size()); ++i){
-			free(matrix[i]);
-		}
-		free(matrix);
-		for (int i(0); i < static_cast<int>(alphabet.size()); ++i){
-			free(norm_matrix[i]);
-		}
-		free(norm_matrix);
-	}
-	
 }
 
 int 

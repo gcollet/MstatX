@@ -52,16 +52,7 @@ JensenStat :: calculate(Msa & msa)
 	int K = static_cast<int>(alphabet.size());
 	
 	/* Allocate proba array */
-	float **proba = (float **) calloc(L, sizeof(float*));
-	if (proba == nullptr){
-		throw std::runtime_error("Cannot allocate probability matrix");
-	}
-	for (int i(0); i < L; i++){
-		proba[i] = (float *) calloc(K, sizeof(float));
-		if (proba[i] == nullptr){
-			throw std::runtime_error("Cannot allocate probability submatrix");
-		}
-	}
+	std::vector<std::vector<float> > proba(L, std::vector<float>(K, 0.0f));
 
 	/* Calculate Sequence Weights */
 	const vector<float> & w = msa.getSeqWeights();
@@ -145,9 +136,4 @@ JensenStat :: calculate(Msa & msa)
 		cout << 0.5 * (score + side_score) <<"\n";
 		col_stat[x] = 0.5 * (score + side_score);
 	}*/
-	
-	for (int i(0); i < L; ++i) {
-		free (proba[i]);	
-	}
-	free(proba);
 }
