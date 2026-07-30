@@ -403,7 +403,6 @@ class Options
 			}
 			std::cerr << " [options]\n\n";
 			std::cerr << "Available statistics: \n";
-			std::cerr << "  sumofpairs (1)\n";
 			std::cerr << "  wentropy (1)\n";
 			std::cerr << "  trident  (1)\n";
 			std::cerr << "  mvector  (1)\n";
