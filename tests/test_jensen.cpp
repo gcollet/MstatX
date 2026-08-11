@@ -96,12 +96,43 @@ void test_jensen_global_mode_is_the_mean_of_column_scores()
 	       "--global should output the mean of the per-column scores");
 }
 
+/* Same fixture, with -k uniform instead of the default "legacy"
+ * background: values come from an independent Python re-computation of
+ * the same formula with q(a) = 1/20 for every standard amino acid,
+ * cross-checked against `./mstatx -s jensen -k uniform` on this
+ * fixture: 0.719283 / 0.786037 / 0.618728. Different numbers from the
+ * default on purpose - the whole point of -k/--background is that the
+ * choice measurably changes the score. */
+void test_jensen_uniform_background_gives_different_values()
+{
+	char *argv[] = {
+		const_cast<char*>("mstatx"),
+		const_cast<char*>("-i"), const_cast<char*>(FIXTURE.c_str()),
+		const_cast<char*>("-o"), const_cast<char*>(OUTPUT_FILE.c_str()),
+		const_cast<char*>("-k"), const_cast<char*>("uniform")
+	};
+	Options::Parse(sizeof(argv) / sizeof(argv[0]), argv);
+	Msa msa(FIXTURE);
+
+	JensenStat stat;
+	stat.calculate(msa);
+	stat.print(msa);
+
+	std::vector<float> values = read_col_stat_file(OUTPUT_FILE);
+	expect(values.size() == 3, "expected one score per column");
+
+	expect(almost_equal(values[0], 0.719283f, 1e-4f), "column 0, uniform background");
+	expect(almost_equal(values[1], 0.786037f, 1e-4f), "column 1, uniform background");
+	expect(almost_equal(values[2], 0.618728f, 1e-4f), "column 2, uniform background");
+}
+
 } // namespace
 
 int main()
 {
 	test_jensen_nominal_values_on_synthetic_alignment();
 	test_jensen_global_mode_is_the_mean_of_column_scores();
+	test_jensen_uniform_background_gives_different_values();
 	std::cout << "All jensen tests passed\n";
 	return 0;
 }

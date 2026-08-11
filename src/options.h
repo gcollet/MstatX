@@ -282,6 +282,7 @@ class Options
 				ValueArg<float>  bArg("-b", "--trident_b", "Factor applied to r(x) (see trident) [default=0.5]", 0.5);
 				ValueArg<float>  cArg("-c", "--trident_c", "Factor applied to g(x) (see trident) [default=3.0]", 3.0);
 				ValueArg<int>    wArg("-w", "--window",    "Number of side columns (jensen score)",                3);
+				ValueArg<std::string> kArg("-k", "--background", "Background distribution: uniform, legacy, or a file path (jensen score) [default=legacy]", std::string("legacy"));
 
 				// 2 -  add the argument to the arg_list for further use (print_usage).
 				// Each entry is a heap-allocated clone of the argument's actual
@@ -300,6 +301,7 @@ class Options
 				arg_list[bArg.getSmallFlag()] = std::unique_ptr<Arg>(bArg.clone());
 				arg_list[cArg.getSmallFlag()] = std::unique_ptr<Arg>(cArg.clone());
 				arg_list[wArg.getSmallFlag()] = std::unique_ptr<Arg>(wArg.clone());
+				arg_list[kArg.getSmallFlag()] = std::unique_ptr<Arg>(kArg.clone());
 
 				// 3 - try to find the argument in the command line to set up the value.
 				hArg.find(command_line);
@@ -315,6 +317,7 @@ class Options
 				bArg.find(command_line);
 				cArg.find(command_line);
 				wArg.find(command_line);
+				kArg.find(command_line);
 
 				// If something is left in the command line... It is not an argument of the program -> error
 				if (command_line.size() > 0){
@@ -334,6 +337,7 @@ class Options
 				factor_b     = bArg.getValue();
 				factor_c     = cArg.getValue();
 				window       = wArg.getValue();
+				background   = kArg.getValue();
 			} catch (std::exception &e) {
 				throw;
 			}
@@ -353,6 +357,7 @@ class Options
 		float  factor_b;     // The factor applied to the second member of trident score */
 		float  factor_c;     // The factor applied to the third  member of trident score */
 		int    window;       // The size of the window to take in account side columns (jensen stat only) */
+	std::string background; // Background distribution: "uniform", "legacy", or a file path (jensen stat only) */
 
 		/* Universal accessor */
 		static Options const & Get()

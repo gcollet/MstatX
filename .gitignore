@@ -9,4 +9,5 @@ tests/test_mvector
 tests/test_factory
 tests/test_options
 tests/test_scoring_matrix
+tests/test_background
 tests/fixtures/.*_test_output.txt

@@ -22,8 +22,8 @@
 #include "jensen.h"
 #include "options.h"
 #include "scoring_matrix.h"
+#include "background.h"
 
-#include <map>
 #include <cmath>
 #include <fstream>
 #include <algorithm>
@@ -65,30 +65,10 @@ JensenStat :: calculate(Msa & msa)
 	/* Calculate Sequence Weights */
 	const vector<float> & w = msa.getSeqWeights();
 
-	/* Background distribution of amino acids 
-	 * These background frequencies are used in sca paper
-	 */
-	map<char,float> q;
-	q['A'] = 0.073;
-	q['C'] = 0.025;
-	q['D'] = 0.050;
-	q['E'] = 0.061;
-	q['F'] = 0.042;
-	q['G'] = 0.072;
-	q['H'] = 0.023;
-	q['I'] = 0.053;
-	q['K'] = 0.064;
-	q['L'] = 0.089;
-	q['M'] = 0.023;
-	q['N'] = 0.043;
-	q['P'] = 0.052;
-	q['Q'] = 0.040;
-	q['R'] = 0.052;
-	q['S'] = 0.073;
-	q['T'] = 0.056;
-	q['V'] = 0.063;
-	q['W'] = 0.013;
-	q['Y'] = 0.033;
+	/* Background distribution of amino acids: -k/--background lets the
+	 * user pick "uniform", the historical "legacy" Capra & Singh (2007)
+	 * table (the default, preserving past behavior), or a custom file. */
+	BackgroundDistribution q(Options::Get().background);
 	
 	/* Calculate aa proba by columns */
 	float lambda = 0.5;
@@ -122,8 +102,8 @@ JensenStat :: calculate(Msa & msa)
 		for (int a(0); a < K; a++){
 			char aa = alphabet[a];
 			if (aa != '-' && aa != 'X' && aa != 'Z' && aa != 'B'){
-				score_left  += proba[x][a] * log(proba[x][a] / (lambda * proba[x][a] + (1.0 - lambda) * q[aa]));
-				score_right += q[aa] * log(q[aa] / (lambda * proba[x][a] + (1.0 - lambda) * q[aa]));
+				score_left  += proba[x][a] * log(proba[x][a] / (lambda * proba[x][a] + (1.0 - lambda) * q.getFreq(aa)));
+				score_right += q.getFreq(aa) * log(q.getFreq(aa) / (lambda * proba[x][a] + (1.0 - lambda) * q.getFreq(aa)));
 			}
 		}
 		col_stat.push_back((1 - (lambda * score_left + (1.0 - lambda) * score_right)) * (1 - (static_cast<float>(msa.getGap(x)) / static_cast<float>(N))));
