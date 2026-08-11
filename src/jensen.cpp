@@ -42,6 +42,14 @@ using namespace std;
  * i.e. a Kullback-Leibler divergence with probability
  * p and background probability r
  */
+
+/* Small constant added to a column's zero-probability symbols so no
+ * log(0) is ever taken; subtracted back from the non-zero symbols so
+ * the column's probabilities still sum to ~1 (see the pseudo_counts
+ * computation below). Named here instead of repeating the same
+ * pow(10.0,-6.0) three times. */
+static const float PSEUDO_COUNT = 1e-6f;
+
 void
 JensenStat :: calculate(Msa & msa)
 {
@@ -94,14 +102,14 @@ JensenStat :: calculate(Msa & msa)
 				}
 			}
 			if (proba[x][a] == 0.0){
-				proba[x][a] = pow(10.0,-6.0);
+				proba[x][a] = PSEUDO_COUNT;
 				nb_abs++;
 			}
 		}
 		/* reduce by the pseudo counts in order to have sum-of-proba = 1 */
-		float pseudo_counts = static_cast<float>(nb_abs) * pow(10.0,-6.0) / (float) (K - nb_abs);
+		float pseudo_counts = static_cast<float>(nb_abs) * PSEUDO_COUNT / static_cast<float>(K - nb_abs);
 		for (int a(0); a < K; a++){
-			if (proba[x][a] > pow(10.0,-6.0)){
+			if (proba[x][a] > PSEUDO_COUNT){
 				proba[x][a] -= pseudo_counts;
 			}
 		}

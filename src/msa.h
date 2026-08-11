@@ -54,17 +54,17 @@ public:
 	explicit Msa(const std::string & fname);
 	~Msa() = default;
 	
-	int   getAaPos(char aa);		/**< Converts a char in his position in alphabet */
-	float getFreq(char aa);			/**< Return the frequency of amino acid aa in the overall multiple alignment */
+	int   getAaPos(char aa) const;		/**< Converts a char in his position in alphabet */
+	float getFreq(char aa) const;			/**< Return the frequency of amino acid aa in the overall multiple alignment */
 	int   getGap(int col);			/**< Return the number of gaps in the column col */
 	std::vector<int> getGapCount() const {return gap_counts;};
 	
 	int   getNcol() const {return ncol;};									/**< Returns ncol value */
 	int   getNseq() const {return nseq;};									/**< Returns nseq value */
 	int   nbGap(int col) const {return gap_counts[col];};	/**< Returns the number of gaps in column col */
-	bool  isInclude(const std::string & alph1);												/**< True if the alphabet of the multiple alignment is included in the alphabet alph1 */
+	bool  isInclude(const std::string & alph1) const;												/**< True if the alphabet of the multiple alignment is included in the alphabet alph1 */
 	
-	std::string getCol(int col);																/**< Returns a column as a string */
+	std::string getCol(int col) const;																/**< Returns a column as a string */
 	std::string getAlphabet() const{return alphabet;};					/**< Returns the alphabet of the msa */
 	
 	char getSymbol(int seq, int col){return mali_seq[seq][col];};	/**< Return symbol row seq, column col */

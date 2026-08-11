@@ -238,7 +238,7 @@ Msa :: rebuildAlphaIndex(){
  * in the overall multiple alignment
  **************************************************************/
 float 
-Msa :: getFreq(char aa){
+Msa :: getFreq(char aa) const {
   int pos = getAaPos(aa);
 	if (pos == -1){
 		throw std::runtime_error("symbol not in alphabet");
@@ -251,7 +251,7 @@ Msa :: getFreq(char aa){
  * getAaPos(aa) returns the index of aa in alphabet
  **************************************************************/
 int
-Msa :: getAaPos(char aa){
+Msa :: getAaPos(char aa) const {
 	return alpha_index[static_cast<unsigned char>(aa)];
 };
 
@@ -303,7 +303,7 @@ Msa :: countEntropy(){
  * multiple alignment is include in the alphabet alph1
  **************************************************************/
 bool
-Msa :: isInclude(const std::string & alph1){
+Msa :: isInclude(const std::string & alph1) const {
   for (char c : alphabet){
 		if (alph1.find(c) == std::string::npos && c != '-' && c != ' '){
 		  return false;	
@@ -313,7 +313,7 @@ Msa :: isInclude(const std::string & alph1){
 }
 
 std::string 
-Msa :: getCol(int col)
+Msa :: getCol(int col) const
 {
   std::string column;
 	for (int i(0); i < nseq; ++i){
