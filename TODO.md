@@ -20,3 +20,15 @@ un utilisateur taper `-s sumofpairs` et tomber sur une erreur "not found".
 - Ajouter `tests/test_sumofpairs.cpp`, sur le modèle des fichiers de test
   existants (fixture synthétique, valeurs nominales vérifiées à la main
   ou par une implémentation Python indépendante, mode `--global`).
+
+## Options existantes mais non branchées
+
+### `-w`/`--window`
+
+Parsée, documentée dans `--help`, testée dans `test_options.cpp` — mais
+non utilisée par aucune statistique active. La seule référence à
+`Options::Get().window` se trouve dans un bloc de code commenté dans
+`jensen.cpp` ("Add Side columns effect"). À trancher : implémenter cet
+effet de fenêtre glissante, ou retirer l'option et le code mort
+correspondant.
+
